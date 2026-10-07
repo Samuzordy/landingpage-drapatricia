@@ -1,11 +1,24 @@
-// Placeholder — implemented in a later etapa (see docs/ROTEIRO_PROMPTS.md).
+import { site } from "@/content/site";
+import { WHATSAPP_PENDING_NOTE, getWhatsAppHref } from "@/lib/whatsapp";
+import { SiteHeader } from "./SiteHeader";
+
+/**
+ * Server wrapper: reads content and builds the WhatsApp links on the server, so the client
+ * header only receives plain props.
+ */
 export function Header() {
   return (
-    <header id="topo" data-layer="epiderme" className="border-b border-areia section-space">
-      <div className="container-page">
-        <p className="kicker">epiderme</p>
-        <h2 className="font-display">Header</h2>
-      </div>
-    </header>
+    <SiteHeader
+      brand={site.specialist.nomeExibicao}
+      tagline={site.specialist.especialidade}
+      nav={site.nav}
+      cta={{
+        label: site.hero.ctaHeader,
+        href: getWhatsAppHref("header"),
+        menuLabel: site.hero.ctaPrimario,
+        menuHref: getWhatsAppHref("menu"),
+        pendingNote: WHATSAPP_PENDING_NOTE,
+      }}
+    />
   );
 }

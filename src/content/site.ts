@@ -17,6 +17,9 @@ export const PLACEHOLDER = "PLACEHOLDER" as const;
 export const PENDING_TEXT = "[Texto pendente — aguardando validação da Dra. Valéria]";
 
 export const site: SiteContent = {
+  // TODO(cliente): set showPendingMarkers to false once every VALIDAR item is confirmed.
+  flags: { showPendingMarkers: true },
+
   settings: {
     whatsapp: PLACEHOLDER, // TODO(cliente): número de WhatsApp comercial
     mensagemPadrao: "Olá, vim pelo site e gostaria de agendar uma consulta.", // TODO(cliente): mensagem padrão
@@ -42,20 +45,25 @@ export const site: SiteContent = {
   ],
 
   hero: {
+    kicker: "Dermatologista · Curitiba – PR",
     titulo: "Cuidado com a sua pele, guiado pela ciência",
     destaqueItalico: "sua pele",
-    subtitulo: PENDING_TEXT, // TODO(cliente): subtítulo do hero
+    // VALIDAR: provisional subtitle assembled from the spec cover line and the three pillar
+    // key messages (section 03). TODO(cliente): final copy.
+    subtitulo:
+      "Dermatologia clínica, cirúrgica e estética: diagnóstico preciso, olhar atento que protege e naturalidade guiada pela ciência.",
     ctaPrimario: "Agendar pelo WhatsApp", // VALIDAR
     ctaSecundario: { label: "Conheça a Dra.", href: "#sobre" },
+    ctaHeader: "Agendar",
   },
 
   credentials: [
-    "CRM-PR 20510",
-    "RQE 17213",
-    "SBD",
-    "UFPR",
-    "Professora PUCPR", // VALIDAR: confirmar se continua lecionando
-    "English spoken",
+    { label: "CRM-PR 20510" },
+    { label: "RQE 17213" },
+    { label: "Título de especialista SBD", pendente: true }, // VALIDAR
+    { label: "Medicina UFPR", pendente: true }, // VALIDAR
+    { label: "Professora PUCPR", pendente: true }, // VALIDAR: confirmar se continua lecionando
+    { label: "English spoken" },
   ],
 
   specialist: {

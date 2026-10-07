@@ -13,13 +13,21 @@ import { Locations } from "@/components/sections/Locations";
 import { Pillars } from "@/components/sections/Pillars";
 import { SkinJourney } from "@/components/sections/SkinJourney";
 import { Testimonials } from "@/components/sections/Testimonials";
+import { WhatsAppFab } from "@/components/ui/WhatsAppFab";
+import { getWhatsAppHref } from "@/lib/whatsapp";
 
 // Server Component: composes the page in funnel order (attract → trust → understand → act).
 export default function HomePage() {
+  // Floating WhatsApp button only once a real number is configured (no fictitious link).
+  const fabHref = getWhatsAppHref("fab");
+
   return (
     <>
+      <a href="#conteudo-principal" className="skip-link">
+        Pular para o conteúdo
+      </a>
       <Header />
-      <main>
+      <main id="conteudo-principal" tabIndex={-1} className="outline-none">
         {/* Epiderme */}
         <Hero />
         <Credentials />
@@ -39,6 +47,7 @@ export default function HomePage() {
         <FinalCta />
       </main>
       <Footer />
+      {fabHref && <WhatsAppFab href={fabHref} />}
     </>
   );
 }

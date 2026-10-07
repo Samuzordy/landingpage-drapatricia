@@ -389,7 +389,7 @@ export default function PlaygroundPage() {
           note="CSS puro. Pausa no hover, no foco interno e pelo controle “Pausar animação” (WCAG 2.2.2). Reduced motion: lista estática."
         >
           <div className="rounded-card bg-areia/60 py-5">
-            <Marquee label="Credenciais" items={site.credentials} />
+            <Marquee label="Credenciais" items={site.credentials.map((c) => c.label)} />
           </div>
           <div className="rounded-card bg-areia/60 py-5">
             <Marquee

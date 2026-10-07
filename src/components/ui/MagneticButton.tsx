@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, type PointerEvent as ReactPointerEvent } from "react";
-import { ButtonContent, buttonClasses, type ButtonProps } from "./Button";
+import { ButtonContent, PendingButton, buttonClasses, type ButtonProps } from "./Button";
 
 /** Max displacement toward the cursor (spec: "desloca até 6 px"). */
 const MAX_PULL = 6;
@@ -82,8 +82,23 @@ export function MagneticButton(props: ButtonProps) {
 
   const handlers = { onPointerEnter, onPointerMove, onPointerLeave, onPointerDown };
 
+  // No magnetism or ripple for an action that doesn't exist yet.
+  if (props.pending) return <PendingButton {...props} />;
+
   if (props.href !== undefined) {
-    const { variant, size, arrow, children, className, external, disabled, href, ...rest } = props;
+    const {
+      variant,
+      size,
+      arrow,
+      children,
+      className,
+      external,
+      disabled,
+      href,
+      pending,
+      ...rest
+    } = props;
+    void pending;
     return (
       <a
         {...rest}
@@ -102,7 +117,18 @@ export function MagneticButton(props: ButtonProps) {
     );
   }
 
-  const { variant, size, arrow, children, className, type = "button", disabled, ...rest } = props;
+  const {
+    variant,
+    size,
+    arrow,
+    children,
+    className,
+    type = "button",
+    disabled,
+    pending,
+    ...rest
+  } = props;
+  void pending;
   return (
     <button
       {...rest}

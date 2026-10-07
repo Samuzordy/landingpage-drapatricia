@@ -409,4 +409,152 @@
       translate: 0 0;
     }
   }
+
+  /* ---------- Skip link ---------- */
+  .skip-link {
+    position: fixed;
+    top: 0.75rem;
+    left: 0.75rem;
+    z-index: 70;
+    padding: 0.75rem 1.25rem;
+    border-radius: var(--radius-pill);
+    background-color: var(--color-cacau);
+    color: var(--color-porcelana);
+    font-weight: 600;
+    translate: 0 -200%;
+  }
+
+  .skip-link:focus-visible {
+    translate: 0 0;
+  }
+
+  /* ---------- Header ---------- */
+  .site-header {
+    border-bottom: 1px solid transparent;
+    transition:
+      background-color var(--dur-base) var(--ease-skin),
+      border-color var(--dur-base) var(--ease-skin),
+      translate var(--dur-base) var(--ease-skin);
+  }
+
+  /* Frosted glass after 80px (backdrop-filter itself isn't animated). */
+  .site-header[data-scrolled] {
+    border-bottom-color: rgb(233 220 209 / 0.9);
+    background-color: rgb(247 241 236 / 0.78);
+    -webkit-backdrop-filter: blur(14px) saturate(1.1);
+    backdrop-filter: blur(14px) saturate(1.1);
+  }
+
+  .site-header[data-menu-open] {
+    border-bottom-color: var(--color-areia);
+    background-color: var(--color-porcelana);
+  }
+
+  .site-header[data-hidden] {
+    translate: 0 -100%;
+  }
+
+  /* Underline draws left → right on hover/focus; stays for the active section (scroll-spy). */
+  .nav-link::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    bottom: 0.55rem;
+    left: 0;
+    height: 1px;
+    background-color: var(--color-terracota);
+    transform-origin: left center;
+    scale: 0 1;
+    transition: scale var(--dur-fast) var(--ease-skin);
+  }
+
+  .nav-link:focus-visible::after,
+  .nav-link[aria-current="true"]::after {
+    scale: 1 1;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .nav-link:hover::after {
+      scale: 1 1;
+    }
+  }
+
+  /* Mobile menu items enter with a 60ms stagger. */
+  .mobile-menu:not([hidden]) .menu-item {
+    animation: menu-item-in var(--dur-slow) var(--ease-skin) both;
+    animation-delay: calc(var(--i, 0) * var(--stagger));
+  }
+
+  @keyframes menu-item-in {
+    from {
+      opacity: 0;
+      translate: 0 14px;
+    }
+  }
+
+  /* ---------- Hero ---------- */
+  .hero-cell {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(48px);
+    opacity: 0.8;
+  }
+
+  /* Organic arch frame for the portrait / lens. */
+  .hero-frame {
+    border-radius: 999px 999px var(--radius-card) var(--radius-card);
+  }
+
+  /* ---------- DermatoscopeLens ---------- */
+  .lens-detail {
+    clip-path: circle(80px at var(--lx, 50%) var(--ly, 50%));
+    opacity: 0;
+    transition: opacity var(--dur-base) var(--ease-skin);
+  }
+
+  .lens-ring {
+    position: absolute;
+    top: -80px;
+    left: -80px;
+    width: 160px;
+    height: 160px;
+    border: 1.5px solid var(--color-terracota);
+    border-radius: 50%;
+    box-shadow: inset 0 0 0 1px rgb(247 241 236 / 0.45);
+    pointer-events: none;
+    translate: var(--lx, 50%) var(--ly, 50%);
+    opacity: 0;
+    scale: 0.92;
+    transition:
+      opacity var(--dur-base) var(--ease-skin),
+      scale var(--dur-base) var(--ease-skin);
+  }
+
+  .lens-label {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    padding: 0.2rem 0.6rem;
+    border-radius: var(--radius-pill);
+    background-color: rgb(247 241 236 / 0.92);
+    color: var(--color-cacau);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+    translate: -50% 8px;
+  }
+
+  .lens:is([data-lens="active"], [data-lens="tour"], [data-lens="static"]) .lens-detail,
+  .lens:is([data-lens="active"], [data-lens="tour"], [data-lens="static"]) .lens-ring {
+    opacity: 1;
+    scale: 1;
+  }
+
+  /* The cursor "becomes" the lens on fine pointers. */
+  @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+    .lens {
+      cursor: none;
+    }
+  }
 }

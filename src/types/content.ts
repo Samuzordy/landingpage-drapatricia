@@ -157,19 +157,37 @@ export type NavItem = {
 };
 
 export type HeroContent = {
+  kicker: string;
   titulo: string;
   /** Words from `titulo` rendered in Fraunces italic. */
   destaqueItalico: string;
   subtitulo: string;
   ctaPrimario: string;
   ctaSecundario: Link;
+  /** Short CTA label in the header. */
+  ctaHeader: string;
+};
+
+export type Credential = {
+  label: string;
+  /** Still needs confirmation by the client (shows a "a validar" mark while flags allow). */
+  pendente?: boolean;
+};
+
+export type SiteFlags = {
+  /**
+   * Shows small "a validar" marks next to unconfirmed data and placeholder notices
+   * (e.g. Google badge, WhatsApp pending). Set to false before launch.
+   */
+  showPendingMarkers: boolean;
 };
 
 export type SiteContent = {
+  flags: SiteFlags;
   settings: SiteSettings;
   nav: NavItem[];
   hero: HeroContent;
-  credentials: string[];
+  credentials: Credential[];
   specialist: Specialist;
   pillars: Pillar[];
   skinLayers: SkinLayer[];
