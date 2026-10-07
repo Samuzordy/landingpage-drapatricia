@@ -1,0 +1,198 @@
+@import "tailwindcss";
+@import "./tokens.css";
+
+/* next/font exposes --font-fraunces / --font-manrope on <html>; map them to theme families. */
+@theme inline {
+  --font-display: var(--font-fraunces), ui-serif, Georgia, serif;
+  --font-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+}
+
+/*
+ * Interaction rule #1: hover only applies on devices with a real hover-capable, fine pointer.
+ * Overrides Tailwind's default `hover:` variant so no hover state can "stick" on touch screens.
+ * Every hover style still needs a :focus-visible and touch equivalent in the component.
+ */
+@custom-variant hover {
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      @slot;
+    }
+  }
+}
+
+/* Motion-safe variant for pieces that must switch off entirely with reduced motion. */
+@custom-variant motion-ok (@media (prefers-reduced-motion: no-preference));
+
+/* ---------- Reset (complements Tailwind preflight) ---------- */
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    scroll-padding-top: 96px; /* keeps anchored sections clear of the fixed header */
+  }
+
+  body {
+    min-height: 100dvh;
+    background-color: var(--color-porcelana);
+    color: var(--color-cacau);
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    line-height: var(--leading-body);
+    overflow-x: clip;
+  }
+
+  @media (min-width: 1024px) {
+    body {
+      font-size: var(--text-body-lg);
+    }
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: 350;
+    text-wrap: balance;
+  }
+
+  h1 {
+    font-size: var(--text-h1);
+    line-height: var(--text-h1--line-height);
+  }
+
+  h2 {
+    font-size: var(--text-h2);
+    line-height: var(--text-h2--line-height);
+    letter-spacing: var(--tracking-h2);
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  img,
+  svg,
+  video,
+  canvas,
+  picture {
+    display: block;
+    max-width: 100%;
+  }
+
+  a {
+    color: inherit;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+  }
+
+  button {
+    cursor: pointer;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-terracota);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  ::selection {
+    background-color: var(--color-rose);
+    color: var(--color-cacau);
+  }
+}
+
+/* ---------- Custom utilities ---------- */
+@utility container-page {
+  width: 100%;
+  max-width: calc(var(--container-page) + 2 * var(--page-margin-mobile));
+  margin-inline: auto;
+  padding-inline: var(--page-margin-mobile);
+}
+
+/* 4 columns with 20px gutter on mobile; 12 columns with 24px gutter from 1024px. */
+@utility grid-page {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  column-gap: var(--grid-gutter-mobile);
+
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--grid-gutter);
+  }
+}
+
+@utility section-space {
+  padding-block: var(--section-space-mobile);
+
+  @media (min-width: 1024px) {
+    padding-block: var(--section-space-desktop);
+  }
+}
+
+@utility kicker {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: var(--text-kicker);
+  line-height: var(--text-kicker--line-height);
+  letter-spacing: var(--tracking-kicker);
+  text-transform: uppercase;
+  color: var(--color-terracota);
+}
+
+@utility measure {
+  max-width: var(--measure-body);
+}
+
+@utility tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Grain texture (3% opacity, inline SVG noise) ---------- */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+}
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/*
+ * Interaction rule #2: with reduced motion, no parallax, auto lens, marquee or magnetic buttons.
+ * Keyframe animations stop, and transitions are restricted to color and opacity only.
+ * JS-driven motion (GSAP, Lenis, Framer, lens) must also check the media query itself.
+ */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    animation-delay: 0ms !important;
+    transition-property:
+      color, background-color, border-color, outline-color, text-decoration-color, fill, stroke,
+      opacity !important;
+    scroll-behavior: auto !important;
+  }
+
+  [data-motion="decorative"] {
+    transform: none !important;
+  }
+}
