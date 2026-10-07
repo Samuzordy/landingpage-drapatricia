@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "./tokens.css";
+@import "./components.css";
 
 /* next/font exposes --font-fraunces / --font-manrope on <html>; map them to theme families. */
 @theme inline {
@@ -140,7 +141,7 @@
   line-height: var(--text-kicker--line-height);
   letter-spacing: var(--tracking-kicker);
   text-transform: uppercase;
-  color: var(--color-terracota);
+  color: var(--color-terracota-texto);
 }
 
 @utility measure {

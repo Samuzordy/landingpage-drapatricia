@@ -1,0 +1,412 @@
+/*
+ * UI component states that Tailwind utilities can't express cleanly (pseudo-elements, :has(),
+ * keyframes). Rules from CLAUDE.md applied here:
+ *   1. hover only inside (hover: hover) and (pointer: fine), always mirrored by :focus-visible;
+ *   2. movement only inside (prefers-reduced-motion: no-preference) — reduced motion keeps
+ *      color/opacity changes only (globals.css also restricts transition-property);
+ *   3. animate transform (translate/scale/rotate) and opacity only. Exception, prescribed by the
+ *      spec itself: Accordion height via grid-template-rows 0fr → 1fr.
+ */
+
+@layer components {
+  /* ---------- Button / MagneticButton ---------- */
+  .btn-primary {
+    background-color: var(--color-terracota);
+    color: #fff; /* white on terracota ≈ 4.6:1 (AA) */
+  }
+
+  .btn-secondary {
+    border: 1px solid var(--color-terracota);
+    background-color: transparent;
+    color: var(--color-cacau); /* terracota text on porcelana is < 4.5:1 at this size */
+  }
+
+  /* Circular fill. Grows from the cursor entry point (--fx/--fy, set by MagneticButton) or the center. */
+  .btn-fill {
+    position: absolute;
+    left: var(--fx, 50%);
+    top: var(--fy, 50%);
+    width: 250%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    translate: -50% -50%;
+    scale: 0;
+    pointer-events: none;
+    transition:
+      scale var(--dur-base) var(--ease-skin),
+      opacity var(--dur-base) var(--ease-skin);
+  }
+
+  .btn-primary .btn-fill {
+    background-color: var(--color-cacau);
+  }
+
+  .btn-secondary .btn-fill {
+    background-color: var(--color-terracota);
+  }
+
+  .btn:not([aria-disabled]):focus-visible .btn-fill {
+    scale: 1;
+  }
+
+  .btn-secondary:not([aria-disabled]):focus-visible {
+    color: #fff;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .btn:not([aria-disabled]):hover .btn-fill {
+      scale: 1;
+    }
+
+    .btn-secondary:not([aria-disabled]):hover {
+      color: #fff;
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .btn:not([aria-disabled]):active {
+      scale: 0.97;
+    }
+  }
+
+  /* Reduced motion: the fill only fades in, no growth. */
+  @media (prefers-reduced-motion: reduce) {
+    .btn-fill {
+      scale: 1;
+      opacity: 0;
+    }
+
+    .btn:not([aria-disabled]):focus-visible .btn-fill {
+      opacity: 1;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) and (hover: hover) and (pointer: fine) {
+    .btn:not([aria-disabled]):hover .btn-fill {
+      opacity: 1;
+    }
+  }
+
+  /* Touch ripple (MagneticButton creates and removes the span). */
+  .btn-ripple {
+    position: absolute;
+    z-index: 5;
+    width: 20px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    translate: -50% -50%;
+    pointer-events: none;
+    background-color: rgb(255 255 255 / 0.35);
+    animation: btn-ripple 600ms var(--ease-skin) forwards;
+  }
+
+  .btn-secondary .btn-ripple {
+    background-color: rgb(168 99 79 / 0.25);
+  }
+
+  @keyframes btn-ripple {
+    from {
+      scale: 0;
+      opacity: 0.6;
+    }
+    to {
+      scale: 14;
+      opacity: 0;
+    }
+  }
+
+  /* ---------- Card ---------- */
+  .card {
+    isolation: isolate;
+    border-color: var(--color-areia);
+  }
+
+  .card[data-interactive] {
+    transition:
+      translate var(--dur-base) var(--ease-skin),
+      scale var(--dur-fast) var(--ease-skin),
+      border-color var(--dur-base) var(--ease-skin);
+  }
+
+  /* Radial glow following the cursor (--mx/--my from PointerGlow); centered for keyboard focus. */
+  .card[data-interactive]::before,
+  .card[data-interactive]::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity var(--dur-base) var(--ease-skin);
+  }
+
+  .card[data-interactive]::before {
+    background: radial-gradient(
+      260px circle at var(--mx, 50%) var(--my, 50%),
+      rgb(201 143 126 / 0.18),
+      transparent 70%
+    );
+  }
+
+  /* Warm shadow on a pseudo-element so only its opacity animates (never box-shadow). */
+  .card[data-interactive]::after {
+    z-index: -1;
+    box-shadow: var(--shadow-warm);
+  }
+
+  .card[data-interactive]:has(:focus-visible) {
+    border-color: var(--color-rose);
+  }
+
+  .card[data-interactive]:has(:focus-visible)::before,
+  .card[data-interactive]:has(:focus-visible)::after {
+    opacity: 1;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .card[data-interactive]:hover {
+      border-color: var(--color-rose);
+    }
+
+    .card[data-interactive]:hover::before,
+    .card[data-interactive]:hover::after {
+      opacity: 1;
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .card[data-interactive]:has(:focus-visible) {
+      translate: 0 -6px;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      .card[data-interactive]:hover {
+        translate: 0 -6px;
+      }
+    }
+
+    /* Touch: press feedback instead of hover. */
+    @media (hover: none) {
+      .card[data-interactive]:active {
+        scale: 0.98;
+      }
+    }
+  }
+
+  /* ---------- Chip ---------- */
+  .chip {
+    border-color: var(--color-areia);
+    background-color: var(--color-porcelana);
+    color: var(--color-cacau);
+  }
+
+  button.chip:is([data-selected], :focus-visible) {
+    border-color: var(--color-terracota);
+    background-color: var(--color-terracota);
+    color: #fff;
+  }
+
+  button.chip:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    button.chip:not(:disabled):hover {
+      border-color: var(--color-terracota);
+      background-color: var(--color-terracota);
+      color: #fff;
+    }
+  }
+
+  /* ---------- Tooltip ---------- */
+  /* Closed bubbles leave layout (display: none) so they can't cause horizontal overflow;
+     allow-discrete + @starting-style keep the fade. Still readable via aria-describedby. */
+  .tooltip {
+    display: none;
+    opacity: 0;
+    translate: calc(-50% + var(--shift, 0px)) 4px;
+    transition:
+      opacity var(--dur-fast) var(--ease-skin),
+      translate var(--dur-fast) var(--ease-skin),
+      display var(--dur-fast) allow-discrete;
+  }
+
+  .tooltip[data-placement="top"] {
+    bottom: calc(100% + 10px);
+  }
+
+  .tooltip[data-placement="bottom"] {
+    top: calc(100% + 10px);
+    translate: calc(-50% + var(--shift, 0px)) -4px;
+  }
+
+  .tooltip[data-open] {
+    display: block;
+    opacity: 1;
+    translate: calc(-50% + var(--shift, 0px)) 0;
+
+    @starting-style {
+      opacity: 0;
+    }
+  }
+
+  /* ---------- Accordion ---------- */
+  .accordion-panel {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows var(--dur-base) var(--ease-skin);
+  }
+
+  .accordion-panel > div {
+    min-height: 0;
+  }
+
+  .accordion-item[data-open] .accordion-panel {
+    grid-template-rows: 1fr;
+  }
+
+  /* "+" turns 45° into "×". */
+  .accordion-icon {
+    transition: rotate var(--dur-base) var(--ease-skin);
+  }
+
+  .accordion-item[data-open] .accordion-icon {
+    rotate: 45deg;
+  }
+
+  /* ---------- Tabs ---------- */
+  .tabs-list {
+    scrollbar-width: thin;
+  }
+
+  .tabs-panel:not([hidden]) {
+    animation: tabs-panel-in var(--dur-base) var(--ease-skin);
+  }
+
+  @keyframes tabs-panel-in {
+    from {
+      opacity: 0;
+      translate: 12px 0;
+    }
+  }
+
+  /* ---------- Marquee ---------- */
+  .marquee-viewport {
+    mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+  }
+
+  .marquee-track {
+    animation: marquee var(--marquee-duration, 40s) linear infinite;
+  }
+
+  @keyframes marquee {
+    to {
+      translate: -100% 0;
+    }
+  }
+
+  .marquee:is(:focus-within, :has(input:checked)) .marquee-track {
+    animation-play-state: paused;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .marquee-viewport:hover .marquee-track {
+      animation-play-state: paused;
+    }
+  }
+
+  /* Reduced motion: static wrapped list. Hiding the duplicate track and the pause control and
+     unshrinking the track use motion-reduce: utilities in Marquee.tsx (utilities win over this layer). */
+  @media (prefers-reduced-motion: reduce) {
+    .marquee-viewport {
+      mask-image: none;
+    }
+
+    .marquee-track {
+      animation: none;
+    }
+  }
+
+  /* ---------- Timeline ---------- */
+  .timeline-rail {
+    position: absolute;
+    top: 0.9rem;
+    bottom: -0.9rem;
+    left: 7px;
+    width: 2px;
+    overflow: hidden;
+    background-color: var(--color-areia);
+  }
+
+  .timeline-item:last-child .timeline-rail {
+    display: none;
+  }
+
+  .timeline-fill {
+    position: absolute;
+    inset: 0;
+    background-color: var(--color-terracota);
+    transform-origin: top;
+    scale: 1 0;
+    transition: scale var(--dur-base) var(--ease-skin);
+  }
+
+  .timeline-dot {
+    position: absolute;
+    top: 0.35rem;
+    left: 2px;
+    width: 12px;
+    height: 12px;
+    border: 2px solid var(--color-terracota);
+    border-radius: 50%;
+    background-color: var(--color-porcelana);
+    transition: background-color var(--dur-fast) var(--ease-skin);
+  }
+
+  .timeline-year {
+    transform-origin: left center;
+    transition: scale var(--dur-base) var(--ease-skin);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    /* Fill the connectors of every milestone before the hovered one. */
+    .timeline-item:has(~ .timeline-item:hover) .timeline-fill {
+      scale: 1 1;
+    }
+
+    .timeline-item:hover .timeline-dot,
+    .timeline-item:has(~ .timeline-item:hover) .timeline-dot {
+      background-color: var(--color-terracota);
+    }
+
+    .timeline-item:hover .timeline-year {
+      scale: 1.15;
+    }
+  }
+
+  /* ---------- WhatsAppFab ---------- */
+  .fab:focus-visible {
+    border-radius: var(--radius-pill);
+  }
+
+  .fab-label {
+    opacity: 0;
+    translate: 8px 0;
+    transition:
+      opacity var(--dur-fast) var(--ease-skin),
+      translate var(--dur-fast) var(--ease-skin);
+  }
+
+  .fab:focus-visible .fab-label {
+    opacity: 1;
+    translate: 0 0;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .fab:hover .fab-label {
+      opacity: 1;
+      translate: 0 0;
+    }
+  }
+}

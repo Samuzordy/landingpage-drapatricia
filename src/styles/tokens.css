@@ -12,7 +12,8 @@
   --color-porcelana: #f7f1ec; /* main background */
   --color-areia: #e9dcd1; /* secondary backgrounds, dividers */
   --color-rose: #c98f7e; /* accents, active borders, icons — never body text */
-  --color-terracota: #a8634f; /* CTAs, links, highlights */
+  --color-terracota: #a8634f; /* CTAs, fills, decorative elements, active states */
+  --color-terracota-texto: #8f4e3c; /* small text, kicker, links: ≈ 5.6:1 on porcelana (AA) */
   --color-cacau: #3b2a25; /* text and headings */
   --color-salvia: #8fa392; /* clinical seals, success */
 
