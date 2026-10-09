@@ -21,8 +21,10 @@ export const isPending = (text: string | undefined | null): boolean =>
   !text || text === PENDING_TEXT;
 
 export const site: SiteContent = {
-  // TODO(cliente): set showPendingMarkers to false once every VALIDAR item is confirmed.
-  flags: { showPendingMarkers: true },
+  // Commercial preview: visual pending marks hidden for the presentation only. The content below
+  // is STILL provisional — every VALIDAR / TODO(cliente) / PLACEHOLDER marker stays in the code.
+  // TODO(cliente): keep false only once every VALIDAR item is confirmed (true shows the marks).
+  flags: { showPendingMarkers: false },
 
   settings: {
     whatsapp: PLACEHOLDER, // TODO(cliente): número de WhatsApp comercial
@@ -77,7 +79,25 @@ export const site: SiteContent = {
     crm: "CRM-PR 20510",
     rqe: "RQE 17213",
     idiomas: ["Português", "Inglês"],
-    foto: undefined, // TODO(cliente): retrato profissional (public/images/retrato-hero.png)
+    // VALIDAR: photos taken from the public Instagram profile (posts with text overlays), cropped
+    // visually — never edited. TODO(cliente): authorization of use + original high-res files.
+    foto: {
+      src: "/images/valeria-hero.jpg", // TODO(cliente): retrato profissional em alta resolução
+      alt: "Retrato da Dra. Valéria Franzon",
+      width: 1080,
+      height: 1346,
+      // Head-and-shoulders region; the post caption starts at ~52% of the height.
+      crop: { x: 0.27, y: 0, width: 0.498 },
+    },
+    fotoSobre: {
+      src: "/images/valeria-sobre.jpg", // TODO(cliente)
+      alt: "Dra. Valéria Franzon sentada em um sofá claro",
+      width: 1024,
+      height: 1276,
+      // Below the post headline (ends ~29%) and above the "VF" monogram (~88%).
+      // Face near the centre of the frame, with the hand-on-chin gesture kept in view.
+      crop: { x: 0.17, y: 0.31, width: 0.548 },
+    },
     fotoDetalhe: undefined, // TODO(cliente): textura de pele em alta (public/images/textura-pele-detalhe.jpg)
     // VALIDAR: first-person rewrite using ONLY facts from the spec (section 03) — no invented
     // phrases. TODO(cliente): replace with the bio written/approved by Dra. Valéria.

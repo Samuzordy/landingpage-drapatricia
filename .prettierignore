@@ -6,3 +6,7 @@ package-lock.json
 next-env.d.ts
 docs
 CLAUDE.md
+
+# Source photos provided by the client (saved Instagram pages) — not project code, never edited
+foto*.html
+foto*_files

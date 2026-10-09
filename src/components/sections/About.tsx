@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { CroppedImage } from "@/components/ui/CroppedImage";
 import { PendingMark } from "@/components/ui/PendingMark";
 import { Timeline } from "@/components/ui/Timeline";
 import { portraitPlaceholder } from "@/content/placeholders";
@@ -11,7 +11,7 @@ import { isPending, site } from "@/content/site";
  */
 export function About() {
   const { specialist } = site;
-  const photo = specialist.foto ?? portraitPlaceholder;
+  const photo = specialist.fotoSobre ?? specialist.foto ?? portraitPlaceholder;
   const quotePending = isPending(specialist.citacao);
 
   // Facts list — every line comes from the spec (section 03). VALIDAR all of them.
@@ -39,13 +39,12 @@ export function About() {
               className="about-cell absolute -top-6 -left-8 -z-10 size-40 bg-areia motion-ok:animate-breathe"
             />
             <div className="about-frame relative aspect-[4/5] overflow-hidden bg-areia shadow-warm">
-              <Image
-                src={photo.src}
-                alt={photo.alt}
-                fill
+              <CroppedImage
+                asset={photo}
+                frameAspect={4 / 5}
                 sizes="(min-width: 1024px) 38vw, (min-width: 640px) 24rem, 90vw"
-                unoptimized={photo.src.endsWith(".svg")}
-                className="object-cover object-[50%_30%]"
+                // Placeholder (no crop) keeps its previous focal point.
+                className={photo.crop ? "" : "object-[50%_30%]"}
               />
             </div>
             <figcaption className="mt-4 text-center text-xs text-cacau/75 lg:text-left">

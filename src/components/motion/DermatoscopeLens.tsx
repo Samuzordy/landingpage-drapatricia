@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useRef } from "react";
+import { CroppedImage } from "@/components/ui/CroppedImage";
 import type { ImageAsset } from "@/types/content";
 
 export type DermatoscopeLensProps = {
@@ -12,7 +13,10 @@ export type DermatoscopeLensProps = {
   label?: string;
   /** Base image is the hero LCP candidate. */
   priority?: boolean;
+  /** Frame sizes (also used by the detail layer). */
   sizes?: string;
+  /** Frame aspect ratio (width / height). The layout keeps it whatever the photo is. */
+  aspect?: number;
   className?: string;
 };
 
@@ -42,6 +46,7 @@ export function DermatoscopeLens({
   label = "aumento 10x",
   priority = false,
   sizes = "(min-width: 1024px) 40vw, 90vw",
+  aspect = 4 / 5,
   className = "",
 }: DermatoscopeLensProps) {
   const rootRef = useRef<HTMLDivElement>(null);
@@ -161,17 +166,9 @@ export function DermatoscopeLens({
       ref={rootRef}
       data-lens="idle"
       className={`lens relative overflow-hidden ${className}`}
-      style={{ aspectRatio: `${base.width} / ${base.height}` }}
+      style={{ aspectRatio: aspect }}
     >
-      <Image
-        src={base.src}
-        alt={base.alt}
-        fill
-        priority={priority}
-        sizes={sizes}
-        unoptimized={isSvg(base.src)}
-        className="object-cover"
-      />
+      <CroppedImage asset={base} frameAspect={aspect} sizes={sizes} priority={priority} />
       <div aria-hidden="true" className="lens-detail absolute inset-0">
         <Image
           src={detail.src}

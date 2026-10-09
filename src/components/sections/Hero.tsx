@@ -57,6 +57,7 @@ function GoogleRatingBadge() {
 export function Hero() {
   const { hero, specialist } = site;
   const whatsappHref = getWhatsAppHref("hero");
+  const heroPhoto = specialist.foto ?? portraitPlaceholder;
   const noteId = "hero-whatsapp-note";
 
   return (
@@ -130,9 +131,10 @@ export function Hero() {
             ))}
           </svg>
           <DermatoscopeLens
-            base={specialist.foto ?? portraitPlaceholder}
+            base={heroPhoto}
             detail={specialist.fotoDetalhe ?? skinDetailPlaceholder}
             priority
+            aspect={4 / 5}
             sizes="(min-width: 1024px) 34vw, (min-width: 640px) 30rem, 90vw"
             className="hero-frame bg-areia shadow-warm"
           />

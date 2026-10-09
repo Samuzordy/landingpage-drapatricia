@@ -9,11 +9,22 @@
 /** Marker for data the client has not sent yet. Never render it as real content. */
 export type Placeholder = "PLACEHOLDER";
 
+export type ImageCrop = {
+  /** Left edge of the visible region, as a fraction of the source width. */
+  x: number;
+  /** Top edge of the visible region, as a fraction of the source height. */
+  y: number;
+  /** Width of the visible region (fraction); the height follows the frame aspect ratio. */
+  width: number;
+};
+
 export type ImageAsset = {
   src: string;
   alt: string;
   width: number;
   height: number;
+  /** Non-destructive visual crop (see lib/image.ts) — hides captions/logos baked into a photo. */
+  crop?: ImageCrop;
 };
 
 export type Link = {
@@ -60,6 +71,8 @@ export type Specialist = {
   foto?: ImageAsset;
   /** Detail texture revealed by the DermatoscopeLens. */
   fotoDetalhe?: ImageAsset;
+  /** Photo for the About section (may differ from the hero portrait). */
+  fotoSobre?: ImageAsset;
   /** Plain paragraphs for now; becomes rich text (Portable Text) in Etapa 7. */
   bio: string[];
   timeline: TimelineItem[];

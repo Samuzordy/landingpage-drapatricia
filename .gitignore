@@ -42,3 +42,9 @@ next-env.d.ts
 
 # allow committed env template
 !.env.example
+
+# Raw reference material (saved Instagram pages with the client photos) — never committed
+/foto1.html
+/foto2.html
+/foto4.html
+/foto4_files/
