@@ -1056,4 +1056,127 @@
       scale: 1 1;
     }
   }
+
+  /* ---------- Buttons for the dark Hipoderme bands ---------- */
+  .btn-light {
+    background-color: var(--color-porcelana);
+    color: var(--color-cacau);
+  }
+
+  .btn-light .btn-fill {
+    background-color: var(--color-cacau);
+  }
+
+  .btn-outline-light {
+    border: 1px solid rgb(255 255 255 / 0.75);
+    background-color: transparent;
+    color: #fff;
+  }
+
+  .btn-outline-light .btn-fill {
+    background-color: var(--color-porcelana);
+  }
+
+  .btn-light:not([aria-disabled]):focus-visible {
+    color: var(--color-porcelana);
+  }
+
+  .btn-outline-light:not([aria-disabled]):focus-visible {
+    color: var(--color-cacau);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .btn-light:not([aria-disabled]):hover {
+      color: var(--color-porcelana);
+    }
+
+    .btn-outline-light:not([aria-disabled]):hover {
+      color: var(--color-cacau);
+    }
+  }
+
+  .btn-light .btn-ripple {
+    background-color: rgb(59 42 37 / 0.2);
+  }
+
+  /* ---------- Hipoderme bands (contrast-checked) ----------
+     FAQ (light text zone): #D2A796 → 15% terracota — cacau ≥ 5.66, cacau/90 ≥ 4.74,
+       terracota-texto-profundo ≥ 4.54.
+     Between ~25% and ~75% terracota neither cacau nor white reaches 4.5:1, so instead of one long
+     gradient the base "rises" with an organic edge (rete-ridge wave) into solid terracota.
+     CTA: terracota → 20% cacau (white 4.60 → 5.68). Footer: 20% → 40% cacau (porcelana ≥ 5.07). */
+  .layer-hipo-1 {
+    background: linear-gradient(
+      to bottom,
+      var(--color-layer-derme-profunda),
+      color-mix(in srgb, var(--color-layer-hipoderme) 15%, var(--color-layer-derme-profunda))
+    );
+  }
+
+  .layer-hipo-2 {
+    background: linear-gradient(
+      to bottom,
+      var(--color-layer-hipoderme),
+      color-mix(in srgb, var(--color-cacau) 20%, var(--color-layer-hipoderme))
+    );
+  }
+
+  .layer-hipo-3 {
+    background: linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--color-cacau) 20%, var(--color-layer-hipoderme)),
+      color-mix(in srgb, var(--color-cacau) 40%, var(--color-layer-hipoderme))
+    );
+  }
+
+  /* Organic boundary: the wave sits on top of the CTA and overlaps the FAQ's bottom padding. */
+  .final-cta-edge {
+    position: absolute;
+    bottom: calc(100% - 1px);
+    left: 0;
+    display: block;
+    width: 100%;
+    height: 4rem;
+  }
+
+  /* Fat-lobule texture of the hypodermis, very faint. */
+  .final-cta-lobules {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-image: radial-gradient(
+      circle,
+      transparent 54%,
+      rgb(255 255 255 / 0.06) 56%,
+      rgb(255 255 255 / 0.06) 59%,
+      transparent 61%
+    );
+    background-position: 0 0;
+    background-size: 72px 64px;
+    /* Fades in and out so the texture never ends on a hard line at the footer. */
+    mask-image: linear-gradient(to bottom, transparent, #000 40%, #000 60%, transparent);
+  }
+
+  /* ---------- Footer ---------- */
+  .footer-link {
+    display: inline-flex;
+    min-height: 2.75rem;
+    align-items: center;
+    color: #fff;
+    text-decoration: underline;
+    text-decoration-color: rgb(255 255 255 / 0.35);
+    text-underline-offset: 0.25em;
+    transition: text-decoration-color var(--dur-fast) var(--ease-skin);
+  }
+
+  .footer-link:focus-visible {
+    text-decoration-color: #fff;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .footer-link:hover {
+      text-decoration-color: #fff;
+    }
+  }
 }

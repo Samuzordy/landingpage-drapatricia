@@ -1,7 +1,11 @@
 import type { AnchorHTMLAttributes, ButtonHTMLAttributes, ReactNode } from "react";
 import { ArrowRightIcon } from "./icons";
 
-export type ButtonVariant = "primary" | "secondary";
+/**
+ * primary / secondary for light bands; light / outline-light for the dark Hipoderme bands
+ * (terracota and darker), where terracota fills would disappear.
+ */
+export type ButtonVariant = "primary" | "secondary" | "light" | "outline-light";
 export type ButtonSize = "md" | "lg";
 
 type CommonProps = {

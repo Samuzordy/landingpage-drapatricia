@@ -44,7 +44,7 @@ export const site: SiteContent = {
     { label: "Sobre", href: "#sobre" },
     { label: "Tratamentos", href: "#tratamentos" },
     { label: "Consulta", href: "#consulta" },
-    { label: "Locais", href: "#locais" },
+    // { label: "Locais", href: "#locais" }, // Fase de produção: seção Locais fora do preview
     { label: "Dúvidas", href: "#duvidas" },
   ],
 
@@ -266,13 +266,52 @@ export const site: SiteContent = {
 
   faqs: [
     // TODO(cliente): todas as respostas
-    { ordem: 1, pergunta: "A consulta é particular ou atende convênio?", resposta: PENDING_TEXT },
-    { ordem: 2, pergunta: "Como funciona o reembolso?", resposta: PENDING_TEXT },
-    { ordem: 3, pergunta: "Quanto tempo dura a consulta?", resposta: PENDING_TEXT },
-    { ordem: 4, pergunta: "Preciso de algum preparo antes da consulta?", resposta: PENDING_TEXT },
-    { ordem: 5, pergunta: "Qual é a idade mínima para atendimento?", resposta: PENDING_TEXT },
-    { ordem: 6, pergunta: "Como funciona o retorno?", resposta: PENDING_TEXT },
+    // VALIDAR: provisional, neutral answers for the preview — they state that the information
+    // will be confirmed; no policies, prices, durations or rules are invented.
+    {
+      ordem: 1,
+      pergunta: "A consulta é particular ou atende convênio?",
+      resposta:
+        "As informações sobre convênios e formas de atendimento serão confirmadas com a Dra. Valéria antes da publicação.", // TODO(cliente)
+    },
+    {
+      ordem: 2,
+      pergunta: "Como funciona o reembolso?",
+      resposta:
+        "As orientações sobre reembolso serão confirmadas com a Dra. Valéria antes da publicação.", // TODO(cliente)
+    },
+    {
+      ordem: 3,
+      pergunta: "Quanto tempo dura a consulta?",
+      resposta: "A duração da consulta será confirmada com a Dra. Valéria antes da publicação.", // TODO(cliente)
+    },
+    {
+      ordem: 4,
+      pergunta: "Preciso de algum preparo antes da consulta?",
+      resposta:
+        "As orientações de preparo, quando houver, serão confirmadas com a Dra. Valéria antes da publicação.", // TODO(cliente)
+    },
+    {
+      ordem: 5,
+      pergunta: "Qual é a idade mínima para atendimento?",
+      resposta: "A faixa etária atendida será confirmada com a Dra. Valéria antes da publicação.", // TODO(cliente)
+    },
+    {
+      ordem: 6,
+      pergunta: "Como funciona o retorno?",
+      resposta: "As condições de retorno serão confirmadas com a Dra. Valéria antes da publicação.", // TODO(cliente)
+    },
   ],
+
+  // VALIDAR: provisional closing copy for the preview (no medical promise). TODO(cliente)
+  finalCta: {
+    kicker: "Agendamento",
+    titulo: "Sua pele merece atenção individual.",
+    destaqueItalico: "atenção individual",
+    texto: "Agende uma avaliação dermatológica com a Dra. Valéria em Curitiba.",
+    ctaPrimario: "Agendar pelo WhatsApp",
+    ctaSecundario: { label: "Conheça a Dra.", href: "#sobre" },
+  },
 
   locations: [
     // VALIDAR: quais endereços seguem ativos

@@ -191,6 +191,16 @@ export type SiteFlags = {
   showPendingMarkers: boolean;
 };
 
+export type FinalCtaContent = {
+  kicker: string;
+  titulo: string;
+  /** Words from `titulo` rendered in italic. */
+  destaqueItalico: string;
+  texto: string;
+  ctaPrimario: string;
+  ctaSecundario: Link;
+};
+
 export type SiteContent = {
   flags: SiteFlags;
   settings: SiteSettings;
@@ -206,4 +216,5 @@ export type SiteContent = {
   testimonials: Testimonial[];
   faqs: Faq[];
   locations: Location[];
+  finalCta: FinalCtaContent;
 };

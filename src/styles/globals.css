@@ -43,6 +43,24 @@
     background-color: var(--color-layer-derme-profunda);
   }
 
+  /* Hipoderme entrance (FAQ): still a light background → deep terracota text accents. */
+  [data-layer="hipoderme"] {
+    --kicker-color: var(--color-terracota-texto-profundo);
+    --accent-text: var(--color-terracota-texto-profundo);
+  }
+
+  /* Dark Hipoderme (CTA, footer): white text ≥ 4.6:1 on terracota and darker. */
+  [data-tone="dark"] {
+    --kicker-color: #fff;
+    --accent-text: var(--color-porcelana);
+    color: #fff;
+  }
+
+  /* The default terracota focus ring would vanish on terracota. */
+  [data-tone="dark"] :focus-visible {
+    outline-color: var(--color-porcelana);
+  }
+
   html {
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;

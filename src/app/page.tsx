@@ -8,15 +8,14 @@ import { Footer } from "@/components/sections/Footer";
 import { Header } from "@/components/sections/Header";
 import { Hero } from "@/components/sections/Hero";
 import { HowItWorks } from "@/components/sections/HowItWorks";
-import { InstagramFeed } from "@/components/sections/InstagramFeed";
-import { Locations } from "@/components/sections/Locations";
 import { Pillars } from "@/components/sections/Pillars";
 import { SkinJourney } from "@/components/sections/SkinJourney";
-import { Testimonials } from "@/components/sections/Testimonials";
 import { WhatsAppFab } from "@/components/ui/WhatsAppFab";
 import { getWhatsAppHref } from "@/lib/whatsapp";
 
 // Server Component: composes the page in funnel order (attract → trust → understand → act).
+// Commercial preview scope: Depoimentos, Conteúdo/Instagram and Locais are left out until the
+// project is approved (their components remain for the production phase).
 export default function HomePage() {
   // Floating WhatsApp button only once a real number is configured (no fictitious link).
   const fabHref = getWhatsAppHref("fab");
@@ -39,11 +38,8 @@ export default function HomePage() {
         {/* Derme profunda */}
         <HowItWorks />
         <Differentials />
-        <Testimonials />
-        <InstagramFeed />
         {/* Hipoderme */}
         <Faq />
-        <Locations />
         <FinalCta />
       </main>
       <Footer />
