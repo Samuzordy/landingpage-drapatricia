@@ -16,6 +16,10 @@ export const PLACEHOLDER = "PLACEHOLDER" as const;
 /** Visible marker for copy the client still has to write or approve. */
 export const PENDING_TEXT = "[Texto pendente — aguardando validação da Dra. Valéria]";
 
+/** True while a text field still holds the pending placeholder. */
+export const isPending = (text: string | undefined | null): boolean =>
+  !text || text === PENDING_TEXT;
+
 export const site: SiteContent = {
   // TODO(cliente): set showPendingMarkers to false once every VALIDAR item is confirmed.
   flags: { showPendingMarkers: true },
@@ -75,7 +79,13 @@ export const site: SiteContent = {
     idiomas: ["Português", "Inglês"],
     foto: undefined, // TODO(cliente): retrato profissional (public/images/retrato-hero.png)
     fotoDetalhe: undefined, // TODO(cliente): textura de pele em alta (public/images/textura-pele-detalhe.jpg)
-    bio: [PENDING_TEXT], // TODO(cliente): bio em primeira pessoa
+    // VALIDAR: first-person rewrite using ONLY facts from the spec (section 03) — no invented
+    // phrases. TODO(cliente): replace with the bio written/approved by Dra. Valéria.
+    bio: [
+      "Sou dermatologista em Curitiba e atuo nas áreas clínica, cirúrgica e estética da dermatologia.",
+      "Sou formada em Medicina pela Universidade Federal do Paraná (2003) e tenho título de especialista em Dermatologia pela Sociedade Brasileira de Dermatologia (2013). Desde 2010, sou professora do curso de Medicina da PUCPR.",
+      "Atendo em português e em inglês.",
+    ],
     timeline: [
       // VALIDAR: todos os marcos; TODO(cliente): residência e cursos complementares
       {
@@ -95,7 +105,7 @@ export const site: SiteContent = {
       },
       {
         ano: "hoje",
-        titulo: PENDING_TEXT, // TODO(cliente)
+        titulo: "Dermatologia clínica, cirúrgica e estética em Curitiba", // VALIDAR (capa do PDF) · TODO(cliente): título final
         descricao: PENDING_TEXT, // TODO(cliente)
       },
     ],

@@ -23,6 +23,7 @@ const GLASS_AFTER_PX = 80; // spec section 06
 const HIDE_AFTER_PX = 160;
 const DIRECTION_THRESHOLD_PX = 6;
 const DESKTOP = "(min-width: 1024px)";
+const SPY_LINE = 0.4; // reading line for scroll-spy, as a fraction of the viewport height
 
 /**
  * Fixed header (spec sections 06/07). Client Component because it reacts to scroll and owns
@@ -78,22 +79,38 @@ export function SiteHeader({ brand, tagline, nav, cta }: SiteHeaderProps) {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Scroll-spy: a thin band around 40% of the viewport decides the active section.
+  // Scroll-spy: the active item is the nav section (in document order) whose top has passed a
+  // reading line at 40% of the viewport. Robust for short sections and for sections in between
+  // (e.g. Jornada keeps "Tratamentos" active). rAF-throttled, passive.
   useEffect(() => {
-    const ids = nav.map((item) => item.href.slice(1));
-    const visible = new Map<string, boolean>();
-    const io = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) visible.set(entry.target.id, entry.isIntersecting);
-        setActive(ids.find((id) => visible.get(id)) ?? null);
-      },
-      { rootMargin: "-40% 0px -55% 0px" },
-    );
-    for (const id of ids) {
-      const section = document.getElementById(id);
-      if (section) io.observe(section);
-    }
-    return () => io.disconnect();
+    const sections = nav
+      .map((item) => document.getElementById(item.href.slice(1)))
+      .filter((el): el is HTMLElement => el !== null);
+    let ticking = false;
+    const update = () => {
+      ticking = false;
+      const line = window.innerHeight * SPY_LINE;
+      let current: HTMLElement | null = null;
+      for (const section of sections) {
+        const top = section.getBoundingClientRect().top;
+        if (top <= line && (!current || top > current.getBoundingClientRect().top)) {
+          current = section;
+        }
+      }
+      setActive(current?.id ?? null);
+    };
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
   }, [nav]);
 
   // Mobile menu: scroll lock, inert background, Esc, focus management, auto-close on desktop.

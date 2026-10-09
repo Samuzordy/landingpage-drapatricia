@@ -8,7 +8,7 @@
 import { site } from "@/content/site";
 
 /** Where the click came from — sent as utm_content to tell CTAs apart in analytics. */
-export type WhatsAppPlacement = "header" | "menu" | "hero" | "fab" | "final-cta";
+export type WhatsAppPlacement = "header" | "menu" | "hero" | "conditions" | "fab" | "final-cta";
 
 const BRAZIL_COUNTRY_CODE = "55";
 

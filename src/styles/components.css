@@ -557,4 +557,180 @@
       cursor: none;
     }
   }
+
+  /* ---------- "Camadas da Pele": start of the Derme band ----------
+     Static, continuous gradients for now (GSAP DepthBackground replaces them in Etapa 5).
+     Capped at 50% of #EAD5CA: --color-terracota-texto on pure #EAD5CA is only ≈ 4.47:1. */
+  .layer-derme-1 {
+    background: linear-gradient(
+      to bottom,
+      var(--color-porcelana),
+      color-mix(in srgb, var(--color-layer-derme) 22%, var(--color-porcelana))
+    );
+  }
+
+  .layer-derme-2 {
+    background: linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--color-layer-derme) 22%, var(--color-porcelana)),
+      color-mix(in srgb, var(--color-layer-derme) 38%, var(--color-porcelana))
+    );
+  }
+
+  .layer-derme-3 {
+    background: linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--color-layer-derme) 38%, var(--color-porcelana)),
+      color-mix(in srgb, var(--color-layer-derme) 50%, var(--color-porcelana))
+    );
+  }
+
+  /* ---------- About ---------- */
+  .about-frame {
+    border-radius: 48% 52% 44% 56% / 36% 38% 62% 64%;
+  }
+
+  .about-cell {
+    border-radius: 50%;
+    filter: blur(36px);
+    opacity: 0.9;
+  }
+
+  /* ---------- Pillars ---------- */
+  .pillar-card {
+    border-color: var(--color-areia);
+    background-color: rgb(247 241 236 / 0.55);
+    transition:
+      border-color var(--dur-base) var(--ease-skin),
+      background-color var(--dur-base) var(--ease-skin);
+  }
+
+  .pillar-card[data-active] {
+    border-color: var(--color-rose);
+    background-color: var(--color-porcelana);
+    box-shadow: var(--shadow-warm);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .pillar-card:hover {
+      border-color: var(--color-rose);
+    }
+  }
+
+  /* Row layout: the active card takes 1.6fr (spec). Layout animation is the documented exception
+     to "transform/opacity only" — prescribed by the spec, disabled with reduced motion. */
+  @media (min-width: 1024px) {
+    .pillars-grid {
+      grid-template-columns: var(--pillar-cols, 1fr 1fr 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+    .pillars-grid {
+      transition: grid-template-columns var(--dur-base) var(--ease-skin);
+    }
+  }
+
+  .pillar-panel {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows var(--dur-base) var(--ease-skin);
+  }
+
+  .pillar-panel > div {
+    min-height: 0;
+  }
+
+  .pillar-card[data-active] .pillar-panel {
+    grid-template-rows: 1fr;
+  }
+
+  /* Services enter with a 60ms stagger. */
+  .pillar-services li {
+    opacity: 0;
+    translate: 0 8px;
+    transition:
+      opacity var(--dur-base) var(--ease-skin),
+      translate var(--dur-base) var(--ease-skin);
+  }
+
+  .pillar-card[data-active] .pillar-services li {
+    opacity: 1;
+    translate: 0 0;
+    transition-delay: calc(var(--i, 0) * var(--stagger));
+  }
+
+  .pillar-card[data-active] .accordion-icon {
+    rotate: 45deg;
+  }
+
+  .pillar-art {
+    width: 7rem;
+    height: 7rem;
+    opacity: 0.55;
+    transition:
+      opacity var(--dur-slow) var(--ease-skin),
+      scale var(--dur-slow) var(--ease-skin);
+  }
+
+  .pillar-card[data-active] .pillar-art {
+    opacity: 1;
+    scale: 1.05;
+  }
+
+  /* ---------- BottomSheet ---------- */
+  .sheet {
+    width: 100%;
+    max-width: 40rem;
+    max-height: min(85dvh, 44rem);
+    margin: auto auto 0;
+    padding: 0;
+    overflow: auto;
+    overscroll-behavior: contain;
+    border: 0;
+    border-radius: 28px 28px 0 0;
+    background-color: var(--color-porcelana);
+    color: var(--color-cacau);
+    box-shadow: 0 -24px 60px -24px rgb(59 42 37 / 0.35);
+  }
+
+  .sheet::backdrop {
+    background-color: rgb(59 42 37 / 0.45);
+  }
+
+  .sheet[open] {
+    animation: sheet-in var(--dur-base) var(--ease-skin);
+  }
+
+  .sheet[open]::backdrop {
+    animation: sheet-backdrop-in var(--dur-base) var(--ease-skin);
+  }
+
+  .sheet-body {
+    padding: 0.875rem 1.5rem calc(1.75rem + env(safe-area-inset-bottom));
+  }
+
+  @media (min-width: 768px) {
+    .sheet {
+      margin-bottom: 1.5rem;
+      border-radius: 28px;
+    }
+
+    .sheet-body {
+      padding: 1rem 2rem 2rem;
+    }
+  }
+
+  @keyframes sheet-in {
+    from {
+      opacity: 0;
+      translate: 0 32px;
+    }
+  }
+
+  @keyframes sheet-backdrop-in {
+    from {
+      opacity: 0;
+    }
+  }
 }
