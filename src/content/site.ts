@@ -172,26 +172,34 @@ export const site: SiteContent = {
 
   skinLayers: [
     // TODO(cliente): conteúdo educativo e relação camada → tratamentos exigem revisão médica
+    // VALIDAR: "papel" comes from the spec concept (section 04). Descriptions are minimal and
+    // purely positional (where the layer sits) — no clinical claims until reviewed.
     {
       id: "epiderme",
       nome: "Epiderme",
       profundidade: 1,
-      descricao: PENDING_TEXT,
-      tratamentos: [],
+      papel: "superfície",
+      descricao: "A camada mais externa da pele — a superfície que vemos e tocamos.",
+      descricaoProvisoria: true, // TODO(cliente): texto educativo revisado
+      tratamentos: [], // TODO(cliente)
     },
     {
       id: "derme",
       nome: "Derme",
       profundidade: 2,
-      descricao: PENDING_TEXT,
-      tratamentos: [],
+      papel: "estrutura",
+      descricao: "A camada intermediária, logo abaixo da epiderme.",
+      descricaoProvisoria: true, // TODO(cliente): texto educativo revisado
+      tratamentos: [], // TODO(cliente)
     },
     {
       id: "hipoderme",
       nome: "Hipoderme",
       profundidade: 3,
-      descricao: PENDING_TEXT,
-      tratamentos: [],
+      papel: "base",
+      descricao: "A camada mais profunda, abaixo da derme.",
+      descricaoProvisoria: true, // TODO(cliente): texto educativo revisado
+      tratamentos: [], // TODO(cliente)
     },
   ],
 
@@ -235,12 +243,22 @@ export const site: SiteContent = {
 
   differentials: [
     // TODO(cliente): descrições
-    { titulo: "Escuta sem pressa", descricao: PENDING_TEXT },
-    { titulo: "Conduta baseada em evidência", descricao: PENDING_TEXT },
-    { titulo: "Dermatoscopia digital", descricao: PENDING_TEXT },
-    { titulo: "3 endereços em Curitiba", descricao: PENDING_TEXT }, // VALIDAR: locais ativos
-    { titulo: "Atendimento em inglês", descricao: PENDING_TEXT },
-    { titulo: "Formação acadêmica", descricao: PENDING_TEXT },
+    { titulo: "Escuta sem pressa", descricao: PENDING_TEXT, icone: "escuta" },
+    { titulo: "Conduta baseada em evidência", descricao: PENDING_TEXT, icone: "evidencia" },
+    { titulo: "Dermatoscopia digital", descricao: PENDING_TEXT, icone: "dermatoscopia" },
+    {
+      titulo: "3 endereços em Curitiba",
+      descricao: PENDING_TEXT,
+      icone: "enderecos",
+      pendente: true, // VALIDAR: locais ativos
+    },
+    { titulo: "Atendimento em inglês", descricao: PENDING_TEXT, icone: "idiomas" },
+    {
+      titulo: "Formação acadêmica",
+      descricao: PENDING_TEXT,
+      icone: "formacao",
+      pendente: true, // VALIDAR: formação e docência
+    },
   ],
 
   // TODO(cliente): somente avaliações públicas com autorização explícita (autorizado: true)

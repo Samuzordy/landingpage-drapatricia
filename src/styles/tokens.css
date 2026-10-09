@@ -14,6 +14,9 @@
   --color-rose: #c98f7e; /* accents, active borders, icons — never body text */
   --color-terracota: #a8634f; /* CTAs, fills, decorative elements, active states */
   --color-terracota-texto: #8f4e3c; /* small text, kicker, links: ≈ 5.6:1 on porcelana (AA) */
+  /* Accessibility variant for the deep bands (Derme profunda #D2A796): ≈ 5.05:1 there, where
+     terracota-texto drops to 2.9:1. Used for kicker/accents via [data-layer] (globals.css). */
+  --color-terracota-texto-profundo: #5e3024;
   --color-cacau: #3b2a25; /* text and headings */
   --color-salvia: #8fa392; /* clinical seals, success */
 

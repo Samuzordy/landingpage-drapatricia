@@ -26,6 +26,23 @@
 
 /* ---------- Reset (complements Tailwind preflight) ---------- */
 @layer base {
+  /*
+   * Semantic text colors that follow the "Camadas da Pele" bands, so contrast stays AA as the
+   * background deepens. Sections declare their band with data-layer="…".
+   *   --kicker-color: small uppercase labels;  --accent-text: italic accent words in headings.
+   */
+  :root {
+    --kicker-color: var(--color-terracota-texto);
+    --accent-text: var(--color-terracota);
+  }
+
+  [data-layer="derme-profunda"] {
+    --kicker-color: var(--color-terracota-texto-profundo);
+    --accent-text: var(--color-terracota-texto-profundo);
+    /* Flat band colour; real sections override it with a gradient class (components layer). */
+    background-color: var(--color-layer-derme-profunda);
+  }
+
   html {
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
@@ -141,7 +158,7 @@
   line-height: var(--text-kicker--line-height);
   letter-spacing: var(--tracking-kicker);
   text-transform: uppercase;
-  color: var(--color-terracota-texto);
+  color: var(--kicker-color);
 }
 
 @utility measure {

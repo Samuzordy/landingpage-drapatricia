@@ -29,7 +29,7 @@ export function Conditions() {
       id="condicoes"
       data-layer="derme"
       aria-labelledby="condicoes-title"
-      className="layer-derme-3 section-space"
+      className="layer-derme-4 section-space"
     >
       <div className="container-page grid-page gap-y-10">
         <div className="col-span-4 lg:col-span-5">

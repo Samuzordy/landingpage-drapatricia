@@ -87,7 +87,11 @@ export type SkinLayer = {
   nome: string;
   /** 1 = most superficial. */
   profundidade: number;
+  /** Short role from the spec's concept (section 04): "superfície", "estrutura", "base". */
+  papel: string;
   descricao: string;
+  /** true while the description is still provisional (needs medical review). */
+  descricaoProvisoria?: boolean;
   /** References to Pillar.slug. */
   tratamentos: PillarSlug[];
 };
@@ -106,10 +110,15 @@ export type ConsultationStep = {
   descricao: string;
 };
 
+export type DifferentialIcon =
+  "escuta" | "evidencia" | "dermatoscopia" | "enderecos" | "idiomas" | "formacao";
+
 export type Differential = {
   titulo: string;
   descricao: string;
-  icone?: string;
+  icone?: DifferentialIcon;
+  /** Claim still depends on client confirmation (shows an "a validar" mark). */
+  pendente?: boolean;
 };
 
 export type TestimonialSource = "Google" | "Doctoralia";

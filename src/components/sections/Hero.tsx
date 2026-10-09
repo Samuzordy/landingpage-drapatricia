@@ -45,7 +45,7 @@ function GoogleRatingBadge() {
     <p className="inline-flex min-h-11 items-center gap-2 rounded-pill border border-dashed border-rose px-4 text-sm text-cacau/85">
       <StarIcon width={16} height={16} className="text-rose" />
       Avaliações no Google
-      <PendingMark label="dado pendente" className="ml-0" />
+      <PendingMark label="dado pendente" flush />
     </p>
   );
 }

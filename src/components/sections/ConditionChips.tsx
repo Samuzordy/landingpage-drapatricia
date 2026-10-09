@@ -3,6 +3,7 @@
 import { useEffect, useId, useRef, useState } from "react";
 import { BottomSheet } from "@/components/ui/BottomSheet";
 import { Button } from "@/components/ui/Button";
+import { PendingTag } from "@/components/ui/PendingTag";
 import { ConditionChipList, type ConditionItem } from "./ConditionChipList";
 
 export type ConditionChipsProps = {
@@ -58,11 +59,7 @@ export function ConditionChips({ conditions, whatsapp, showPendingMarkers }: Con
           <>
             <p className="measure text-[1.0625rem] text-cacau/90">
               {current.hint}
-              {current.hintPending && showPendingMarkers && (
-                <span className="ml-2 inline-flex items-center rounded-pill border border-dashed border-rose px-2 py-0.5 align-middle text-[0.6875rem] font-medium text-cacau/80">
-                  texto pendente
-                </span>
-              )}
+              {current.hintPending && showPendingMarkers && <PendingTag label="texto pendente" />}
             </p>
             {current.pillar && (
               <p className="mt-4 text-sm text-cacau/80">

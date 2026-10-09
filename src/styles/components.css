@@ -577,11 +577,12 @@
     );
   }
 
+  /* Jornada da Pele */
   .layer-derme-3 {
     background: linear-gradient(
       to bottom,
       color-mix(in srgb, var(--color-layer-derme) 38%, var(--color-porcelana)),
-      color-mix(in srgb, var(--color-layer-derme) 50%, var(--color-porcelana))
+      color-mix(in srgb, var(--color-layer-derme) 55%, var(--color-porcelana))
     );
   }
 
@@ -731,6 +732,328 @@
   @keyframes sheet-backdrop-in {
     from {
       opacity: 0;
+    }
+  }
+
+  /* ---------- Deepening: Derme → Derme profunda (contrast-checked) ----------
+     Jornada stays ≤ 75% #EAD5CA (terracota-texto ≥ 4.75:1). The derme-profunda sections switch
+     kicker/accents to --color-terracota-texto-profundo (≥ 5.05:1 even on pure #D2A796). */
+  /* Quando procurar — ends at 75%, where terracota-texto is still ≥ 4.75:1 */
+  .layer-derme-4 {
+    background: linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--color-layer-derme) 55%, var(--color-porcelana)),
+      color-mix(in srgb, var(--color-layer-derme) 75%, var(--color-porcelana))
+    );
+  }
+
+  .layer-profunda-1 {
+    background: linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--color-layer-derme) 75%, var(--color-porcelana)),
+      color-mix(in srgb, var(--color-layer-derme-profunda) 50%, var(--color-layer-derme))
+    );
+  }
+
+  .layer-profunda-2 {
+    background: linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--color-layer-derme-profunda) 50%, var(--color-layer-derme)),
+      var(--color-layer-derme-profunda)
+    );
+  }
+
+  /* ---------- Jornada da Pele: cross-section ---------- */
+  .skin-layer {
+    transition:
+      opacity var(--dur-base) var(--ease-skin),
+      translate var(--dur-base) var(--ease-skin),
+      filter var(--dur-base) var(--ease-skin);
+  }
+
+  .skin-shape {
+    stroke: transparent;
+    stroke-width: 1.5;
+    transition: stroke var(--dur-fast) var(--ease-skin);
+  }
+
+  /* Others drop to 40%; the active layer gains saturation and a terracota outline. */
+  .skin-svg[data-has-active] .skin-layer:not([data-active]) {
+    opacity: 0.4;
+  }
+
+  .skin-layer[data-active] {
+    filter: saturate(1.35);
+  }
+
+  .skin-layer[data-active] .skin-shape {
+    stroke: var(--color-terracota);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .skin-layer[data-active] {
+      translate: 0 -4px;
+    }
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .skin-layer {
+      cursor: pointer;
+    }
+  }
+
+  .skin-index {
+    fill: var(--color-cacau);
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    opacity: 0.75;
+  }
+
+  /* ---------- Jornada: depth gauge (tablist) ---------- */
+  .journey-tabs {
+    display: grid;
+    grid-template-columns: repeat(var(--layer-count, 3), minmax(0, 1fr));
+    gap: 0.5rem;
+  }
+
+  .journey-gauge {
+    display: none;
+  }
+
+  .journey-tab {
+    display: flex;
+    min-height: 3.5rem;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 0.625rem 0.75rem;
+    border: 1px solid rgb(59 42 37 / 0.2);
+    border-radius: 16px;
+    background-color: rgb(247 241 236 / 0.35);
+    color: var(--color-cacau);
+    text-align: left;
+    transition:
+      background-color var(--dur-fast) var(--ease-skin),
+      border-color var(--dur-fast) var(--ease-skin);
+  }
+
+  .journey-tab[aria-selected="true"] {
+    border-color: var(--color-terracota);
+    background-color: var(--color-porcelana);
+  }
+
+  .journey-tab-index {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+  }
+
+  .journey-tab-name {
+    font-family: var(--font-display);
+    font-size: clamp(0.9375rem, 4.2vw, 1.125rem);
+    line-height: 1.2;
+  }
+
+  .journey-tab-role {
+    display: none;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .journey-tab:hover {
+      border-color: var(--color-rose);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .journey-tabs {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      padding-left: 1.75rem;
+    }
+
+    /* Vertical "probe": a marker slides down to the selected depth. */
+    .journey-gauge {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 6px;
+      display: block;
+      width: 2px;
+      border-radius: 2px;
+      background-color: rgb(59 42 37 / 0.15);
+    }
+
+    .journey-gauge-marker {
+      position: absolute;
+      left: -2px;
+      width: 6px;
+      height: calc(100% / var(--layer-count, 3));
+      border-radius: 3px;
+      background-color: var(--color-terracota);
+      translate: 0 calc(var(--active-index, 0) * 100%);
+      transition: translate var(--dur-base) var(--ease-skin);
+    }
+
+    .journey-tab {
+      display: grid;
+      min-height: 5.25rem;
+      grid-template-columns: 2.75rem 1fr;
+      align-items: baseline;
+      padding: 1rem 0;
+      border: 0;
+      border-bottom: 1px solid rgb(59 42 37 / 0.14);
+      border-radius: 0;
+      background: none;
+    }
+
+    .journey-tab[aria-selected="true"] {
+      background: none;
+    }
+
+    .journey-tab-index {
+      grid-row: span 2;
+    }
+
+    .journey-tab-name {
+      font-size: 1.875rem;
+      font-weight: 350;
+    }
+
+    .journey-tab[aria-selected="true"] .journey-tab-name {
+      color: var(--accent-text);
+      font-style: italic;
+    }
+
+    .journey-tab-role {
+      display: block;
+      grid-column: 2;
+      margin-top: 0.25rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      .journey-tab:hover .journey-tab-name {
+        color: var(--accent-text);
+      }
+    }
+  }
+
+  /* Panel swaps with fade + 12px slide (fade only with reduced motion). */
+  .journey-panel {
+    padding: 1.5rem;
+    border: 1px solid rgb(59 42 37 / 0.1);
+    background-color: rgb(247 241 236 / 0.6);
+  }
+
+  .journey-panel:not([hidden]) {
+    animation: tabs-panel-in var(--dur-base) var(--ease-skin);
+  }
+
+  @media (min-width: 1024px) {
+    .journey-panel {
+      padding: 2rem;
+    }
+  }
+
+  /* ---------- Como funciona: steps + scroll-drawn connector ---------- */
+  .steps-line {
+    position: absolute;
+    top: 1.5rem;
+    bottom: 2.5rem;
+    left: 11px;
+    width: 1px;
+    /* clip, not hidden: hidden would make this a scroll container and view() would track it
+       instead of the page. */
+    overflow: clip;
+    background-color: rgb(59 42 37 / 0.2);
+  }
+
+  .steps-line-fill {
+    position: absolute;
+    inset: 0;
+    background-color: var(--accent-text);
+    transform-origin: top center;
+  }
+
+  .step-dot {
+    position: absolute;
+    top: 1.125rem;
+    left: 4px;
+    width: 15px;
+    height: 15px;
+    border: 1.5px solid var(--accent-text);
+    border-radius: 50%;
+    background-color: var(--color-porcelana);
+  }
+
+  .step-number {
+    display: block;
+    font-size: 3.25rem;
+    line-height: 1;
+  }
+
+  @media (min-width: 1024px) {
+    .steps-line {
+      top: 7px;
+      right: 0;
+      bottom: auto;
+      left: 0;
+      width: auto;
+      height: 1px;
+    }
+
+    .steps-line-fill {
+      transform-origin: left center;
+    }
+
+    .step-dot {
+      top: 0;
+      left: 0;
+    }
+
+    .step-number {
+      font-size: 4.5rem;
+    }
+  }
+
+  /* Progressive enhancement: scroll-driven drawing, no JS. Static full line otherwise. */
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .steps-line-fill {
+        animation: steps-draw-y linear both;
+        animation-timeline: view();
+        animation-range: entry 0% cover 55%;
+      }
+
+      @media (min-width: 1024px) {
+        .steps-line-fill {
+          animation-name: steps-draw-x;
+        }
+      }
+    }
+  }
+
+  @keyframes steps-draw-y {
+    from {
+      scale: 1 0;
+    }
+    to {
+      scale: 1 1;
+    }
+  }
+
+  @keyframes steps-draw-x {
+    from {
+      scale: 0 1;
+    }
+    to {
+      scale: 1 1;
     }
   }
 }
