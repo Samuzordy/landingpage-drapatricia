@@ -2,8 +2,8 @@
  * Content of the dermatology variant ("Jornada da Pele"). Lives next to the variant so the
  * template's main content (src/content/site.ts) stays specialty-neutral.
  *
- * Layer descriptions are minimal and purely positional (where each layer sits) — any clinical
- * or educational copy needs review by the professional before use.
+ * Layer copy is short, general and non-clinical (role of each layer) — still to be reviewed by
+ * the professional before going live (`pendingReview`).
  */
 import type { ImageAsset, SectionHeading } from "@/types/content";
 
@@ -26,36 +26,40 @@ export const skinJourney = {
     kicker: "Jornada da pele",
     title: "Da superfície à profundidade",
     highlight: "profundidade",
-    intro: "Selecione uma camada para conhecê-la.",
+    intro: "Cada camada tem um papel no cuidado com a pele. Selecione uma para conhecê-la.",
   } satisfies SectionHeading,
   tabsLabel: "Camadas da pele",
-  relatedLabel: "Tratamentos relacionados",
+  relatedLabel: "Áreas relacionadas",
   emptyRelated: "Em definição.",
   servicesLinkLabel: "Ver áreas de atuação",
+  // Related entries mirror the service area titles in site.ts.
   layers: [
     {
       id: "epiderme",
       name: "Epiderme",
-      role: "superfície",
-      description: "A camada mais externa da pele — a superfície que vemos e tocamos.",
+      role: "proteção",
+      description:
+        "A camada mais externa: protege o organismo e está em contato direto com o ambiente, como o sol, o clima e os cosméticos.",
       pendingReview: true,
-      related: [],
+      related: ["Dermatologia clínica", "Dermatologia estética"],
     },
     {
       id: "derme",
       name: "Derme",
       role: "estrutura",
-      description: "A camada intermediária, logo abaixo da epiderme.",
+      description:
+        "Dá estrutura e sustentação à pele. Abriga fibras, vasos e anexos como os folículos dos cabelos e as glândulas.",
       pendingReview: true,
-      related: [],
+      related: ["Dermatologia clínica", "Cabelos e couro cabeludo", "Dermatologia cirúrgica"],
     },
     {
       id: "hipoderme",
       name: "Hipoderme",
-      role: "base",
-      description: "A camada mais profunda, abaixo da derme.",
+      role: "profundidade",
+      description:
+        "A camada mais profunda integra a pele às estruturas abaixo dela. Olhar para o conjunto das camadas faz parte de uma avaliação individualizada.",
       pendingReview: true,
-      related: [],
+      related: ["Dermatologia cirúrgica", "Dermatologia estética"],
     },
   ] satisfies SkinLayer[],
 };

@@ -36,7 +36,7 @@
    */
   :root {
     --kicker-color: var(--color-terracota-texto);
-    --accent-text: var(--color-terracota);
+    --accent-text: var(--color-terracota-texto);
 
     --depth-0: var(--color-porcelana);
     --depth-1: color-mix(in srgb, var(--color-band-mid) 22%, var(--color-porcelana));

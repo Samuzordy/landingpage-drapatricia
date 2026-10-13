@@ -4,7 +4,7 @@ import { resolveNav } from "@/lib/sections";
 
 /**
  * Rodapé — the deepest band. Server Component, zero JS.
- * Name, specialty and council registrations stay prominent. No contact data is invented:
+ * Name, professional title and council registrations stay prominent. No contact data is invented:
  * social profiles without a confirmed URL show only the handle, and the privacy policy is a
  * visual placeholder (no page in this preview template).
  */
@@ -12,6 +12,7 @@ export function Footer() {
   const { professional, settings, nav, flags, footer } = site;
   const links = resolveNav(nav.footer);
   const year = new Date().getFullYear();
+  const hasInfo = settings.social.length > 0 || Boolean(footer.privacyLabel);
 
   return (
     <footer data-tone="dark" className="band-dark-2 text-white">
@@ -20,7 +21,7 @@ export function Footer() {
           <p className="font-display text-[2rem] leading-tight font-normal">
             {professional.displayName}
           </p>
-          <p className="mt-1 text-sm tracking-[0.18em] uppercase">{professional.specialty}</p>
+          <p className="mt-1 text-sm tracking-[0.18em] uppercase">{professional.title}</p>
           <p className="mt-6 text-base font-semibold tabular">
             {professional.registrations.join(" · ")}
           </p>
@@ -42,36 +43,40 @@ export function Footer() {
           </nav>
         )}
 
-        <div className="col-span-4 sm:col-span-2 lg:col-span-4">
-          <p className="text-xs font-semibold tracking-[0.18em] uppercase">{footer.infoTitle}</p>
-          <ul className="mt-4 space-y-3 text-[0.9375rem]">
-            {settings.social.map((social) => (
-              <li key={social.label}>
-                {social.label}:{" "}
-                {social.url !== PLACEHOLDER ? (
-                  <a
-                    href={social.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="footer-link inline-flex"
-                  >
-                    {social.handle}
-                    <span className="sr-only"> (abre em nova aba)</span>
-                  </a>
-                ) : (
-                  <>
-                    <span className="font-semibold">{social.handle}</span>
-                    <PendingMark label="link pendente" tone="light" />
-                  </>
-                )}
-              </li>
-            ))}
-            <li>
-              {footer.privacyLabel}
-              <PendingMark label="em elaboração" tone="light" />
-            </li>
-          </ul>
-        </div>
+        {hasInfo && (
+          <div className="col-span-4 sm:col-span-2 lg:col-span-4">
+            <p className="text-xs font-semibold tracking-[0.18em] uppercase">{footer.infoTitle}</p>
+            <ul className="mt-4 space-y-3 text-[0.9375rem]">
+              {settings.social.map((social) => (
+                <li key={social.label}>
+                  {social.label}:{" "}
+                  {social.url !== PLACEHOLDER ? (
+                    <a
+                      href={social.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="footer-link inline-flex"
+                    >
+                      {social.handle}
+                      <span className="sr-only"> (abre em nova aba)</span>
+                    </a>
+                  ) : (
+                    <>
+                      <span className="font-semibold">{social.handle}</span>
+                      <PendingMark label="link pendente" tone="light" />
+                    </>
+                  )}
+                </li>
+              ))}
+              {footer.privacyLabel && (
+                <li>
+                  {footer.privacyLabel}
+                  <PendingMark label="em elaboração" tone="light" />
+                </li>
+              )}
+            </ul>
+          </div>
+        )}
       </div>
 
       <div className="border-t border-white/20">

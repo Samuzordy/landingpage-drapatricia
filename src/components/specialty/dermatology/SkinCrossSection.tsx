@@ -70,16 +70,16 @@ export function SkinCrossSection({ active, labels, onLayerPointerEnter }: SkinCr
     >
       <defs>
         <linearGradient id="sk-epi" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="#f6ebe4" />
-          <stop offset="1" stopColor="#efdcd0" />
+          <stop offset="0" stopColor="#f5ece4" />
+          <stop offset="1" stopColor="#ecdccf" />
         </linearGradient>
         <linearGradient id="sk-der" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="#ebcdbf" />
-          <stop offset="1" stopColor="#dfb8a6" />
+          <stop offset="0" stopColor="#e8cfc0" />
+          <stop offset="1" stopColor="#dcbba8" />
         </linearGradient>
         <linearGradient id="sk-hip" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="#d9a994" />
-          <stop offset="1" stopColor="#c99581" />
+          <stop offset="0" stopColor="#e6d3ad" />
+          <stop offset="1" stopColor="#d8c194" />
         </linearGradient>
         <clipPath id="sk-hip-clip">
           <path d={HYPODERMIS} />
@@ -94,8 +94,8 @@ export function SkinCrossSection({ active, labels, onLayerPointerEnter }: SkinCr
         <path d={HYPODERMIS} fill="url(#sk-hip)" className="skin-shape" />
         <g
           clipPath="url(#sk-hip-clip)"
-          fill="#e6bba7"
-          stroke="#f7f1ec"
+          fill="#ecdcb8"
+          stroke="#f6f4ec"
           strokeWidth="1.2"
           strokeOpacity="0.7"
         >
@@ -113,14 +113,14 @@ export function SkinCrossSection({ active, labels, onLayerPointerEnter }: SkinCr
         <path d={DERMIS} fill="url(#sk-der)" className="skin-shape" />
         <g clipPath="url(#sk-der-clip)" fill="none" strokeLinecap="round">
           {/* collagen fibres */}
-          <g stroke="#a8634f" strokeOpacity="0.2" strokeWidth="1.3">
+          <g stroke="#a5574a" strokeOpacity="0.2" strokeWidth="1.3">
             <path d="M20 176 C120 160 170 196 270 178 S440 160 540 182" />
             <path d="M20 206 C100 222 190 190 280 210 S430 228 540 204" />
             <path d="M20 238 C130 222 210 254 300 236 S460 222 540 244" />
             <path d="M20 266 C110 280 200 252 290 270 S450 282 540 262" />
           </g>
           {/* capillary loops */}
-          <g stroke="#a8634f" strokeOpacity="0.5" strokeWidth="1">
+          <g stroke="#a5574a" strokeOpacity="0.5" strokeWidth="1">
             {CAPILLARIES.map((d) => (
               <path key={d} d={d} />
             ))}
@@ -128,20 +128,20 @@ export function SkinCrossSection({ active, labels, onLayerPointerEnter }: SkinCr
           {/* vessel */}
           <path
             d="M20 224 C110 196 180 252 270 222 S420 196 540 228"
-            stroke="#a8634f"
+            stroke="#a5574a"
             strokeOpacity="0.55"
             strokeWidth="2.2"
           />
           <path
             d="M20 232 C110 204 180 260 270 230 S420 204 540 236"
-            stroke="#c98f7e"
+            stroke="#c9a594"
             strokeOpacity="0.5"
             strokeWidth="1"
           />
           {/* sweat gland: duct + coil */}
           <path
             d="M452 118 C448 160 458 200 450 248 C436 252 436 272 450 272 C464 272 464 256 452 256 C442 258 444 268 452 266"
-            stroke="#8f4e3c"
+            stroke="#8a4a3e"
             strokeOpacity="0.55"
             strokeWidth="1.3"
           />
@@ -149,23 +149,23 @@ export function SkinCrossSection({ active, labels, onLayerPointerEnter }: SkinCr
         {/* hair follicle + sebaceous gland */}
         <path
           d="M318 66 C314 140 310 210 302 266 C298 290 334 292 330 268 C334 210 336 140 340 66"
-          fill="#efd6ca"
-          stroke="#a8634f"
+          fill="#f1e2d6"
+          stroke="#a5574a"
           strokeOpacity="0.6"
           strokeWidth="1.2"
         />
         <path
           d="M340 134 C360 126 372 142 364 156 C358 168 342 164 340 156"
-          fill="#c98f7e"
+          fill="#c9a594"
           fillOpacity="0.35"
-          stroke="#a8634f"
+          stroke="#a5574a"
           strokeOpacity="0.45"
           strokeWidth="1"
         />
         <path
           d="M128 66 C126 120 124 160 118 196 C114 214 142 216 138 196 C140 160 142 120 146 66"
-          fill="#efd6ca"
-          stroke="#a8634f"
+          fill="#f1e2d6"
+          stroke="#a5574a"
           strokeOpacity="0.5"
           strokeWidth="1"
         />
@@ -178,19 +178,19 @@ export function SkinCrossSection({ active, labels, onLayerPointerEnter }: SkinCr
       <g {...layer("epiderme")}>
         <path d={EPIDERMIS} fill="url(#sk-epi)" className="skin-shape" />
         {/* strata parallel to the surface */}
-        <g fill="none" stroke="#c98f7e" strokeOpacity="0.4" strokeWidth="0.8">
+        <g fill="none" stroke="#c9a594" strokeOpacity="0.4" strokeWidth="0.8">
           <path d="M20 74 C110 66 180 80 280 72 S450 66 540 74" />
           <path d="M20 84 C110 76 180 90 280 82 S450 76 540 84" />
           <path d="M20 95 C110 88 180 101 280 94 S450 88 540 95" strokeDasharray="2 5" />
         </g>
-        <path d={SURFACE} fill="none" stroke="#a8634f" strokeOpacity="0.6" strokeWidth="1.2" />
+        <path d={SURFACE} fill="none" stroke="#a5574a" strokeOpacity="0.6" strokeWidth="1.2" />
         <text x={LEFT + 16} y="88" className="skin-index">
           01
         </text>
       </g>
 
       {/* hair shafts above the surface (decorative, not part of a layer) */}
-      <g fill="none" stroke="#3b2a25" strokeOpacity="0.75" strokeLinecap="round" aria-hidden="true">
+      <g fill="none" stroke="#2e2620" strokeOpacity="0.75" strokeLinecap="round" aria-hidden="true">
         <path d="M331 8 C332 34 331 60 324 120 C320 180 314 230 316 270" strokeWidth="2" />
         <path d="M137 22 C138 40 137 56 133 110 C131 150 129 176 128 198" strokeWidth="1.6" />
       </g>

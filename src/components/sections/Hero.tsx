@@ -145,6 +145,7 @@ export function Hero() {
           )}
           <figcaption className="mt-4 text-center text-xs text-cacau/75">
             {professional.displayName}
+            <span className="mt-1 block tabular">{professional.registrations.join(" · ")}</span>
           </figcaption>
         </figure>
       </div>

@@ -12,13 +12,13 @@
   /* ---------- Button / MagneticButton ---------- */
   .btn-primary {
     background-color: var(--color-terracota);
-    color: #fff; /* white on terracota ≈ 4.6:1 (AA) */
+    color: #fff; /* white on the primary ≥ 4.5:1 (AA) */
   }
 
   .btn-secondary {
     border: 1px solid var(--color-terracota);
     background-color: transparent;
-    color: var(--color-cacau); /* terracota text on porcelana is < 4.5:1 at this size */
+    color: var(--color-cacau);
   }
 
   /* Circular fill. Grows from the cursor entry point (--fx/--fy, set by MagneticButton) or the center. */
@@ -37,29 +37,23 @@
       opacity var(--dur-base) var(--ease-soft);
   }
 
+  /* Discreet hover: the primary lifts slightly toward sage (white text stays ≥ 7:1). */
   .btn-primary .btn-fill {
-    background-color: var(--color-cacau);
+    background-color: color-mix(in srgb, var(--color-terracota) 82%, var(--color-salvia));
   }
 
+  /* Light sage wash: the secondary never turns into a second primary. */
   .btn-secondary .btn-fill {
-    background-color: var(--color-terracota);
+    background-color: color-mix(in srgb, var(--color-salvia) 28%, var(--color-porcelana));
   }
 
   .btn:not([aria-disabled]):focus-visible .btn-fill {
     scale: 1;
   }
 
-  .btn-secondary:not([aria-disabled]):focus-visible {
-    color: #fff;
-  }
-
   @media (hover: hover) and (pointer: fine) {
     .btn:not([aria-disabled]):hover .btn-fill {
       scale: 1;
-    }
-
-    .btn-secondary:not([aria-disabled]):hover {
-      color: #fff;
     }
   }
 
@@ -595,6 +589,14 @@
   @media (min-width: 1024px) {
     .services-grid {
       grid-template-columns: var(--service-cols, 1fr 1fr 1fr);
+    }
+  }
+
+  /* 4+ areas: the row layout only from 1280px; two accordion columns in between. */
+  @media (min-width: 1024px) and (max-width: 1279.98px) {
+    .services-grid[data-count="many"] {
+      grid-template-columns: 1fr 1fr;
+      align-items: start;
     }
   }
 

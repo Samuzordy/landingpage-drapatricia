@@ -67,9 +67,12 @@ export function ServiceCardsView({
   handlers?: ServiceCardHandlers;
 }) {
   const columns = services.map((_, i) => (i === active ? "1.6fr" : "1fr")).join(" ");
+  // 4+ areas share the row: titles stay one step smaller to keep the card padding.
+  const many = services.length > 3;
 
   return (
     <ul
+      data-count={many ? "many" : undefined}
       className="services-grid mt-12 grid gap-4 lg:mt-16 lg:gap-6"
       style={{ "--service-cols": columns } as CSSProperties}
     >
@@ -103,7 +106,9 @@ export function ServiceCardsView({
                 >
                   <PlusIcon className="accordion-icon" />
                 </span>
-                <span className="col-start-1 mt-4 font-display text-[1.75rem] leading-[1.1] font-normal text-cacau lg:text-[2rem]">
+                <span
+                  className={`col-start-1 mt-4 font-display text-[1.75rem] leading-[1.1] font-normal text-cacau ${many ? "" : "lg:text-[2rem]"}`}
+                >
                   {service.title}
                 </span>
                 <span className="col-start-1 mt-3 font-display text-lg leading-snug font-light text-cacau/90 italic">

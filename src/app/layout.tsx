@@ -20,6 +20,8 @@ const manrope = Manrope({
 export const metadata: Metadata = {
   title: site.settings.seo.title,
   description: site.settings.seo.description,
+  // Commercial preview of a real professional's page: keep it out of search engines.
+  robots: { index: false, follow: false },
 };
 
 export const viewport: Viewport = {

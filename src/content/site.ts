@@ -1,8 +1,9 @@
 /**
- * TEMPLATE — the single file to edit when starting a new landing.
+ * Content of the commercial preview for Dra. Patricia Martinski (dermatology, Curitiba – PR).
  *
- * Everything below is DEMO content: fictitious name, registrations, city, institutions and
- * copy. Replace it with the new professional's data before showing the preview.
+ * Facts come only from public sources (Doctoralia, Hospital IPO): name, CRM/RQE, city, PUCPR,
+ * SBD specialist title, conditions and procedures listed there. Everything else is neutral,
+ * institutional copy — no personal claims.
  *   - `// TEMPLATE:`      → value expected to change in every project.
  *   - `// TODO(cliente)`  → data the client still has to send (keep PLACEHOLDER meanwhile).
  *
@@ -21,30 +22,30 @@ export const PENDING_TEXT = "[Texto pendente — aguardando validação]";
 export const isPending = (text: string | undefined | null): boolean =>
   !text || text === PENDING_TEXT;
 
-// TEMPLATE: identity used across the page (header, hero, about, final CTA, footer, SEO).
+// Identity used across the page (header, hero, about, final CTA, footer, SEO).
 const professional = {
-  name: "Nome Sobrenome",
-  displayName: "Dra. Nome Sobrenome",
-  title: "Médica especialista",
-  specialty: "Especialidade médica",
-  registrations: ["CRM-UF 00000", "RQE 00000"],
-  location: "Cidade – UF",
-  languages: ["Português", "Inglês"],
+  name: "Patricia Martinski",
+  displayName: "Dra. Patricia Martinski",
+  title: "Dermatologista",
+  specialty: "Dermatologia clínica, cirúrgica e estética",
+  registrations: ["CRM-PR 17877", "RQE 23981"],
+  location: "Curitiba – PR",
+  languages: [], // no public information — left empty on purpose
 };
 
 export const site: SiteContent = {
   // Pending marks stay hidden in commercial previews (true shows "a validar" tags).
   flags: { showPendingMarkers: false },
 
-  // TEMPLATE: turn sections on/off. Nav links, CTAs pointing to a disabled section and the
-  // background depth gradient adapt automatically.
+  // Nav links, CTAs pointing to a disabled section and the background depth gradient adapt
+  // automatically.
   sections: {
     hero: true,
     credentials: true,
     about: true,
     services: true,
     conditions: true,
-    specialtyFeature: false, // also needs `specialtyFeature.variant` below
+    specialtyFeature: true,
     consultation: true,
     differentials: true,
     faq: true,
@@ -52,32 +53,32 @@ export const site: SiteContent = {
   },
 
   settings: {
-    themeColor: "#f7f1ec", // TEMPLATE: same as --color-porcelana (tokens.css)
-    whatsapp: PLACEHOLDER, // TODO(cliente): WhatsApp comercial — CTAs ficam "em breve" até lá
-    whatsappMessage: "Olá, vim pelo site e gostaria de agendar uma consulta.",
-    whatsappPendingNote: "Agendamento pelo WhatsApp disponível em breve.",
-    social: [
-      // TODO(cliente): perfil real; sem URL o handle aparece sem link
-      { label: "Instagram", handle: "@nome.sobrenome", url: PLACEHOLDER },
-    ],
+    themeColor: "#f6f4ec", // same as --color-porcelana (tokens.css)
+    whatsapp: PLACEHOLDER, // TODO(cliente): WhatsApp oficial — CTAs ficam "em breve" até lá
+    whatsappMessage: "Olá, vim pelo site e gostaria de agendar uma consulta dermatológica.",
+    whatsappPendingNote: "Canal de agendamento disponível em breve.",
+    social: [], // TODO(cliente): Instagram oficial, se ela quiser exibir
     seo: {
-      title: `${professional.specialty} em ${professional.location} | ${professional.displayName}`,
-      description: `Atendimento em ${professional.specialty.toLowerCase()} em ${professional.location} com ${professional.displayName}. ${professional.registrations.join(" · ")}.`,
+      title: `${professional.displayName} | ${professional.title} em ${professional.location}`,
+      description: `${professional.specialty} em ${professional.location} com ${professional.displayName}. ${professional.registrations.join(" · ")}.`,
     },
-    googleRating: null, // TODO(cliente): nota, total e link do Google (somente com autorização)
+    googleRating: null, // TODO(cliente): somente com autorização
   },
 
   professional,
 
-  // TEMPLATE: replace the files in public/images/ (keep the 4:5 portrait ratio).
+  // About keeps the neutral placeholder until a second photo arrives (never reuse the hero one).
+  // To switch: { src: "/images/patricia-sobre.jpg", alt: professional.displayName,
+  //              width: …, height: …, objectPosition: "50% 30%" }
   images: {
+    // Square 512×511 export from her Instagram (TODO(cliente): original in higher resolution).
+    // Cover fills the 4:5 arch by height and trims ~10% per side; the face sits at ~53%.
     hero: {
-      src: "/images/placeholders/professional-hero-placeholder.svg",
-      alt: `Retrato de ${professional.displayName}`,
-      width: 800,
-      height: 1000,
-      // For photos with text/logos around the subject, crop visually instead of editing:
-      // crop: { x: 0.27, y: 0, width: 0.5 },
+      src: "/images/patricia-hero.jpg",
+      alt: `Retrato da ${professional.displayName}`,
+      width: 512,
+      height: 511,
+      objectPosition: "53% 50%",
     },
     about: {
       src: "/images/placeholders/professional-about-placeholder.svg",
@@ -93,14 +94,15 @@ export const site: SiteContent = {
     header: [
       { section: "about", label: "Sobre" },
       { section: "services", label: "Atuação" },
+      { section: "specialtyFeature", label: "Jornada da pele" },
       { section: "consultation", label: "Consulta" },
       { section: "faq", label: "Dúvidas" },
     ],
     footer: [
       { section: "about", label: "Sobre" },
-      { section: "services", label: "Atuação" },
-      { section: "specialtyFeature", label: "Destaque" },
+      { section: "services", label: "Áreas de atuação" },
       { section: "conditions", label: "Quando procurar" },
+      { section: "specialtyFeature", label: "Jornada da pele" },
       { section: "consultation", label: "Consulta" },
       { section: "differentials", label: "Diferenciais" },
       { section: "faq", label: "Dúvidas" },
@@ -108,59 +110,48 @@ export const site: SiteContent = {
   },
 
   hero: {
-    kicker: `${professional.specialty} · ${professional.location}`,
-    title: "Cuidado atento à sua saúde, guiado pela ciência",
-    highlight: "sua saúde",
+    kicker: `${professional.title} · ${professional.location}`,
+    title: "Cuidado dermatológico em cada fase da sua pele.",
+    highlight: "sua pele",
     subtitle:
-      "Atendimento com escuta, avaliação criteriosa e um plano construído junto com você, em cada etapa do cuidado.",
-    primaryCta: "Agendar pelo WhatsApp",
+      "Dermatologia clínica, cirúrgica e estética, com atenção à saúde, à prevenção e às necessidades individuais de cada paciente.",
+    primaryCta: "Agendar consulta",
     secondaryCta: { label: "Conheça a Dra.", href: "#sobre" },
     headerCta: "Agendar",
-    // Optional magnifier lens over the portrait (see README › SpecialtyFeature for the
-    // dermatology example). null = plain portrait.
+    // Off for this landing: with a real portrait the lens would pass over her face. The starter
+    // option stays available ({ detail: skinDetailImage, label } from specialty/dermatology).
     lens: null,
   },
 
+  // Registrations already sit right above (hero caption) — kept out of the marquee.
   credentials: {
     label: "Credenciais",
     items: [
-      ...professional.registrations.map((label) => ({ label })),
-      { label: "Título de especialista" },
-      { label: "Formação em Medicina" },
-      { label: "Membro de sociedade de especialidade" },
-      { label: "English spoken" },
+      { label: "Dermatologia" },
+      { label: "Especialista pela Sociedade Brasileira de Dermatologia" },
+      { label: "Formação pela PUCPR" },
+      { label: professional.location },
     ],
   },
 
   about: {
-    kicker: "Sobre a especialista",
+    kicker: "Um olhar completo para a saúde da pele",
     bio: [
-      `Sou ${professional.title.toLowerCase()} em ${professional.specialty.toLowerCase()} e atendo em ${professional.location}.`,
-      "Meu trabalho combina escuta atenta, avaliação criteriosa e decisões tomadas em conjunto com cada paciente, com explicações claras em todas as etapas.",
-      `Atendo em ${professional.languages.join(" e ").toLowerCase()}.`,
+      `A ${professional.displayName} é médica dermatologista, com formação pela Pontifícia Universidade Católica do Paraná e título de especialista pela Sociedade Brasileira de Dermatologia. Sua atuação contempla o cuidado dermatológico em diferentes necessidades, do diagnóstico e acompanhamento clínico aos procedimentos dermatológicos.`,
+      "A dermatologia permite acompanhar a pele em diferentes fases da vida, atuando tanto na prevenção quanto no tratamento de alterações da pele, dos cabelos e do couro cabeludo.",
     ],
     facts: [
       { term: "Registro", detail: professional.registrations.join(" · "), emphasis: true },
-      { term: "Formação", detail: "Medicina — Universidade Exemplo" },
-      { term: "Especialização", detail: "Residência em Especialidade — Hospital Exemplo" },
-      { term: "Título", detail: "Título de especialista — Sociedade de Especialidade" },
-      { term: "Idiomas", detail: professional.languages.join(" e ") },
+      { term: "Formação", detail: "Pontifícia Universidade Católica do Paraná (PUCPR)" },
+      { term: "Título", detail: "Especialista pela Sociedade Brasileira de Dermatologia" },
+      { term: "Atendimento", detail: professional.location },
     ],
+    // No public dates or extra institutions — empty lists/quote hide these blocks.
     timelineTitle: "Linha do tempo",
-    // TEMPLATE: demo milestones and years
-    timeline: [
-      { year: "2008", title: "Graduação em Medicina — Universidade Exemplo" },
-      { year: "2012", title: "Residência em Especialidade — Hospital Exemplo" },
-      { year: "2014", title: "Título de especialista — Sociedade de Especialidade" },
-      { year: "hoje", title: `Atendimento em ${professional.location}` },
-    ],
+    timeline: [],
     institutionsTitle: "Instituições",
-    institutions: [
-      { name: "Universidade Exemplo", abbreviation: "UE" },
-      { name: "Hospital Exemplo", abbreviation: "HE" },
-      { name: "Sociedade de Especialidade", abbreviation: "SE" },
-    ],
-    quote: "Cada pessoa chega com uma história. O cuidado começa por ouvi-la.",
+    institutions: [],
+    quote: "",
   },
 
   services: {
@@ -168,46 +159,53 @@ export const site: SiteContent = {
       kicker: "Atuação",
       title: "Áreas de atuação",
       highlight: "atuação",
-      intro: "Do primeiro diagnóstico ao acompanhamento contínuo.",
+      intro:
+        "Dermatologia completa: saúde da pele, prevenção, diagnóstico e tratamentos dermatológicos.",
     },
     items: [
       {
-        title: "Avaliação e diagnóstico",
-        slug: "avaliacao",
-        keyMessage: "Entender antes de tratar.",
+        title: "Dermatologia clínica",
+        slug: "clinica",
+        keyMessage: "Avaliação, diagnóstico e acompanhamento da pele ao longo da vida.",
         art: "rings",
         services: [
-          "Consulta inicial completa",
-          "Revisão de histórico e exames anteriores",
-          "Exame clínico detalhado",
-          "Solicitação e interpretação de exames",
-          "Segunda opinião",
+          "Consulta dermatológica",
+          "Acne",
+          "Melasma",
+          "Manchas e alterações da pele",
+          "Avaliação preventiva da pele",
         ],
       },
       {
-        title: "Tratamento e acompanhamento",
-        slug: "tratamento",
-        keyMessage: "Um plano pensado para a sua rotina.",
+        title: "Cabelos e couro cabeludo",
+        slug: "cabelos",
+        keyMessage: "Investigação de alterações como queda de cabelo e alopecias.",
+        art: "waves",
+        services: ["Queda de cabelo", "Alopecias", "Doenças do cabelo e do couro cabeludo"],
+      },
+      {
+        title: "Dermatologia cirúrgica",
+        slug: "cirurgica",
+        keyMessage: "Avaliação de lesões cutâneas e procedimentos quando indicados.",
         art: "reticle",
         services: [
-          "Plano de tratamento individual",
-          "Ajustes conforme a evolução",
-          "Retornos programados",
-          "Acompanhamento de condições crônicas",
-          "Orientação para familiares",
+          "Biópsia de pele",
+          "Crioterapia",
+          "Crioterapia de verrugas",
+          "Cirurgia de câncer de pele",
         ],
       },
       {
-        title: "Prevenção e orientação",
-        slug: "prevencao",
-        keyMessage: "Cuidar antes que incomode.",
-        art: "waves",
+        title: "Dermatologia estética",
+        slug: "estetica",
+        keyMessage:
+          "Procedimentos dermatológicos voltados ao cuidado e ao rejuvenescimento da pele.",
+        art: "rings",
         services: [
-          "Check-up preventivo",
-          "Rastreamento conforme idade e histórico",
-          "Orientação sobre hábitos e autocuidado",
-          "Educação em saúde",
-          "Encaminhamentos quando necessário",
+          "Peeling",
+          "Rejuvenescimento facial",
+          "Preenchimento facial",
+          "Aplicação de toxina botulínica",
         ],
       },
     ],
@@ -216,182 +214,166 @@ export const site: SiteContent = {
   conditions: {
     heading: {
       kicker: "Quando procurar",
-      title: "Quando agendar uma consulta",
-      highlight: "consulta",
-      intro: "Toque ou passe o cursor sobre um item para ver quando vale buscar avaliação.",
+      title: "Quando procurar um dermatologista",
+      highlight: "dermatologista",
+      intro:
+        "Situações em que uma avaliação dermatológica pode ajudar. Toque ou passe o cursor sobre um item para saber mais.",
     },
-    listLabel: "Motivos para buscar avaliação",
+    listLabel: "Motivos para buscar avaliação dermatológica",
     sheetKicker: "Quando procurar",
     relatedLabel: "Área relacionada",
-    disclaimer: "Informação geral, de caráter educativo. Não substitui a avaliação profissional.",
+    disclaimer: "Informação geral, de caráter educativo. Não substitui a avaliação médica.",
     pendingHint: "Orientação sobre quando procurar atendimento em revisão.",
     items: [
       {
-        name: "Sintomas persistentes",
+        name: "Acne",
         whenToSeek:
-          "Quando um sintoma dura semanas ou volta com frequência, vale investigar a causa com calma.",
-        service: "avaliacao",
+          "Espinhas persistentes, inflamadas ou que deixam marcas podem ser avaliadas para orientar o cuidado de cada caso.",
+        service: "clinica",
       },
       {
-        name: "Mudanças recentes",
+        name: "Melasma",
         whenToSeek:
-          "Alterações que surgiram ou mudaram de aspecto há pouco tempo merecem avaliação.",
-        service: "avaliacao",
+          "Manchas acastanhadas no rosto, que costumam se intensificar com o sol, merecem avaliação e acompanhamento.",
+        service: "clinica",
       },
       {
-        name: "Check-up preventivo",
-        whenToSeek: "Consultas periódicas ajudam a acompanhar a saúde mesmo sem sintomas.",
-        service: "prevencao",
-      },
-      {
-        name: "Segunda opinião",
+        name: "Queda de cabelo",
         whenToSeek:
-          "Se ficou alguma dúvida sobre um diagnóstico ou tratamento, uma nova avaliação ajuda.",
-        service: "avaliacao",
+          "Queda acima do habitual, ou que se prolonga por semanas, é um motivo para investigar as possíveis causas.",
+        service: "cabelos",
       },
       {
-        name: "Resultados de exames",
+        name: "Alopecia",
         whenToSeek:
-          "Para entender resultados de exames e decidir os próximos passos com segurança.",
-        service: "avaliacao",
+          "Falhas no couro cabeludo, afinamento dos fios ou perda localizada pedem avaliação para entender a alteração.",
+        service: "cabelos",
       },
       {
-        name: "Condição crônica",
+        name: "Alterações nas unhas",
         whenToSeek:
-          "Para acompanhar uma condição de longo prazo e ajustar o cuidado ao longo do tempo.",
-        service: "tratamento",
+          "Mudanças de cor, espessura ou formato das unhas também fazem parte da avaliação dermatológica.",
+        service: "clinica",
       },
       {
-        name: "Antes de um procedimento",
-        whenToSeek: "Para avaliar indicação, preparo e cuidados antes de qualquer procedimento.",
-        service: "tratamento",
+        name: "Manchas na pele",
+        whenToSeek:
+          "Manchas que surgiram há pouco ou mudaram de cor e tamanho podem ser avaliadas com o exame da pele.",
+        service: "clinica",
       },
       {
-        name: "Histórico familiar",
-        whenToSeek: "Quando há casos na família, a avaliação ajuda a definir a prevenção adequada.",
-        service: "prevencao",
+        name: "Lesões ou sinais que mudam",
+        whenToSeek:
+          "Pintas ou lesões que crescem, mudam de cor ou formato, coçam ou sangram devem ser avaliadas.",
+        service: "cirurgica",
+      },
+      {
+        name: "Avaliação preventiva da pele",
+        whenToSeek:
+          "Mesmo sem queixas, o exame periódico ajuda a acompanhar pintas e sinais ao longo do tempo.",
+        service: "clinica",
       },
     ],
   },
 
-  // TEMPLATE: "none" or a variant from src/components/specialty/ (also enable
-  // sections.specialtyFeature). Example: "dermatology-skin-journey".
-  specialtyFeature: { variant: "none" },
+  // Variant content (layers, lens image) lives in components/specialty/dermatology/content.ts.
+  specialtyFeature: { variant: "dermatology-skin-journey" },
 
   consultation: {
     heading: {
       kicker: "Consulta",
       title: "Como funciona a consulta",
       highlight: "consulta",
-      intro: "Quatro etapas, do primeiro contato ao acompanhamento.",
+      intro: "Três etapas para entender, avaliar e planejar o cuidado com a sua pele.",
     },
     steps: [
       {
-        title: "Contato",
-        description: "Você envia uma mensagem e recebe as opções de data, horário e local.",
+        title: "Entender",
+        description: "Conversa sobre a queixa, o histórico e os objetivos da consulta.",
       },
       {
-        title: "Avaliação completa",
+        title: "Avaliar",
+        description: "Exame dermatológico e avaliação das características individuais.",
+      },
+      {
+        title: "Planejar",
         description:
-          "Conversa sem pressa sobre a sua história, exame e análise de exames anteriores.",
-      },
-      {
-        title: "Plano individual",
-        description: "As opções são explicadas com clareza e o plano é definido em conjunto.",
-      },
-      {
-        title: "Acompanhamento",
-        description: "Retornos programados para avaliar a evolução e ajustar o que for preciso.",
+          "Definição das possibilidades de acompanhamento ou tratamento, conforme indicação médica.",
       },
     ],
   },
 
+  // Traits of dermatological care itself — not personal claims about the professional.
   differentials: {
-    heading: { kicker: "Diferenciais", title: "Como é o atendimento", highlight: "atendimento" },
+    heading: {
+      kicker: "Diferenciais",
+      title: "O cuidado dermatológico de forma ampla",
+      highlight: "de forma ampla",
+    },
     items: [
       {
-        title: "Escuta sem pressa",
-        description: "Tempo de consulta pensado para ouvir, examinar e explicar cada etapa.",
-        icon: "listening",
-      },
-      {
-        title: "Conduta baseada em evidência",
-        description: "Decisões apoiadas em diretrizes e estudos científicos atualizados.",
+        title: "Visão ampla da dermatologia",
+        description:
+          "Clínica, cirurgia dermatológica, cabelos e cuidados estéticos reunidos em uma mesma especialidade.",
         icon: "evidence",
       },
       {
-        title: "Avaliação criteriosa",
-        description: "Exame detalhado e recursos diagnósticos quando indicados.",
+        title: "Acompanhamento individual",
+        description: "Cada pele apresenta características e necessidades diferentes.",
+        icon: "listening",
+      },
+      {
+        title: "Prevenção e cuidado contínuo",
+        description:
+          "A consulta dermatológica também pode fazer parte da rotina preventiva de saúde.",
         icon: "precision",
-      },
-      {
-        title: "Fácil acesso",
-        description: `Consultório em região central de ${professional.location}.`,
-        icon: "locations",
-      },
-      {
-        title: "Atendimento em inglês",
-        description: "Consultas também em inglês, para quem preferir.",
-        icon: "languages",
-      },
-      {
-        title: "Formação contínua",
-        description: "Atualização constante em congressos e cursos da especialidade.",
-        icon: "education",
       },
     ],
   },
 
   faq: {
     heading: { kicker: "Dúvidas", title: "Dúvidas frequentes", highlight: "frequentes" },
-    // TEMPLATE: neutral demo answers — confirm every policy with the client.
     items: [
       {
-        question: "A consulta é particular ou atende convênio?",
+        question: "Quando devo procurar um dermatologista?",
         answer:
-          "As formas de atendimento disponíveis, particulares e por convênio, são informadas no agendamento pelo WhatsApp.",
+          "Sempre que houver alterações na pele, nos cabelos ou nas unhas que incomodem ou persistam, e também para o acompanhamento preventivo da pele. Pintas ou sinais que mudam de aspecto merecem atenção especial.",
       },
       {
-        question: "Como funciona o reembolso?",
+        question: "O dermatologista também avalia cabelos e couro cabeludo?",
         answer:
-          "Após a consulta, você recebe a documentação necessária para solicitar o reembolso ao seu plano, conforme as regras do contrato.",
+          "Sim. Cabelos, couro cabeludo e unhas fazem parte da dermatologia. Queda de cabelo, alopecias e outras alterações do couro cabeludo podem ser investigadas em consulta.",
       },
       {
-        question: "Quanto tempo dura a consulta?",
+        question: "Como funciona a primeira consulta?",
         answer:
-          "A primeira consulta costuma ser mais longa, para permitir uma avaliação completa. A duração é informada no agendamento.",
+          "A consulta começa com uma conversa sobre a queixa, o histórico de saúde e os objetivos. Em seguida é feito o exame dermatológico e, ao final, são apresentadas as possibilidades de acompanhamento ou tratamento. Se tiver exames ou receitas anteriores, vale levá-los.",
       },
       {
-        question: "Preciso de algum preparo antes da consulta?",
+        question: "É possível realizar procedimentos durante a consulta?",
         answer:
-          "Leve exames anteriores, receitas e a lista de medicamentos em uso. Se houver preparo específico, você será avisado no agendamento.",
+          "Depende de cada caso. A disponibilidade e a indicação de procedimentos são definidas após avaliação médica.",
       },
       {
-        question: "Qual é a faixa etária atendida?",
+        question: "Como faço para agendar?",
         answer:
-          "A faixa etária atendida é informada no agendamento, de acordo com a especialidade.",
-      },
-      {
-        question: "Como funciona o retorno?",
-        answer:
-          "O retorno é agendado conforme a necessidade de cada caso, para avaliar a evolução e ajustar o plano.",
+          "Pelo botão “Agendar consulta”, nesta página. No contato, são informadas as opções de data, horário e local de atendimento.",
       },
     ],
   },
 
   finalCta: {
     kicker: "Agendamento",
-    title: "Seu cuidado merece atenção individual.",
-    highlight: "atenção individual",
-    text: `Agende uma avaliação com ${professional.displayName} em ${professional.location}.`,
-    primaryCta: "Agendar pelo WhatsApp",
-    secondaryCta: { label: "Conheça a Dra.", href: "#sobre" },
+    title: "Seu cuidado com a pele pode começar por uma avaliação.",
+    highlight: "uma avaliação",
+    text: "Agende uma consulta dermatológica e converse com a especialista sobre as necessidades da sua pele.",
+    primaryCta: "Agendar consulta",
   },
 
   footer: {
     navTitle: "Navegação",
     infoTitle: "Redes e informações",
-    privacyLabel: "Política de Privacidade",
+    privacyLabel: "", // empty hides it (no policy page in this preview)
     credit: "Desenvolvido por Samuel Faria",
   },
 };

@@ -11,7 +11,7 @@ export function Header() {
   return (
     <SiteHeader
       brand={site.professional.displayName}
-      tagline={site.professional.specialty}
+      tagline={site.professional.title}
       nav={resolveNav(site.nav.header)}
       cta={{
         label: site.hero.headerCta,

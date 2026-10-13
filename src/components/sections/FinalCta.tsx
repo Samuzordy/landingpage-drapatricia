@@ -21,7 +21,7 @@ const EDGE = (() => {
 export function FinalCta() {
   const { finalCta } = site;
   const href = getWhatsAppHref("final-cta");
-  const secondaryHref = resolveHref(finalCta.secondaryCta.href);
+  const secondaryHref = finalCta.secondaryCta ? resolveHref(finalCta.secondaryCta.href) : null;
   const noteId = "final-cta-whatsapp-note";
 
   return (
@@ -62,7 +62,7 @@ export function FinalCta() {
                 {finalCta.primaryCta}
               </MagneticButton>
             )}
-            {secondaryHref && (
+            {secondaryHref && finalCta.secondaryCta && (
               <MagneticButton href={secondaryHref} variant="outline-light" size="lg">
                 {finalCta.secondaryCta.label}
               </MagneticButton>

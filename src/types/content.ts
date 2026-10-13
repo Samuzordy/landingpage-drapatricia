@@ -258,12 +258,14 @@ export type FinalCtaContent = {
   highlight: string;
   text: string;
   primaryCta: string;
-  secondaryCta: Link;
+  /** Optional second button (e.g. "Conheça a Dra."). */
+  secondaryCta?: Link;
 };
 
 export type FooterContent = {
   navTitle: string;
   infoTitle: string;
+  /** Empty string hides it. */
   privacyLabel: string;
   /** Agency/author credit on the bottom line. Empty string hides it. */
   credit: string;

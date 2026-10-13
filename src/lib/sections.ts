@@ -58,8 +58,8 @@ export function resolveHref(href: string): string | null {
 const BANDED_SECTIONS: SectionKey[] = [
   "about",
   "services",
-  "specialtyFeature",
   "conditions",
+  "specialtyFeature",
   "consultation",
   "differentials",
   "faq",
