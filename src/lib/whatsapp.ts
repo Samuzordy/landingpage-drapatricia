@@ -1,5 +1,5 @@
 /**
- * WhatsApp links for every CTA (spec section 06: pre-filled message stating the origin + UTM).
+ * WhatsApp links for every CTA (pre-filled message + UTM stating the origin).
  *
  * Safe by design: while the client's number is missing or invalid (`PLACEHOLDER` in
  * content/site.ts), every builder returns `null` and callers render the CTA in `pending` mode.
@@ -62,7 +62,7 @@ export function buildWhatsAppUrl({
 export function getWhatsAppHref(placement: WhatsAppPlacement): string | null {
   return buildWhatsAppUrl({
     phone: site.settings.whatsapp,
-    message: site.settings.mensagemPadrao,
+    message: site.settings.whatsappMessage,
     placement,
   });
 }
@@ -70,4 +70,4 @@ export function getWhatsAppHref(placement: WhatsAppPlacement): string | null {
 export const isWhatsAppConfigured = normalizeWhatsAppNumber(site.settings.whatsapp) !== null;
 
 /** Accessible explanation attached (aria-describedby) to CTAs in pending mode. */
-export const WHATSAPP_PENDING_NOTE = "Agendamento pelo WhatsApp disponível em breve.";
+export const WHATSAPP_PENDING_NOTE = site.settings.whatsappPendingNote;

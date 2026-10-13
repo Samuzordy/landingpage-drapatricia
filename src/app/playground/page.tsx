@@ -13,7 +13,7 @@ import { WhatsAppFab } from "@/components/ui/WhatsAppFab";
 import { site } from "@/content/site";
 import { ChipToggleDemo, ControlledTabsDemo } from "./PlaygroundDemos";
 
-// Internal development route — removed in Etapa 9 (docs/ROTEIRO_PROMPTS.md).
+// Internal development route (noindex) — component gallery for reviewing states.
 export const metadata: Metadata = {
   title: "Playground de componentes (interno)",
   robots: { index: false, follow: false },
@@ -22,14 +22,18 @@ export const metadata: Metadata = {
 const LONG_TEXT =
   "Texto longo de exemplo para validar quebra de linha, largura máxima de leitura (68 caracteres) e o comportamento do componente quando o conteúdo ocupa várias linhas em telas estreitas.";
 
+// Roles, not hex values: the swatches follow tokens.css whatever the project palette is.
 const SWATCHES = [
-  { name: "Porcelana", token: "bg-porcelana", hex: "#F7F1EC" },
-  { name: "Areia", token: "bg-areia", hex: "#E9DCD1" },
-  { name: "Rosé Argila", token: "bg-rose", hex: "#C98F7E" },
-  { name: "Terracota", token: "bg-terracota", hex: "#A8634F" },
-  { name: "Terracota texto", token: "bg-terracota-texto", hex: "#8F4E3C" },
-  { name: "Cacau", token: "bg-cacau", hex: "#3B2A25" },
-  { name: "Sálvia", token: "bg-salvia", hex: "#8FA392" },
+  { name: "Porcelana", token: "bg-porcelana", role: "fundo claro" },
+  { name: "Areia", token: "bg-areia", role: "superfície suave" },
+  { name: "Rosé", token: "bg-rose", role: "acento decorativo" },
+  { name: "Terracota", token: "bg-terracota", role: "cor principal" },
+  { name: "Terracota texto", token: "bg-terracota-texto", role: "principal p/ texto" },
+  { name: "Cacau", token: "bg-cacau", role: "texto" },
+  { name: "Sálvia", token: "bg-salvia", role: "sucesso / acento" },
+  { name: "Faixa média", token: "bg-band-mid", role: "fundo do meio" },
+  { name: "Faixa profunda", token: "bg-band-deep", role: "fundo profundo" },
+  { name: "Base escura", token: "bg-band-base", role: "CTA final e rodapé" },
 ];
 
 function Section({
@@ -95,7 +99,7 @@ export default function PlaygroundPage() {
 
       <main className="container-page pb-32">
         <header className="py-12 md:py-16">
-          <p className="kicker">Etapa 2 · componentes base</p>
+          <p className="kicker">Template · componentes base</p>
           <h1 className="mt-2">
             Playground de <em className="font-light">componentes</em>
           </h1>
@@ -126,19 +130,19 @@ export default function PlaygroundPage() {
           title="Fundamentos"
           note="Tokens de cor e tipografia de src/styles/tokens.css."
         >
-          <ul className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-7">
+          <ul className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
             {SWATCHES.map((s) => (
               <li key={s.name}>
                 <span className={`block h-16 rounded-card border border-areia ${s.token}`} />
                 <p className="mt-2 text-sm font-semibold">{s.name}</p>
-                <p className="text-xs text-cacau/75 tabular">{s.hex}</p>
+                <p className="text-xs text-cacau/75">{s.role}</p>
               </li>
             ))}
           </ul>
           <div className="space-y-3">
             <p className="kicker">Kicker · Manrope Medium</p>
             <p className="font-display text-h2 font-light">
-              Cuidado com a <em>sua pele</em>
+              Cuidado com a <em>sua saúde</em>
             </p>
             <p className="measure">{LONG_TEXT}</p>
           </div>
@@ -187,7 +191,7 @@ export default function PlaygroundPage() {
           <State label="Texto longo">
             <div className="max-w-sm">
               <Button arrow className="w-full">
-                Agendar uma consulta de avaliação dermatológica pelo WhatsApp
+                Agendar uma consulta de avaliação completa pelo WhatsApp
               </Button>
             </div>
           </State>
@@ -200,10 +204,10 @@ export default function PlaygroundPage() {
         >
           <div className="flex flex-wrap gap-4">
             <MagneticButton size="lg" arrow>
-              {site.hero.ctaPrimario}
+              {site.hero.primaryCta}
             </MagneticButton>
             <MagneticButton variant="secondary" size="lg" href="#about-demo">
-              {site.hero.ctaSecundario.label}
+              {site.hero.secondaryCta.label}
             </MagneticButton>
             <MagneticButton disabled>Desabilitado</MagneticButton>
           </div>
@@ -316,7 +320,7 @@ export default function PlaygroundPage() {
                 {
                   id: "a1",
                   title: "A consulta é particular ou atende convênio?",
-                  content: <p>{site.faqs[0]?.resposta}</p>,
+                  content: <p>{site.faq.items[0]?.answer}</p>,
                 },
                 {
                   id: "a2",
@@ -341,15 +345,11 @@ export default function PlaygroundPage() {
           <State label="Multiple (vários abertos)">
             <Accordion
               type="multiple"
-              items={[
-                { id: "m1", title: "Clínica", content: <p>Acne, rosácea, eczema…</p> },
-                {
-                  id: "m2",
-                  title: "Cirúrgica e Prevenção",
-                  content: <p>Dermatoscopia digital, biópsias…</p>,
-                },
-                { id: "m3", title: "Estética", content: <p>Toxina botulínica, preenchimento…</p> },
-              ]}
+              items={site.services.items.map((area) => ({
+                id: area.slug,
+                title: area.title,
+                content: <p>{area.services.slice(0, 3).join(", ")}…</p>,
+              }))}
             />
           </State>
         </Section>
@@ -363,16 +363,8 @@ export default function PlaygroundPage() {
             <Tabs
               label="Locais de atendimento"
               items={[
-                ...site.locations.map((l) => ({
-                  id: l._id,
-                  label: l.bairro,
-                  content: (
-                    <p>
-                      {l.clinica ? `${l.clinica} · ` : ""}
-                      {l.endereco}
-                    </p>
-                  ),
-                })),
+                { id: "centro", label: "Centro", content: <p>Rua Exemplo, 100 · Centro</p> },
+                { id: "bairro", label: "Bairro", content: <p>Av. Exemplo, 200 · Bairro</p> },
                 { id: "x", label: "Indisponível", content: <p />, disabled: true },
                 { id: "long", label: "Aba com rótulo bem mais longo", content: <p>{LONG_TEXT}</p> },
               ]}
@@ -389,7 +381,7 @@ export default function PlaygroundPage() {
           note="CSS puro. Pausa no hover, no foco interno e pelo controle “Pausar animação” (WCAG 2.2.2). Reduced motion: lista estática."
         >
           <div className="rounded-card bg-areia/60 py-5">
-            <Marquee label="Credenciais" items={site.credentials.map((c) => c.label)} />
+            <Marquee label="Credenciais" items={site.credentials.items.map((c) => c.label)} />
           </div>
           <div className="rounded-card bg-areia/60 py-5">
             <Marquee
@@ -412,10 +404,10 @@ export default function PlaygroundPage() {
         >
           <Timeline
             label="Formação (exemplo)"
-            items={site.specialist.timeline.map((t) => ({
-              year: t.ano,
-              title: t.titulo,
-              description: t.descricao,
+            items={site.about.timeline.map((t) => ({
+              year: t.year,
+              title: t.title,
+              description: t.description ?? LONG_TEXT,
             }))}
           />
         </Section>
@@ -423,7 +415,7 @@ export default function PlaygroundPage() {
         <Section
           id="fab"
           title="WhatsAppFab"
-          note="Fixo no canto inferior direito (veja a tela) e versão estática abaixo. Rótulo aparece no hover e no foco. Link real chega na Etapa 3 (lib/whatsapp.ts)."
+          note="Fixo no canto inferior direito (veja a tela) e versão estática abaixo. Rótulo aparece no hover e no foco. Na landing, o link vem de lib/whatsapp.ts."
         >
           <div id="about-demo" className="flex justify-end rounded-card bg-areia/60 p-6">
             <WhatsAppFab href="#fab" position="static" />
@@ -431,7 +423,7 @@ export default function PlaygroundPage() {
         </Section>
       </main>
 
-      {/* TODO(cliente): real wa.me link in Etapa 3. */}
+      {/* Demo link — the landing builds the real wa.me URL in lib/whatsapp.ts. */}
       <WhatsAppFab href="#fab" />
     </>
   );

@@ -6,7 +6,7 @@ export type ChipProps = Omit<ButtonHTMLAttributes<HTMLButtonElement>, "children"
   children: ReactNode;
   /** Toggle state, exposed as aria-pressed. Omit for a non-toggle chip. */
   selected?: boolean;
-  /** "Quando procurar" hint (≤ 140 chars). Shown as Tooltip; Etapa 4 adds the mobile bottom-sheet. */
+  /** Short hint (≤ 140 chars) shown as Tooltip — pair with a bottom sheet for touch. */
   hint?: ReactNode;
   /** Renders a non-interactive label instead of a button. */
   static?: boolean;
@@ -14,11 +14,11 @@ export type ChipProps = Omit<ButtonHTMLAttributes<HTMLButtonElement>, "children"
 
 const chipClasses = [
   "chip inline-flex min-h-11 items-center gap-2 rounded-pill border px-4 text-sm font-medium",
-  "transition-colors duration-(--dur-fast) ease-skin",
+  "transition-colors duration-(--dur-fast) ease-soft",
 ].join(" ");
 
 /**
- * Condition chip (spec section 07): fills Porcelana → Terracota with white text in 180ms on
+ * Chip: fills light background → primary color with white text in 180ms on
  * hover, keyboard focus and when selected. Server-compatible; Tooltip is the only client part.
  */
 export function Chip({

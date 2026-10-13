@@ -1,8 +1,8 @@
 import type { PointerEvent } from "react";
-import type { SkinLayerId } from "@/types/content";
+import type { SkinLayerId } from "./content";
 
 /*
- * Anatomical cross-section of the skin (spec section 04, "Corte anatômico interativo").
+ * Anatomical cross-section of the skin (dermatology variant, "corte anatômico interativo").
  * Pure SVG markup — no hooks, no "use client" — so it ships as static HTML. Fine line-art in
  * the palette: stratified epidermis with rete ridges, dermis with collagen fibres, capillary
  * loops, a vessel, a hair follicle + sebaceous gland and a coiled sweat gland, and a

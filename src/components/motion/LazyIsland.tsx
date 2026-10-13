@@ -22,7 +22,7 @@ type LazyIslandProps<P extends object> = {
 const FOCUSABLE = "a[href], button:not([disabled]), input, select, textarea, [tabindex]";
 
 /**
- * Below-the-fold interactive islands without upfront JS (CLAUDE.md rule 4 / spec section 08):
+ * Below-the-fold interactive islands without upfront JS (CLAUDE.md, interaction rule 4):
  * the server renders the static markup; the interactive chunk is imported only when the island
  * gets close to the viewport (or on first pointer/focus inside it), then swapped in.
  * Same markup on both sides → no layout shift; focus inside is preserved across the swap.

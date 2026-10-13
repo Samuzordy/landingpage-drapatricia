@@ -14,7 +14,7 @@ export type TabsProps = {
   /** Accessible name for the tab list. */
   label: string;
   defaultValue?: string;
-  /** Controlled mode (e.g. SkinJourney syncing hover and tabs). */
+  /** Controlled mode (e.g. syncing an illustration hover with the tabs). */
   value?: string;
   onValueChange?: (id: string) => void;
   className?: string;
@@ -23,7 +23,7 @@ export type TabsProps = {
 /**
  * WAI-ARIA tabs with automatic activation and roving tabindex.
  * Keyboard: ArrowLeft/ArrowRight (wrapping), Home/End. The tab list scrolls horizontally on
- * narrow screens (spec: Locais "abas roláveis horizontalmente"). Panels fade in (opacity +
+ * narrow screens. Panels fade in (opacity +
  * 12px slide); with reduced motion only the opacity remains.
  */
 export function Tabs({
@@ -89,7 +89,7 @@ export function Tabs({
               disabled={item.disabled}
               onClick={() => select(item.id)}
               onKeyDown={(e) => onKeyDown(e, index)}
-              className="min-h-11 shrink-0 snap-start rounded-pill border border-areia px-5 text-sm font-semibold whitespace-nowrap text-cacau transition-colors duration-(--dur-fast) ease-skin hover:border-rose disabled:cursor-not-allowed disabled:opacity-50 aria-selected:border-terracota aria-selected:bg-terracota aria-selected:text-white"
+              className="min-h-11 shrink-0 snap-start rounded-pill border border-areia px-5 text-sm font-semibold whitespace-nowrap text-cacau transition-colors duration-(--dur-fast) ease-soft hover:border-rose disabled:cursor-not-allowed disabled:opacity-50 aria-selected:border-terracota aria-selected:bg-terracota aria-selected:text-white"
             >
               {item.label}
             </button>

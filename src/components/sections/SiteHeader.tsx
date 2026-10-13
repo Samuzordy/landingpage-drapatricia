@@ -19,14 +19,14 @@ type SiteHeaderProps = {
   };
 };
 
-const GLASS_AFTER_PX = 80; // spec section 06
+const GLASS_AFTER_PX = 80;
 const HIDE_AFTER_PX = 160;
 const DIRECTION_THRESHOLD_PX = 6;
 const DESKTOP = "(min-width: 1024px)";
 const SPY_LINE = 0.4; // reading line for scroll-spy, as a fraction of the viewport height
 
 /**
- * Fixed header (spec sections 06/07). Client Component because it reacts to scroll and owns
+ * Fixed header. Client Component because it reacts to scroll and owns
  * the mobile menu state.
  * - frosted glass after 80px; hides on scroll down, returns on scroll up or on keyboard focus;
  * - scroll-spy: the link of the section in view gets aria-current;
@@ -80,8 +80,8 @@ export function SiteHeader({ brand, tagline, nav, cta }: SiteHeaderProps) {
   }, []);
 
   // Scroll-spy: the active item is the nav section (in document order) whose top has passed a
-  // reading line at 40% of the viewport. Robust for short sections and for sections in between
-  // (e.g. Jornada keeps "Tratamentos" active). rAF-throttled, passive.
+  // reading line at 40% of the viewport. Robust for short sections and for sections that aren't
+  // in the nav (the previous nav item stays active). rAF-throttled, passive.
   useEffect(() => {
     const sections = nav
       .map((item) => document.getElementById(item.href.slice(1)))

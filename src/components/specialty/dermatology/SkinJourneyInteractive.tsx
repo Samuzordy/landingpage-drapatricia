@@ -1,19 +1,20 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import type { SkinLayerId } from "@/types/content";
-import { SkinJourneyView, type JourneyLayer } from "./SkinJourneyView";
+import type { SkinLayerId } from "./content";
+import { SkinJourneyView, type JourneyLabels, type JourneyLayer } from "./SkinJourneyView";
 
 const FINE_POINTER = "(hover: hover) and (pointer: fine)";
 
 export type SkinJourneyInteractiveProps = {
   layers: JourneyLayer[];
+  labels: JourneyLabels;
   showPendingMarkers: boolean;
 };
 
 /**
  * Interactive Jornada da Pele — lazy-loaded by SkinJourneyIsland.
- * - fine pointer: hovering a layer of the cross-section selects it (spec section 07);
+ * - fine pointer: hovering a layer of the cross-section selects it;
  * - everyone: the depth gauge is a WAI-ARIA tablist — click/tap selects; arrows (all four),
  *   Home and End move between layers with automatic activation; focus is always visible;
  * - the active layer lifts 4px with extra saturation, the others drop to 40%; the panel swaps
@@ -21,6 +22,7 @@ export type SkinJourneyInteractiveProps = {
  */
 export function SkinJourneyInteractive({
   layers,
+  labels,
   showPendingMarkers,
 }: SkinJourneyInteractiveProps) {
   const [active, setActive] = useState<SkinLayerId>(layers[0]?.id ?? "epiderme");
@@ -39,6 +41,7 @@ export function SkinJourneyInteractive({
   return (
     <SkinJourneyView
       layers={layers}
+      labels={labels}
       active={active}
       showPendingMarkers={showPendingMarkers}
       handlers={{

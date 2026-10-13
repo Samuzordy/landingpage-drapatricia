@@ -4,8 +4,8 @@
  *   1. hover only inside (hover: hover) and (pointer: fine), always mirrored by :focus-visible;
  *   2. movement only inside (prefers-reduced-motion: no-preference) — reduced motion keeps
  *      color/opacity changes only (globals.css also restricts transition-property);
- *   3. animate transform (translate/scale/rotate) and opacity only. Exception, prescribed by the
- *      spec itself: Accordion height via grid-template-rows 0fr → 1fr.
+ *   3. animate transform (translate/scale/rotate) and opacity only. Documented exceptions:
+ *      Accordion height (grid-template-rows 0fr → 1fr) and the service cards' column widths.
  */
 
 @layer components {
@@ -33,8 +33,8 @@
     scale: 0;
     pointer-events: none;
     transition:
-      scale var(--dur-base) var(--ease-skin),
-      opacity var(--dur-base) var(--ease-skin);
+      scale var(--dur-base) var(--ease-soft),
+      opacity var(--dur-base) var(--ease-soft);
   }
 
   .btn-primary .btn-fill {
@@ -97,11 +97,11 @@
     translate: -50% -50%;
     pointer-events: none;
     background-color: rgb(255 255 255 / 0.35);
-    animation: btn-ripple 600ms var(--ease-skin) forwards;
+    animation: btn-ripple 600ms var(--ease-soft) forwards;
   }
 
   .btn-secondary .btn-ripple {
-    background-color: rgb(168 99 79 / 0.25);
+    background-color: color-mix(in srgb, var(--color-terracota) 25%, transparent);
   }
 
   @keyframes btn-ripple {
@@ -123,9 +123,9 @@
 
   .card[data-interactive] {
     transition:
-      translate var(--dur-base) var(--ease-skin),
-      scale var(--dur-fast) var(--ease-skin),
-      border-color var(--dur-base) var(--ease-skin);
+      translate var(--dur-base) var(--ease-soft),
+      scale var(--dur-fast) var(--ease-soft),
+      border-color var(--dur-base) var(--ease-soft);
   }
 
   /* Radial glow following the cursor (--mx/--my from PointerGlow); centered for keyboard focus. */
@@ -137,13 +137,13 @@
     border-radius: inherit;
     pointer-events: none;
     opacity: 0;
-    transition: opacity var(--dur-base) var(--ease-skin);
+    transition: opacity var(--dur-base) var(--ease-soft);
   }
 
   .card[data-interactive]::before {
     background: radial-gradient(
       260px circle at var(--mx, 50%) var(--my, 50%),
-      rgb(201 143 126 / 0.18),
+      color-mix(in srgb, var(--color-rose) 18%, transparent),
       transparent 70%
     );
   }
@@ -227,8 +227,8 @@
     opacity: 0;
     translate: calc(-50% + var(--shift, 0px)) 4px;
     transition:
-      opacity var(--dur-fast) var(--ease-skin),
-      translate var(--dur-fast) var(--ease-skin),
+      opacity var(--dur-fast) var(--ease-soft),
+      translate var(--dur-fast) var(--ease-soft),
       display var(--dur-fast) allow-discrete;
   }
 
@@ -255,7 +255,7 @@
   .accordion-panel {
     display: grid;
     grid-template-rows: 0fr;
-    transition: grid-template-rows var(--dur-base) var(--ease-skin);
+    transition: grid-template-rows var(--dur-base) var(--ease-soft);
   }
 
   .accordion-panel > div {
@@ -268,7 +268,7 @@
 
   /* "+" turns 45° into "×". */
   .accordion-icon {
-    transition: rotate var(--dur-base) var(--ease-skin);
+    transition: rotate var(--dur-base) var(--ease-soft);
   }
 
   .accordion-item[data-open] .accordion-icon {
@@ -281,7 +281,7 @@
   }
 
   .tabs-panel:not([hidden]) {
-    animation: tabs-panel-in var(--dur-base) var(--ease-skin);
+    animation: tabs-panel-in var(--dur-base) var(--ease-soft);
   }
 
   @keyframes tabs-panel-in {
@@ -349,7 +349,7 @@
     background-color: var(--color-terracota);
     transform-origin: top;
     scale: 1 0;
-    transition: scale var(--dur-base) var(--ease-skin);
+    transition: scale var(--dur-base) var(--ease-soft);
   }
 
   .timeline-dot {
@@ -361,12 +361,12 @@
     border: 2px solid var(--color-terracota);
     border-radius: 50%;
     background-color: var(--color-porcelana);
-    transition: background-color var(--dur-fast) var(--ease-skin);
+    transition: background-color var(--dur-fast) var(--ease-soft);
   }
 
   .timeline-year {
     transform-origin: left center;
-    transition: scale var(--dur-base) var(--ease-skin);
+    transition: scale var(--dur-base) var(--ease-soft);
   }
 
   @media (hover: hover) and (pointer: fine) {
@@ -394,8 +394,8 @@
     opacity: 0;
     translate: 8px 0;
     transition:
-      opacity var(--dur-fast) var(--ease-skin),
-      translate var(--dur-fast) var(--ease-skin);
+      opacity var(--dur-fast) var(--ease-soft),
+      translate var(--dur-fast) var(--ease-soft);
   }
 
   .fab:focus-visible .fab-label {
@@ -432,15 +432,15 @@
   .site-header {
     border-bottom: 1px solid transparent;
     transition:
-      background-color var(--dur-base) var(--ease-skin),
-      border-color var(--dur-base) var(--ease-skin),
-      translate var(--dur-base) var(--ease-skin);
+      background-color var(--dur-base) var(--ease-soft),
+      border-color var(--dur-base) var(--ease-soft),
+      translate var(--dur-base) var(--ease-soft);
   }
 
   /* Frosted glass after 80px (backdrop-filter itself isn't animated). */
   .site-header[data-scrolled] {
-    border-bottom-color: rgb(233 220 209 / 0.9);
-    background-color: rgb(247 241 236 / 0.78);
+    border-bottom-color: color-mix(in srgb, var(--color-areia) 90%, transparent);
+    background-color: color-mix(in srgb, var(--color-porcelana) 78%, transparent);
     -webkit-backdrop-filter: blur(14px) saturate(1.1);
     backdrop-filter: blur(14px) saturate(1.1);
   }
@@ -465,7 +465,7 @@
     background-color: var(--color-terracota);
     transform-origin: left center;
     scale: 0 1;
-    transition: scale var(--dur-fast) var(--ease-skin);
+    transition: scale var(--dur-fast) var(--ease-soft);
   }
 
   .nav-link:focus-visible::after,
@@ -481,7 +481,7 @@
 
   /* Mobile menu items enter with a 60ms stagger. */
   .mobile-menu:not([hidden]) .menu-item {
-    animation: menu-item-in var(--dur-slow) var(--ease-skin) both;
+    animation: menu-item-in var(--dur-slow) var(--ease-soft) both;
     animation-delay: calc(var(--i, 0) * var(--stagger));
   }
 
@@ -505,11 +505,11 @@
     border-radius: 999px 999px var(--radius-card) var(--radius-card);
   }
 
-  /* ---------- DermatoscopeLens ---------- */
+  /* ---------- MagnifierLens (optional, hero) ---------- */
   .lens-detail {
     clip-path: circle(80px at var(--lx, 50%) var(--ly, 50%));
     opacity: 0;
-    transition: opacity var(--dur-base) var(--ease-skin);
+    transition: opacity var(--dur-base) var(--ease-soft);
   }
 
   .lens-ring {
@@ -520,14 +520,14 @@
     height: 160px;
     border: 1.5px solid var(--color-terracota);
     border-radius: 50%;
-    box-shadow: inset 0 0 0 1px rgb(247 241 236 / 0.45);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-porcelana) 45%, transparent);
     pointer-events: none;
     translate: var(--lx, 50%) var(--ly, 50%);
     opacity: 0;
     scale: 0.92;
     transition:
-      opacity var(--dur-base) var(--ease-skin),
-      scale var(--dur-base) var(--ease-skin);
+      opacity var(--dur-base) var(--ease-soft),
+      scale var(--dur-base) var(--ease-soft);
   }
 
   .lens-label {
@@ -536,7 +536,7 @@
     left: 50%;
     padding: 0.2rem 0.6rem;
     border-radius: var(--radius-pill);
-    background-color: rgb(247 241 236 / 0.92);
+    background-color: color-mix(in srgb, var(--color-porcelana) 92%, transparent);
     color: var(--color-cacau);
     font-size: 0.6875rem;
     font-weight: 600;
@@ -558,34 +558,6 @@
     }
   }
 
-  /* ---------- "Camadas da Pele": start of the Derme band ----------
-     Static, continuous gradients for now (GSAP DepthBackground replaces them in Etapa 5).
-     Capped at 50% of #EAD5CA: --color-terracota-texto on pure #EAD5CA is only ≈ 4.47:1. */
-  .layer-derme-1 {
-    background: linear-gradient(
-      to bottom,
-      var(--color-porcelana),
-      color-mix(in srgb, var(--color-layer-derme) 22%, var(--color-porcelana))
-    );
-  }
-
-  .layer-derme-2 {
-    background: linear-gradient(
-      to bottom,
-      color-mix(in srgb, var(--color-layer-derme) 22%, var(--color-porcelana)),
-      color-mix(in srgb, var(--color-layer-derme) 38%, var(--color-porcelana))
-    );
-  }
-
-  /* Jornada da Pele */
-  .layer-derme-3 {
-    background: linear-gradient(
-      to bottom,
-      color-mix(in srgb, var(--color-layer-derme) 38%, var(--color-porcelana)),
-      color-mix(in srgb, var(--color-layer-derme) 55%, var(--color-porcelana))
-    );
-  }
-
   /* ---------- About ---------- */
   .about-frame {
     border-radius: 48% 52% 44% 56% / 36% 38% 62% 64%;
@@ -597,84 +569,84 @@
     opacity: 0.9;
   }
 
-  /* ---------- Pillars ---------- */
-  .pillar-card {
+  /* ---------- Services (expanding cards) ---------- */
+  .service-card {
     border-color: var(--color-areia);
-    background-color: rgb(247 241 236 / 0.55);
+    background-color: color-mix(in srgb, var(--color-porcelana) 55%, transparent);
     transition:
-      border-color var(--dur-base) var(--ease-skin),
-      background-color var(--dur-base) var(--ease-skin);
+      border-color var(--dur-base) var(--ease-soft),
+      background-color var(--dur-base) var(--ease-soft);
   }
 
-  .pillar-card[data-active] {
+  .service-card[data-active] {
     border-color: var(--color-rose);
     background-color: var(--color-porcelana);
     box-shadow: var(--shadow-warm);
   }
 
   @media (hover: hover) and (pointer: fine) {
-    .pillar-card:hover {
+    .service-card:hover {
       border-color: var(--color-rose);
     }
   }
 
-  /* Row layout: the active card takes 1.6fr (spec). Layout animation is the documented exception
-     to "transform/opacity only" — prescribed by the spec, disabled with reduced motion. */
+  /* Row layout: the active card takes 1.6fr. Layout animation is a documented exception to
+     "transform/opacity only" — disabled with reduced motion. */
   @media (min-width: 1024px) {
-    .pillars-grid {
-      grid-template-columns: var(--pillar-cols, 1fr 1fr 1fr);
+    .services-grid {
+      grid-template-columns: var(--service-cols, 1fr 1fr 1fr);
     }
   }
 
   @media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
-    .pillars-grid {
-      transition: grid-template-columns var(--dur-base) var(--ease-skin);
+    .services-grid {
+      transition: grid-template-columns var(--dur-base) var(--ease-soft);
     }
   }
 
-  .pillar-panel {
+  .service-panel {
     display: grid;
     grid-template-rows: 0fr;
-    transition: grid-template-rows var(--dur-base) var(--ease-skin);
+    transition: grid-template-rows var(--dur-base) var(--ease-soft);
   }
 
-  .pillar-panel > div {
+  .service-panel > div {
     min-height: 0;
   }
 
-  .pillar-card[data-active] .pillar-panel {
+  .service-card[data-active] .service-panel {
     grid-template-rows: 1fr;
   }
 
   /* Services enter with a 60ms stagger. */
-  .pillar-services li {
+  .service-list li {
     opacity: 0;
     translate: 0 8px;
     transition:
-      opacity var(--dur-base) var(--ease-skin),
-      translate var(--dur-base) var(--ease-skin);
+      opacity var(--dur-base) var(--ease-soft),
+      translate var(--dur-base) var(--ease-soft);
   }
 
-  .pillar-card[data-active] .pillar-services li {
+  .service-card[data-active] .service-list li {
     opacity: 1;
     translate: 0 0;
     transition-delay: calc(var(--i, 0) * var(--stagger));
   }
 
-  .pillar-card[data-active] .accordion-icon {
+  .service-card[data-active] .accordion-icon {
     rotate: 45deg;
   }
 
-  .pillar-art {
+  .service-art {
     width: 7rem;
     height: 7rem;
     opacity: 0.55;
     transition:
-      opacity var(--dur-slow) var(--ease-skin),
-      scale var(--dur-slow) var(--ease-skin);
+      opacity var(--dur-slow) var(--ease-soft),
+      scale var(--dur-slow) var(--ease-soft);
   }
 
-  .pillar-card[data-active] .pillar-art {
+  .service-card[data-active] .service-art {
     opacity: 1;
     scale: 1.05;
   }
@@ -692,19 +664,19 @@
     border-radius: 28px 28px 0 0;
     background-color: var(--color-porcelana);
     color: var(--color-cacau);
-    box-shadow: 0 -24px 60px -24px rgb(59 42 37 / 0.35);
+    box-shadow: 0 -24px 60px -24px color-mix(in srgb, var(--color-cacau) 35%, transparent);
   }
 
   .sheet::backdrop {
-    background-color: rgb(59 42 37 / 0.45);
+    background-color: color-mix(in srgb, var(--color-cacau) 45%, transparent);
   }
 
   .sheet[open] {
-    animation: sheet-in var(--dur-base) var(--ease-skin);
+    animation: sheet-in var(--dur-base) var(--ease-soft);
   }
 
   .sheet[open]::backdrop {
-    animation: sheet-backdrop-in var(--dur-base) var(--ease-skin);
+    animation: sheet-backdrop-in var(--dur-base) var(--ease-soft);
   }
 
   .sheet-body {
@@ -735,232 +707,6 @@
     }
   }
 
-  /* ---------- Deepening: Derme → Derme profunda (contrast-checked) ----------
-     Jornada stays ≤ 75% #EAD5CA (terracota-texto ≥ 4.75:1). The derme-profunda sections switch
-     kicker/accents to --color-terracota-texto-profundo (≥ 5.05:1 even on pure #D2A796). */
-  /* Quando procurar — ends at 75%, where terracota-texto is still ≥ 4.75:1 */
-  .layer-derme-4 {
-    background: linear-gradient(
-      to bottom,
-      color-mix(in srgb, var(--color-layer-derme) 55%, var(--color-porcelana)),
-      color-mix(in srgb, var(--color-layer-derme) 75%, var(--color-porcelana))
-    );
-  }
-
-  .layer-profunda-1 {
-    background: linear-gradient(
-      to bottom,
-      color-mix(in srgb, var(--color-layer-derme) 75%, var(--color-porcelana)),
-      color-mix(in srgb, var(--color-layer-derme-profunda) 50%, var(--color-layer-derme))
-    );
-  }
-
-  .layer-profunda-2 {
-    background: linear-gradient(
-      to bottom,
-      color-mix(in srgb, var(--color-layer-derme-profunda) 50%, var(--color-layer-derme)),
-      var(--color-layer-derme-profunda)
-    );
-  }
-
-  /* ---------- Jornada da Pele: cross-section ---------- */
-  .skin-layer {
-    transition:
-      opacity var(--dur-base) var(--ease-skin),
-      translate var(--dur-base) var(--ease-skin),
-      filter var(--dur-base) var(--ease-skin);
-  }
-
-  .skin-shape {
-    stroke: transparent;
-    stroke-width: 1.5;
-    transition: stroke var(--dur-fast) var(--ease-skin);
-  }
-
-  /* Others drop to 40%; the active layer gains saturation and a terracota outline. */
-  .skin-svg[data-has-active] .skin-layer:not([data-active]) {
-    opacity: 0.4;
-  }
-
-  .skin-layer[data-active] {
-    filter: saturate(1.35);
-  }
-
-  .skin-layer[data-active] .skin-shape {
-    stroke: var(--color-terracota);
-  }
-
-  @media (prefers-reduced-motion: no-preference) {
-    .skin-layer[data-active] {
-      translate: 0 -4px;
-    }
-  }
-
-  @media (hover: hover) and (pointer: fine) {
-    .skin-layer {
-      cursor: pointer;
-    }
-  }
-
-  .skin-index {
-    fill: var(--color-cacau);
-    font-family: var(--font-sans);
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.14em;
-    opacity: 0.75;
-  }
-
-  /* ---------- Jornada: depth gauge (tablist) ---------- */
-  .journey-tabs {
-    display: grid;
-    grid-template-columns: repeat(var(--layer-count, 3), minmax(0, 1fr));
-    gap: 0.5rem;
-  }
-
-  .journey-gauge {
-    display: none;
-  }
-
-  .journey-tab {
-    display: flex;
-    min-height: 3.5rem;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-    padding: 0.625rem 0.75rem;
-    border: 1px solid rgb(59 42 37 / 0.2);
-    border-radius: 16px;
-    background-color: rgb(247 241 236 / 0.35);
-    color: var(--color-cacau);
-    text-align: left;
-    transition:
-      background-color var(--dur-fast) var(--ease-skin),
-      border-color var(--dur-fast) var(--ease-skin);
-  }
-
-  .journey-tab[aria-selected="true"] {
-    border-color: var(--color-terracota);
-    background-color: var(--color-porcelana);
-  }
-
-  .journey-tab-index {
-    font-size: 0.6875rem;
-    font-weight: 600;
-    letter-spacing: 0.14em;
-  }
-
-  .journey-tab-name {
-    font-family: var(--font-display);
-    font-size: clamp(0.9375rem, 4.2vw, 1.125rem);
-    line-height: 1.2;
-  }
-
-  .journey-tab-role {
-    display: none;
-  }
-
-  @media (hover: hover) and (pointer: fine) {
-    .journey-tab:hover {
-      border-color: var(--color-rose);
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .journey-tabs {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-      padding-left: 1.75rem;
-    }
-
-    /* Vertical "probe": a marker slides down to the selected depth. */
-    .journey-gauge {
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      left: 6px;
-      display: block;
-      width: 2px;
-      border-radius: 2px;
-      background-color: rgb(59 42 37 / 0.15);
-    }
-
-    .journey-gauge-marker {
-      position: absolute;
-      left: -2px;
-      width: 6px;
-      height: calc(100% / var(--layer-count, 3));
-      border-radius: 3px;
-      background-color: var(--color-terracota);
-      translate: 0 calc(var(--active-index, 0) * 100%);
-      transition: translate var(--dur-base) var(--ease-skin);
-    }
-
-    .journey-tab {
-      display: grid;
-      min-height: 5.25rem;
-      grid-template-columns: 2.75rem 1fr;
-      align-items: baseline;
-      padding: 1rem 0;
-      border: 0;
-      border-bottom: 1px solid rgb(59 42 37 / 0.14);
-      border-radius: 0;
-      background: none;
-    }
-
-    .journey-tab[aria-selected="true"] {
-      background: none;
-    }
-
-    .journey-tab-index {
-      grid-row: span 2;
-    }
-
-    .journey-tab-name {
-      font-size: 1.875rem;
-      font-weight: 350;
-    }
-
-    .journey-tab[aria-selected="true"] .journey-tab-name {
-      color: var(--accent-text);
-      font-style: italic;
-    }
-
-    .journey-tab-role {
-      display: block;
-      grid-column: 2;
-      margin-top: 0.25rem;
-      font-size: 0.75rem;
-      font-weight: 600;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-    }
-
-    @media (hover: hover) and (pointer: fine) {
-      .journey-tab:hover .journey-tab-name {
-        color: var(--accent-text);
-      }
-    }
-  }
-
-  /* Panel swaps with fade + 12px slide (fade only with reduced motion). */
-  .journey-panel {
-    padding: 1.5rem;
-    border: 1px solid rgb(59 42 37 / 0.1);
-    background-color: rgb(247 241 236 / 0.6);
-  }
-
-  .journey-panel:not([hidden]) {
-    animation: tabs-panel-in var(--dur-base) var(--ease-skin);
-  }
-
-  @media (min-width: 1024px) {
-    .journey-panel {
-      padding: 2rem;
-    }
-  }
-
   /* ---------- Como funciona: steps + scroll-drawn connector ---------- */
   .steps-line {
     position: absolute;
@@ -971,7 +717,7 @@
     /* clip, not hidden: hidden would make this a scroll container and view() would track it
        instead of the page. */
     overflow: clip;
-    background-color: rgb(59 42 37 / 0.2);
+    background-color: color-mix(in srgb, var(--color-cacau) 20%, transparent);
   }
 
   .steps-line-fill {
@@ -1057,7 +803,7 @@
     }
   }
 
-  /* ---------- Buttons for the dark Hipoderme bands ---------- */
+  /* ---------- Buttons for the dark bands (final CTA, footer) ---------- */
   .btn-light {
     background-color: var(--color-porcelana);
     color: var(--color-cacau);
@@ -1096,36 +842,26 @@
   }
 
   .btn-light .btn-ripple {
-    background-color: rgb(59 42 37 / 0.2);
+    background-color: color-mix(in srgb, var(--color-cacau) 20%, transparent);
   }
 
-  /* ---------- Hipoderme bands (contrast-checked) ----------
-     FAQ (light text zone): #D2A796 → 15% terracota — cacau ≥ 5.66, cacau/90 ≥ 4.74,
-       terracota-texto-profundo ≥ 4.54.
-     Between ~25% and ~75% terracota neither cacau nor white reaches 4.5:1, so instead of one long
-     gradient the base "rises" with an organic edge (rete-ridge wave) into solid terracota.
-     CTA: terracota → 20% cacau (white 4.60 → 5.68). Footer: 20% → 40% cacau (porcelana ≥ 5.07). */
-  .layer-hipo-1 {
+  /* ---------- Dark bands (final CTA, footer) — contrast-checked with the default theme ----------
+     Between ~25% and ~75% of the base color neither cacau nor white reaches 4.5:1, so instead of
+     one long gradient the base "rises" with an organic wave edge into the solid base color.
+     CTA: base → 20% cacau (white 4.60 → 5.68). Footer: 20% → 40% cacau (porcelana ≥ 5.07). */
+  .band-dark-1 {
     background: linear-gradient(
       to bottom,
-      var(--color-layer-derme-profunda),
-      color-mix(in srgb, var(--color-layer-hipoderme) 15%, var(--color-layer-derme-profunda))
+      var(--color-band-base),
+      color-mix(in srgb, var(--color-cacau) 20%, var(--color-band-base))
     );
   }
 
-  .layer-hipo-2 {
+  .band-dark-2 {
     background: linear-gradient(
       to bottom,
-      var(--color-layer-hipoderme),
-      color-mix(in srgb, var(--color-cacau) 20%, var(--color-layer-hipoderme))
-    );
-  }
-
-  .layer-hipo-3 {
-    background: linear-gradient(
-      to bottom,
-      color-mix(in srgb, var(--color-cacau) 20%, var(--color-layer-hipoderme)),
-      color-mix(in srgb, var(--color-cacau) 40%, var(--color-layer-hipoderme))
+      color-mix(in srgb, var(--color-cacau) 20%, var(--color-band-base)),
+      color-mix(in srgb, var(--color-cacau) 40%, var(--color-band-base))
     );
   }
 
@@ -1139,8 +875,8 @@
     height: 4rem;
   }
 
-  /* Fat-lobule texture of the hypodermis, very faint. */
-  .final-cta-lobules {
+  /* Faint cellular texture on the CTA band. */
+  .final-cta-texture {
     position: absolute;
     inset: 0;
     z-index: -1;
@@ -1167,7 +903,7 @@
     text-decoration: underline;
     text-decoration-color: rgb(255 255 255 / 0.35);
     text-underline-offset: 0.25em;
-    transition: text-decoration-color var(--dur-fast) var(--ease-skin);
+    transition: text-decoration-color var(--dur-fast) var(--ease-soft);
   }
 
   .footer-link:focus-visible {

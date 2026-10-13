@@ -7,7 +7,7 @@ import type { ConditionChipsProps } from "./ConditionChips";
 const load = () => import("./ConditionChips").then((m) => m.ConditionChips);
 
 /** Loads tooltip + bottom sheet only when the section approaches the viewport. */
-export function ConditionsIsland({
+export function WhenToSeekIsland({
   children,
   ...props
 }: ConditionChipsProps & { children: ReactNode }) {

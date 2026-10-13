@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="1000" viewBox="0 0 800 1000">
+  <!-- TEMPLATE placeholder for the hero portrait (4:5). Neutral abstract bust in the default
+       palette — replace with the professional's photo (see README). -->
+  <defs>
+    <radialGradient id="bg" cx="58%" cy="30%" r="85%">
+      <stop offset="0" stop-color="#f7f1ec"/>
+      <stop offset="0.5" stop-color="#ecdcd0"/>
+      <stop offset="1" stop-color="#d9b6a6"/>
+    </radialGradient>
+    <linearGradient id="figure" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#e2c3b4"/>
+      <stop offset="1" stop-color="#c99a87"/>
+    </linearGradient>
+    <filter id="grain" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.012 0.02" numOctaves="3" seed="7"/>
+      <feColorMatrix values="0 0 0 0 0.66  0 0 0 0 0.39  0 0 0 0 0.31  0 0 0 0.14 0"/>
+    </filter>
+    <filter id="soft"><feGaussianBlur stdDeviation="34"/></filter>
+  </defs>
+  <rect width="800" height="1000" fill="url(#bg)"/>
+  <g filter="url(#soft)" opacity="0.6">
+    <ellipse cx="590" cy="250" rx="230" ry="200" fill="#e9dcd1"/>
+    <ellipse cx="190" cy="760" rx="250" ry="190" fill="#c98f7e" opacity="0.4"/>
+  </g>
+  <g fill="none" stroke="#c98f7e" stroke-width="1.2" opacity="0.55">
+    <circle cx="400" cy="400" r="150"/>
+    <circle cx="400" cy="400" r="210" opacity="0.6"/>
+    <circle cx="400" cy="400" r="270" opacity="0.35"/>
+  </g>
+  <!-- abstract bust -->
+  <g fill="url(#figure)" opacity="0.75">
+    <ellipse cx="400" cy="400" rx="112" ry="134"/>
+    <path d="M400 560c-150 0-262 74-292 214-10 46-14 136-14 226h612c0-90-4-180-14-226-30-140-142-214-292-214z"/>
+  </g>
+  <rect width="800" height="1000" filter="url(#grain)"/>
+</svg>

@@ -6,7 +6,7 @@ type CardElement = "div" | "article" | "li" | "section";
 export type CardProps = HTMLAttributes<HTMLElement> & {
   as?: CardElement;
   /**
-   * Spec section 07 "cards de conteúdo": lifts 6px with warm shadow, border Areia → Rosé,
+   * Content card: lifts 6px with warm shadow, border Areia → Rosé,
    * radial glow following the cursor (--mx / --my). The same lift applies when a child
    * receives keyboard focus; touch gets press feedback (scale .98).
    */

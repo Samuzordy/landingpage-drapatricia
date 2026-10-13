@@ -1,7 +1,7 @@
 import { ChatIcon } from "./icons";
 
 export type WhatsAppFabProps = {
-  /** wa.me link with default message + UTM — built by lib/whatsapp.ts in Etapa 3. */
+  /** wa.me link with default message + UTM — built by lib/whatsapp.ts. */
   href: string;
   label?: string;
   /** "fixed" (default) pins it bottom-right on every section; "static" for previews. */
@@ -10,7 +10,7 @@ export type WhatsAppFabProps = {
 };
 
 /**
- * Floating WhatsApp button (spec section 06). 56px target, safe-area aware, opens in a new tab.
+ * Floating WhatsApp button. 56px target, safe-area aware, opens in a new tab.
  * The text label slides in on hover (fine pointers) and on keyboard focus; on touch the
  * accessible name comes from aria-label. Server Component.
  */
@@ -39,7 +39,7 @@ export function WhatsAppFab({
       >
         {label}
       </span>
-      <span className="grid size-14 place-items-center rounded-pill bg-terracota text-white shadow-warm transition-colors duration-(--dur-fast) ease-skin group-hover:bg-cacau group-focus-visible:bg-cacau">
+      <span className="grid size-14 place-items-center rounded-pill bg-terracota text-white shadow-warm transition-colors duration-(--dur-fast) ease-soft group-hover:bg-cacau group-focus-visible:bg-cacau">
         <ChatIcon width={26} height={26} />
       </span>
     </a>

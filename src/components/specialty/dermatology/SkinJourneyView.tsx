@@ -1,16 +1,25 @@
 import type { CSSProperties, KeyboardEvent, PointerEvent } from "react";
 import { PendingTag } from "@/components/ui/PendingTag";
-import type { SkinLayerId } from "@/types/content";
+import type { SkinLayerId } from "./content";
 import { SkinCrossSection } from "./SkinCrossSection";
 
 export type JourneyLayer = {
   id: SkinLayerId;
-  nome: string;
-  papel: string;
-  descricao: string;
-  descricaoProvisoria: boolean;
-  /** Pillar titles linked to this layer — empty while pending medical review. */
-  tratamentos: string[];
+  name: string;
+  role: string;
+  description: string;
+  pendingReview: boolean;
+  /** Related service titles — empty while pending professional review. */
+  related: string[];
+};
+
+export type JourneyLabels = {
+  tabs: string;
+  related: string;
+  emptyRelated: string;
+  servicesLink: string;
+  /** Anchor of the services section, or null when it's disabled (link hidden). */
+  servicesHref: string | null;
 };
 
 export type JourneyHandlers = {
@@ -24,17 +33,19 @@ const panelId = (id: SkinLayerId) => `jornada-painel-${id}`;
 
 /**
  * Jornada da Pele — pure markup (no hooks / "use client"). Rendered on the server as the static
- * first state (Epiderme selected) and reused by the interactive island, so both match.
+ * first state (first layer selected) and reused by the interactive island, so both match.
  * Selection uses the WAI-ARIA tabs pattern: the "depth gauge" is the tablist, each layer panel a
  * tabpanel; the SVG mirrors the selected tab.
  */
 export function SkinJourneyView({
   layers,
+  labels,
   active,
   showPendingMarkers,
   handlers,
 }: {
   layers: JourneyLayer[];
+  labels: JourneyLabels;
   active: SkinLayerId;
   showPendingMarkers: boolean;
   handlers?: JourneyHandlers;
@@ -43,7 +54,7 @@ export function SkinJourneyView({
     0,
     layers.findIndex((l) => l.id === active),
   );
-  const labels = Object.fromEntries(layers.map((l) => [l.id, l.nome])) as Record<
+  const layerNames = Object.fromEntries(layers.map((l) => [l.id, l.name])) as Record<
     SkinLayerId,
     string
   >;
@@ -57,7 +68,7 @@ export function SkinJourneyView({
         <div className="journey-figure relative">
           <SkinCrossSection
             active={active}
-            labels={labels}
+            labels={layerNames}
             onLayerPointerEnter={handlers?.onLayerPointerEnter}
           />
         </div>
@@ -65,7 +76,7 @@ export function SkinJourneyView({
 
       <div className="col-span-4 lg:col-span-5 lg:pt-4">
         {/* Depth gauge = tablist (vertical on desktop, a row of buttons on small screens). */}
-        <div role="tablist" aria-label="Camadas da pele" className="journey-tabs relative">
+        <div role="tablist" aria-label={labels.tabs} className="journey-tabs relative">
           <span aria-hidden="true" className="journey-gauge">
             <span className="journey-gauge-marker" />
           </span>
@@ -85,8 +96,8 @@ export function SkinJourneyView({
                 className="journey-tab"
               >
                 <span className="journey-tab-index tabular">{String(i + 1).padStart(2, "0")}</span>
-                <span className="journey-tab-name">{layer.nome}</span>
-                <span className="journey-tab-role">{layer.papel}</span>
+                <span className="journey-tab-name">{layer.name}</span>
+                <span className="journey-tab-role">{layer.role}</span>
               </button>
             );
           })}
@@ -103,25 +114,23 @@ export function SkinJourneyView({
             className="journey-panel mt-8 rounded-card"
           >
             <p className="kicker">
-              Camada {String(i + 1).padStart(2, "0")} · {layer.papel}
+              Camada {String(i + 1).padStart(2, "0")} · {layer.role}
             </p>
             <h3 className="mt-3 text-[2.25rem] leading-none font-light lg:text-[2.75rem]">
-              {layer.nome}
+              {layer.name}
             </h3>
             <p className="mt-4 measure text-[1.0625rem] text-cacau/90">
-              {layer.descricao}
-              {layer.descricaoProvisoria && showPendingMarkers && (
-                <PendingTag label="texto em revisão médica" />
-              )}
+              {layer.description}
+              {layer.pendingReview && showPendingMarkers && <PendingTag label="texto em revisão" />}
             </p>
 
             <div className="mt-6 border-t border-cacau/15 pt-5">
               <p className="text-xs font-semibold tracking-[0.14em] text-cacau/90 uppercase">
-                Tratamentos relacionados
+                {labels.related}
               </p>
-              {layer.tratamentos.length > 0 ? (
+              {layer.related.length > 0 ? (
                 <ul className="mt-3 flex flex-wrap gap-2">
-                  {layer.tratamentos.map((t) => (
+                  {layer.related.map((t) => (
                     <li
                       key={t}
                       className="rounded-pill border border-cacau/20 px-3 py-1 text-sm text-cacau"
@@ -132,16 +141,18 @@ export function SkinJourneyView({
                 </ul>
               ) : (
                 <p className="mt-2 text-sm text-cacau/90">
-                  Em definição com a Dra. Valéria.
+                  {labels.emptyRelated}
                   {showPendingMarkers && <PendingTag label="a validar" />}
                 </p>
               )}
-              <a
-                href="#tratamentos"
-                className="mt-4 inline-flex min-h-11 items-center text-sm font-semibold text-cacau underline decoration-rose underline-offset-4"
-              >
-                Ver pilares de atuação
-              </a>
+              {labels.servicesHref && (
+                <a
+                  href={labels.servicesHref}
+                  className="mt-4 inline-flex min-h-11 items-center text-sm font-semibold text-cacau underline decoration-rose underline-offset-4"
+                >
+                  {labels.servicesLink}
+                </a>
+              )}
             </div>
           </div>
         ))}

@@ -3,14 +3,14 @@
 import { useEffect, useRef, type PointerEvent as ReactPointerEvent } from "react";
 import { ButtonContent, PendingButton, buttonClasses, type ButtonProps } from "./Button";
 
-/** Max displacement toward the cursor (spec: "desloca até 6 px"). */
+/** Max displacement toward the cursor. */
 const MAX_PULL = 6;
 
 const FINE_POINTER = "(hover: hover) and (pointer: fine)";
 const REDUCED_MOTION = "(prefers-reduced-motion: reduce)";
 
 /**
- * CTA with the spec's desktop/touch behaviors:
+ * CTA with desktop/touch behaviors:
  * - fine pointer: magnetic pull (≤ 6px) and circular fill starting where the cursor entered;
  * - touch: press scale .97 (CSS) and a ripple from the touch point;
  * - reduced motion: no pull, no ripple; the fill only fades (opacity).

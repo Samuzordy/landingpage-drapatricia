@@ -1,34 +1,39 @@
 import type { CSSProperties, FocusEvent, PointerEvent } from "react";
 import { PlusIcon } from "@/components/ui/icons";
-import type { Pillar, PillarSlug } from "@/types/content";
+import type { ServiceArea, ServiceArt as ServiceArtVariant } from "@/types/content";
 
-export type PillarCardData = Pick<Pillar, "titulo" | "slug" | "mensagemChave" | "servicos">;
+export type ServiceCardData = Pick<
+  ServiceArea,
+  "title" | "slug" | "keyMessage" | "services" | "art"
+>;
 
-export type PillarCardHandlers = {
+export type ServiceCardHandlers = {
   onTrigger: (index: number) => void;
   onTriggerFocus: (index: number, e: FocusEvent<HTMLButtonElement>) => void;
   onCardPointerEnter: (index: number, e: PointerEvent<HTMLLIElement>) => void;
 };
 
-/** Thin-stroke decorative motif per pillar (zooms 1 → 1.05 when the card is active). */
-function PillarArt({ variant }: { variant: PillarSlug }) {
+const ART_CYCLE: ServiceArtVariant[] = ["rings", "reticle", "waves"];
+
+/** Thin-stroke decorative motif per card (zooms 1 → 1.05 when the card is active). */
+function ServiceArt({ variant }: { variant: ServiceArtVariant }) {
   return (
     <svg
       aria-hidden="true"
       viewBox="0 0 160 160"
-      className="pillar-art"
+      className="service-art"
       fill="none"
       stroke="currentColor"
       strokeWidth="1"
     >
-      {variant === "clinica" && (
+      {variant === "rings" && (
         <>
           <circle cx="80" cy="80" r="22" />
           <circle cx="80" cy="80" r="42" opacity="0.7" />
           <circle cx="80" cy="80" r="62" opacity="0.45" />
         </>
       )}
-      {variant === "cirurgica-prevencao" && (
+      {variant === "reticle" && (
         <>
           <circle cx="80" cy="80" r="56" />
           <circle cx="80" cy="80" r="6" />
@@ -36,7 +41,7 @@ function PillarArt({ variant }: { variant: PillarSlug }) {
           <path d="M60 80h-6M106 80h-6M80 60v-6M80 106v-6" opacity="0.6" />
         </>
       )}
-      {variant === "estetica" && (
+      {variant === "waves" && (
         <>
           <path d="M18 104c22-30 42-30 62 0s40 30 62 0" />
           <path d="M18 80c22-30 42-30 62 0s40 30 62 0" opacity="0.7" />
@@ -48,36 +53,36 @@ function PillarArt({ variant }: { variant: PillarSlug }) {
 }
 
 /**
- * Pure markup for the pillar cards — no hooks, no "use client".
+ * Pure markup for the service cards — no hooks, no "use client".
  * Rendered on the server as the static first state (zero JS) and reused by the interactive
- * PillarCards island once it loads, so both renders match and nothing shifts.
+ * ServiceCards island once it loads, so both renders match and nothing shifts.
  */
-export function PillarCardsView({
-  pillars,
+export function ServiceCardsView({
+  services,
   active,
   handlers,
 }: {
-  pillars: PillarCardData[];
+  services: ServiceCardData[];
   active: number | null;
-  handlers?: PillarCardHandlers;
+  handlers?: ServiceCardHandlers;
 }) {
-  const columns = pillars.map((_, i) => (i === active ? "1.6fr" : "1fr")).join(" ");
+  const columns = services.map((_, i) => (i === active ? "1.6fr" : "1fr")).join(" ");
 
   return (
     <ul
-      className="pillars-grid mt-12 grid gap-4 lg:mt-16 lg:gap-6"
-      style={{ "--pillar-cols": columns } as CSSProperties}
+      className="services-grid mt-12 grid gap-4 lg:mt-16 lg:gap-6"
+      style={{ "--service-cols": columns } as CSSProperties}
     >
-      {pillars.map((pillar, i) => {
+      {services.map((service, i) => {
         const isActive = active === i;
-        const triggerId = `pilar-${pillar.slug}-trigger`;
-        const panelId = `pilar-${pillar.slug}-servicos`;
+        const triggerId = `area-${service.slug}-trigger`;
+        const panelId = `area-${service.slug}-servicos`;
         return (
           <li
-            key={pillar.slug}
+            key={service.slug}
             data-active={isActive || undefined}
             onPointerEnter={handlers ? (e) => handlers.onCardPointerEnter(i, e) : undefined}
-            className="pillar-card relative isolate flex flex-col overflow-hidden rounded-card border"
+            className="service-card relative isolate flex flex-col overflow-hidden rounded-card border"
           >
             <h3 className="font-sans text-base font-normal">
               <button
@@ -99,10 +104,10 @@ export function PillarCardsView({
                   <PlusIcon className="accordion-icon" />
                 </span>
                 <span className="col-start-1 mt-4 font-display text-[1.75rem] leading-[1.1] font-normal text-cacau lg:text-[2rem]">
-                  {pillar.titulo}
+                  {service.title}
                 </span>
-                <span className="col-start-1 mt-3 font-display text-lg leading-snug font-light text-cacau/85 italic">
-                  “{pillar.mensagemChave}”
+                <span className="col-start-1 mt-3 font-display text-lg leading-snug font-light text-cacau/90 italic">
+                  “{service.keyMessage}”
                 </span>
               </button>
             </h3>
@@ -112,13 +117,13 @@ export function PillarCardsView({
               role="region"
               aria-labelledby={triggerId}
               inert={!isActive}
-              className="pillar-panel"
+              className="service-panel"
             >
               <div className="overflow-hidden">
-                <ul className="pillar-services px-6 pb-8 lg:px-8">
-                  {pillar.servicos.map((service, j) => (
+                <ul className="service-list px-6 pb-8 lg:px-8">
+                  {service.services.map((item, j) => (
                     <li
-                      key={service}
+                      key={item}
                       style={{ "--i": j } as CSSProperties}
                       className="flex items-baseline gap-3 border-t border-areia py-2.5 text-[0.9375rem] text-cacau"
                     >
@@ -126,7 +131,7 @@ export function PillarCardsView({
                         aria-hidden="true"
                         className="size-1.5 shrink-0 translate-y-[-2px] rounded-full bg-rose"
                       />
-                      {service}
+                      {item}
                     </li>
                   ))}
                 </ul>
@@ -137,7 +142,7 @@ export function PillarCardsView({
               aria-hidden="true"
               className="pointer-events-none mt-auto hidden justify-end p-8 text-rose lg:flex"
             >
-              <PillarArt variant={pillar.slug} />
+              <ServiceArt variant={service.art ?? ART_CYCLE[i % ART_CYCLE.length] ?? "rings"} />
             </div>
           </li>
         );

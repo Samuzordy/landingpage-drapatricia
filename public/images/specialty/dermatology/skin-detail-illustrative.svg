@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="800" height="1000" viewBox="0 0 800 1000">
-  <!-- ILLUSTRATIVE (generated) "microscopic" layer for DermatoscopeLens. Not a clinical image.
-       TODO(cliente): replace with public/images/textura-pele-detalhe.jpg (min. 2000px). -->
+  <!-- DERMATOLOGY VARIANT: illustrative (generated) close-up for the hero MagnifierLens. Not a clinical image.
+       Replace with a real texture photo (min. 2000px) if desired. -->
   <defs>
     <filter id="micro" x="0" y="0" width="100%" height="100%">
       <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="4" seed="3" result="n"/>

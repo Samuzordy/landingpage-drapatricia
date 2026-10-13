@@ -2,7 +2,7 @@ import type { SVGProps } from "react";
 
 type IconProps = SVGProps<SVGSVGElement>;
 
-// Thin-stroke icons (spec section 06: "ícones de traço fino"). Decorative by default.
+// Thin-stroke icons. Decorative by default.
 function base(props: IconProps): IconProps {
   return {
     width: 20,
@@ -68,7 +68,7 @@ export function CheckIcon(props: IconProps) {
   );
 }
 
-/** Generic chat bubble with handset — TODO(cliente): swap for the official WhatsApp glyph if desired. */
+/** Generic chat bubble with handset — swap for the official WhatsApp glyph if desired. */
 export function ChatIcon(props: IconProps) {
   return (
     <svg {...base(props)}>

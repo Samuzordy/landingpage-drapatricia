@@ -6,17 +6,17 @@ import { Tabs } from "@/components/ui/Tabs";
 
 // Interactive demos that need local state (Server Components can't pass onClick handlers).
 
-const CONDITIONS = ["Acne", "Rosácea", "Melasma", "Queda de cabelo", "Pintas e sinais"];
+const OPTIONS = ["Check-up", "Segunda opinião", "Retorno", "Resultados de exames", "Prevenção"];
 
 export function ChipToggleDemo() {
-  const [selected, setSelected] = useState<string[]>(["Melasma"]);
+  const [selected, setSelected] = useState<string[]>(["Retorno"]);
   const toggle = (name: string) =>
     setSelected((s) => (s.includes(name) ? s.filter((x) => x !== name) : [...s, name]));
 
   return (
     <div>
       <div className="flex flex-wrap gap-2">
-        {CONDITIONS.map((name) => (
+        {OPTIONS.map((name) => (
           <Chip key={name} selected={selected.includes(name)} onClick={() => toggle(name)}>
             {name}
           </Chip>
@@ -30,11 +30,11 @@ export function ChipToggleDemo() {
 }
 
 export function ControlledTabsDemo() {
-  const [value, setValue] = useState("derme");
+  const [value, setValue] = useState("avaliacao");
   const layers = [
-    { id: "epiderme", label: "Epiderme" },
-    { id: "derme", label: "Derme" },
-    { id: "hipoderme", label: "Hipoderme" },
+    { id: "contato", label: "Contato" },
+    { id: "avaliacao", label: "Avaliação" },
+    { id: "plano", label: "Plano" },
   ];
 
   return (
@@ -53,7 +53,7 @@ export function ControlledTabsDemo() {
         ))}
       </div>
       <Tabs
-        label="Camadas da pele (controlado)"
+        label="Etapas (controlado)"
         value={value}
         onValueChange={setValue}
         items={layers.map((l) => ({
@@ -62,7 +62,7 @@ export function ControlledTabsDemo() {
           content: (
             <p className="text-cacau/85">
               Painel controlado externamente: <strong>{l.label}</strong>. Simula a sincronização
-              entre o hover na ilustração e as abas da Jornada da Pele (Etapa 5).
+              entre o hover em uma ilustração e as abas (padrão usado no SpecialtyFeature).
             </p>
           ),
         }))}

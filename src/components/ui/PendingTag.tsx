@@ -2,13 +2,13 @@ type PendingTagProps = {
   label?: string;
   /** No leading margin — for tags that start a line or sit in a flex row with gap. */
   flush?: boolean;
-  /** "light" for the dark Hipoderme bands (terracota/cacau backgrounds). */
+  /** "light" for the dark bands (final CTA, footer). */
   tone?: "default" | "light";
   className?: string;
 };
 
 const toneClasses = {
-  // cacau/90 keeps ≥ 4.5:1 even on the deepest light band (Derme profunda #D2A796).
+  // cacau/90 keeps ≥ 4.5:1 even on the deepest light band (--color-band-deep).
   default: "border-rose text-cacau/90",
   // white keeps ≥ 4.6:1 on terracota and above on the darker footer band.
   light: "border-white/60 text-white",

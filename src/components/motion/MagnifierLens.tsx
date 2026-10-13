@@ -5,11 +5,12 @@ import { useEffect, useRef } from "react";
 import { CroppedImage } from "@/components/ui/CroppedImage";
 import type { ImageAsset } from "@/types/content";
 
-export type DermatoscopeLensProps = {
+export type MagnifierLensProps = {
   /** Visible surface (portrait or texture). */
   base: ImageAsset;
-  /** "Microscopic" layer revealed inside the lens. */
+  /** Close-up layer revealed inside the lens (texture, detail, illustration). */
   detail: ImageAsset;
+  /** Small tag under the ring, e.g. "aumento 10x". Empty string hides it. */
   label?: string;
   /** Base image is the hero LCP candidate. */
   priority?: boolean;
@@ -20,7 +21,7 @@ export type DermatoscopeLensProps = {
   className?: string;
 };
 
-const LERP = 0.12; // inertia (spec section 07)
+const LERP = 0.12; // inertia
 const TOUR_MS = 6000; // automatic path on touch devices
 const SETTLE_PX = 0.15;
 /** Fixed position (fraction of the frame) for the static, reduced-motion lens. */
@@ -32,23 +33,23 @@ const REDUCED_MOTION = "(prefers-reduced-motion: reduce)";
 type LensMode = "idle" | "active" | "tour" | "static";
 
 /**
- * Hero "Lente Dermatoscópica" (spec sections 04, 07, 08).
+ * Magnifier lens over an image (optional on the Hero via site.hero.lens).
  * - Fine pointer: a 160px lens follows the cursor with lerp 0.12, revealing `detail` through
- *   clip-path: circle(80px at var(--lx) var(--ly)); thin terracota ring + "aumento 10x".
+ *   clip-path: circle(80px at var(--lx) var(--ly)); thin primary-color ring + optional label.
  * - Touch: no hover needed — when the frame is ≥ 60% visible the lens runs a slow 6s path once,
  *   then fades out. Purely visual (pointer-events: none), never blocks scrolling or taps.
  * - Reduced motion: no tracking, no tour; the lens is shown still at a fixed spot.
  * requestAnimationFrame runs only while the lens is moving; everything is cleaned on unmount.
  */
-export function DermatoscopeLens({
+export function MagnifierLens({
   base,
   detail,
-  label = "aumento 10x",
+  label = "",
   priority = false,
   sizes = "(min-width: 1024px) 40vw, 90vw",
   aspect = 4 / 5,
   className = "",
-}: DermatoscopeLensProps) {
+}: MagnifierLensProps) {
   const rootRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -180,7 +181,7 @@ export function DermatoscopeLens({
         />
       </div>
       <div aria-hidden="true" className="lens-ring">
-        <span className="lens-label">{label}</span>
+        {label && <span className="lens-label">{label}</span>}
       </div>
     </div>
   );

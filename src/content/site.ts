@@ -1,373 +1,397 @@
 /**
- * PROVISIONAL content — replaced by Sanity in Etapa 7 (kept as fallback).
+ * TEMPLATE — the single file to edit when starting a new landing.
  *
- * Every data point came from CLAUDE.md / docs/especificacao.pdf (public sources) and must be
- * validated with Dra. Valéria before publishing:
- *   - `// VALIDAR`        → data exists but needs confirmation.
- *   - `// TODO(cliente)`  → data missing; waiting for the client.
+ * Everything below is DEMO content: fictitious name, registrations, city, institutions and
+ * copy. Replace it with the new professional's data before showing the preview.
+ *   - `// TEMPLATE:`      → value expected to change in every project.
+ *   - `// TODO(cliente)`  → data the client still has to send (keep PLACEHOLDER meanwhile).
  *
- * Never invent testimonials, patient counts, Google rating, years of experience or phones.
- * Copy must follow CFM 2.336/2023: no superlatives, promises, prices or promotions.
+ * Never invent testimonials, patient counts, ratings, years of experience or phone numbers.
+ * Copy must follow the professional council's advertising rules (for physicians, CFM
+ * 2.336/2023): no superlatives, promises of results, prices or promotions.
  */
 import type { SiteContent } from "@/types/content";
 
 export const PLACEHOLDER = "PLACEHOLDER" as const;
 
-/** Visible marker for copy the client still has to write or approve. */
-export const PENDING_TEXT = "[Texto pendente — aguardando validação da Dra. Valéria]";
+/** Marker for copy the client still has to write or approve (rendered as hidden/omitted). */
+export const PENDING_TEXT = "[Texto pendente — aguardando validação]";
 
 /** True while a text field still holds the pending placeholder. */
 export const isPending = (text: string | undefined | null): boolean =>
   !text || text === PENDING_TEXT;
 
+// TEMPLATE: identity used across the page (header, hero, about, final CTA, footer, SEO).
+const professional = {
+  name: "Nome Sobrenome",
+  displayName: "Dra. Nome Sobrenome",
+  title: "Médica especialista",
+  specialty: "Especialidade médica",
+  registrations: ["CRM-UF 00000", "RQE 00000"],
+  location: "Cidade – UF",
+  languages: ["Português", "Inglês"],
+};
+
 export const site: SiteContent = {
-  // Commercial preview: visual pending marks hidden for the presentation only. The content below
-  // is STILL provisional — every VALIDAR / TODO(cliente) / PLACEHOLDER marker stays in the code.
-  // TODO(cliente): keep false only once every VALIDAR item is confirmed (true shows the marks).
+  // Pending marks stay hidden in commercial previews (true shows "a validar" tags).
   flags: { showPendingMarkers: false },
 
-  settings: {
-    whatsapp: PLACEHOLDER, // TODO(cliente): número de WhatsApp comercial
-    mensagemPadrao: "Olá, vim pelo site e gostaria de agendar uma consulta.", // TODO(cliente): mensagem padrão
-    instagram: {
-      handle: "@valeriafranzon.dermato", // VALIDAR (citado no PDF)
-      url: PLACEHOLDER, // TODO(cliente): link do perfil
-    },
-    email: PLACEHOLDER, // TODO(cliente): e-mail de contato
-    seo: {
-      title: "Dermatologista em Curitiba | Dra. Valéria Franzon",
-      description:
-        "Dermatologia clínica, cirúrgica e estética em Curitiba – PR com a Dra. Valéria Franzon. CRM-PR 20510 · RQE 17213.", // VALIDAR
-    },
-    googleRating: null, // TODO(cliente): nota, total e link do Google Business Profile (com autorização)
+  // TEMPLATE: turn sections on/off. Nav links, CTAs pointing to a disabled section and the
+  // background depth gradient adapt automatically.
+  sections: {
+    hero: true,
+    credentials: true,
+    about: true,
+    services: true,
+    conditions: true,
+    specialtyFeature: false, // also needs `specialtyFeature.variant` below
+    consultation: true,
+    differentials: true,
+    faq: true,
+    finalCta: true,
   },
 
-  nav: [
-    { label: "Sobre", href: "#sobre" },
-    { label: "Tratamentos", href: "#tratamentos" },
-    { label: "Consulta", href: "#consulta" },
-    // { label: "Locais", href: "#locais" }, // Fase de produção: seção Locais fora do preview
-    { label: "Dúvidas", href: "#duvidas" },
-  ],
+  settings: {
+    themeColor: "#f7f1ec", // TEMPLATE: same as --color-porcelana (tokens.css)
+    whatsapp: PLACEHOLDER, // TODO(cliente): WhatsApp comercial — CTAs ficam "em breve" até lá
+    whatsappMessage: "Olá, vim pelo site e gostaria de agendar uma consulta.",
+    whatsappPendingNote: "Agendamento pelo WhatsApp disponível em breve.",
+    social: [
+      // TODO(cliente): perfil real; sem URL o handle aparece sem link
+      { label: "Instagram", handle: "@nome.sobrenome", url: PLACEHOLDER },
+    ],
+    seo: {
+      title: `${professional.specialty} em ${professional.location} | ${professional.displayName}`,
+      description: `Atendimento em ${professional.specialty.toLowerCase()} em ${professional.location} com ${professional.displayName}. ${professional.registrations.join(" · ")}.`,
+    },
+    googleRating: null, // TODO(cliente): nota, total e link do Google (somente com autorização)
+  },
+
+  professional,
+
+  // TEMPLATE: replace the files in public/images/ (keep the 4:5 portrait ratio).
+  images: {
+    hero: {
+      src: "/images/placeholders/professional-hero-placeholder.svg",
+      alt: `Retrato de ${professional.displayName}`,
+      width: 800,
+      height: 1000,
+      // For photos with text/logos around the subject, crop visually instead of editing:
+      // crop: { x: 0.27, y: 0, width: 0.5 },
+    },
+    about: {
+      src: "/images/placeholders/professional-about-placeholder.svg",
+      alt: `${professional.displayName} em seu consultório`,
+      width: 800,
+      height: 1000,
+      objectPosition: "50% 30%",
+    },
+  },
+
+  // Links whose section is disabled are dropped automatically.
+  nav: {
+    header: [
+      { section: "about", label: "Sobre" },
+      { section: "services", label: "Atuação" },
+      { section: "consultation", label: "Consulta" },
+      { section: "faq", label: "Dúvidas" },
+    ],
+    footer: [
+      { section: "about", label: "Sobre" },
+      { section: "services", label: "Atuação" },
+      { section: "specialtyFeature", label: "Destaque" },
+      { section: "conditions", label: "Quando procurar" },
+      { section: "consultation", label: "Consulta" },
+      { section: "differentials", label: "Diferenciais" },
+      { section: "faq", label: "Dúvidas" },
+    ],
+  },
 
   hero: {
-    kicker: "Dermatologista · Curitiba – PR",
-    titulo: "Cuidado com a sua pele, guiado pela ciência",
-    destaqueItalico: "sua pele",
-    // VALIDAR: provisional subtitle assembled from the spec cover line and the three pillar
-    // key messages (section 03). TODO(cliente): final copy.
-    subtitulo:
-      "Dermatologia clínica, cirúrgica e estética: diagnóstico preciso, olhar atento que protege e naturalidade guiada pela ciência.",
-    ctaPrimario: "Agendar pelo WhatsApp", // VALIDAR
-    ctaSecundario: { label: "Conheça a Dra.", href: "#sobre" },
-    ctaHeader: "Agendar",
+    kicker: `${professional.specialty} · ${professional.location}`,
+    title: "Cuidado atento à sua saúde, guiado pela ciência",
+    highlight: "sua saúde",
+    subtitle:
+      "Atendimento com escuta, avaliação criteriosa e um plano construído junto com você, em cada etapa do cuidado.",
+    primaryCta: "Agendar pelo WhatsApp",
+    secondaryCta: { label: "Conheça a Dra.", href: "#sobre" },
+    headerCta: "Agendar",
+    // Optional magnifier lens over the portrait (see README › SpecialtyFeature for the
+    // dermatology example). null = plain portrait.
+    lens: null,
   },
 
-  credentials: [
-    { label: "CRM-PR 20510" },
-    { label: "RQE 17213" },
-    { label: "Título de especialista SBD", pendente: true }, // VALIDAR
-    { label: "Medicina UFPR", pendente: true }, // VALIDAR
-    { label: "Professora PUCPR", pendente: true }, // VALIDAR: confirmar se continua lecionando
-    { label: "English spoken" },
-  ],
+  credentials: {
+    label: "Credenciais",
+    items: [
+      ...professional.registrations.map((label) => ({ label })),
+      { label: "Título de especialista" },
+      { label: "Formação em Medicina" },
+      { label: "Membro de sociedade de especialidade" },
+      { label: "English spoken" },
+    ],
+  },
 
-  specialist: {
-    nome: "Valéria Zanela Franzon",
-    nomeExibicao: "Dra. Valéria Franzon", // VALIDAR: nome de exibição
-    especialidade: "Dermatologista",
-    crm: "CRM-PR 20510",
-    rqe: "RQE 17213",
-    idiomas: ["Português", "Inglês"],
-    // VALIDAR: photos taken from the public Instagram profile (posts with text overlays), cropped
-    // visually — never edited. TODO(cliente): authorization of use + original high-res files.
-    foto: {
-      src: "/images/valeria-hero.jpg", // TODO(cliente): retrato profissional em alta resolução
-      alt: "Retrato da Dra. Valéria Franzon",
-      width: 1080,
-      height: 1346,
-      // Head-and-shoulders region; the post caption starts at ~52% of the height.
-      crop: { x: 0.27, y: 0, width: 0.498 },
-    },
-    fotoSobre: {
-      src: "/images/valeria-sobre.jpg", // TODO(cliente)
-      alt: "Dra. Valéria Franzon sentada em um sofá claro",
-      width: 1024,
-      height: 1276,
-      // Below the post headline (ends ~29%) and above the "VF" monogram (~88%).
-      // Face near the centre of the frame, with the hand-on-chin gesture kept in view.
-      crop: { x: 0.17, y: 0.31, width: 0.548 },
-    },
-    fotoDetalhe: undefined, // TODO(cliente): textura de pele em alta (public/images/textura-pele-detalhe.jpg)
-    // VALIDAR: first-person rewrite using ONLY facts from the spec (section 03) — no invented
-    // phrases. TODO(cliente): replace with the bio written/approved by Dra. Valéria.
+  about: {
+    kicker: "Sobre a especialista",
     bio: [
-      "Sou dermatologista em Curitiba e atuo nas áreas clínica, cirúrgica e estética da dermatologia.",
-      "Sou formada em Medicina pela Universidade Federal do Paraná (2003) e tenho título de especialista em Dermatologia pela Sociedade Brasileira de Dermatologia (2013). Desde 2010, sou professora do curso de Medicina da PUCPR.",
-      "Atendo em português e em inglês.",
+      `Sou ${professional.title.toLowerCase()} em ${professional.specialty.toLowerCase()} e atendo em ${professional.location}.`,
+      "Meu trabalho combina escuta atenta, avaliação criteriosa e decisões tomadas em conjunto com cada paciente, com explicações claras em todas as etapas.",
+      `Atendo em ${professional.languages.join(" e ").toLowerCase()}.`,
     ],
+    facts: [
+      { term: "Registro", detail: professional.registrations.join(" · "), emphasis: true },
+      { term: "Formação", detail: "Medicina — Universidade Exemplo" },
+      { term: "Especialização", detail: "Residência em Especialidade — Hospital Exemplo" },
+      { term: "Título", detail: "Título de especialista — Sociedade de Especialidade" },
+      { term: "Idiomas", detail: professional.languages.join(" e ") },
+    ],
+    timelineTitle: "Linha do tempo",
+    // TEMPLATE: demo milestones and years
     timeline: [
-      // VALIDAR: todos os marcos; TODO(cliente): residência e cursos complementares
-      {
-        ano: "2003",
-        titulo: "Graduação em Medicina — UFPR",
-        descricao: PENDING_TEXT, // TODO(cliente)
-      },
-      {
-        ano: "2010",
-        titulo: "Professora do curso de Medicina — PUCPR",
-        descricao: PENDING_TEXT, // TODO(cliente)
-      },
-      {
-        ano: "2013",
-        titulo: "Título de especialista em Dermatologia — SBD",
-        descricao: PENDING_TEXT, // TODO(cliente)
-      },
-      {
-        ano: "hoje",
-        titulo: "Dermatologia clínica, cirúrgica e estética em Curitiba", // VALIDAR (capa do PDF) · TODO(cliente): título final
-        descricao: PENDING_TEXT, // TODO(cliente)
-      },
+      { year: "2008", title: "Graduação em Medicina — Universidade Exemplo" },
+      { year: "2012", title: "Residência em Especialidade — Hospital Exemplo" },
+      { year: "2014", title: "Título de especialista — Sociedade de Especialidade" },
+      { year: "hoje", title: `Atendimento em ${professional.location}` },
     ],
-    instituicoes: [
-      // TODO(cliente): logos com autorização de uso
-      { nome: "Universidade Federal do Paraná", sigla: "UFPR" },
-      { nome: "Pontifícia Universidade Católica do Paraná", sigla: "PUCPR" },
-      { nome: "Sociedade Brasileira de Dermatologia", sigla: "SBD" },
+    institutionsTitle: "Instituições",
+    institutions: [
+      { name: "Universidade Exemplo", abbreviation: "UE" },
+      { name: "Hospital Exemplo", abbreviation: "HE" },
+      { name: "Sociedade de Especialidade", abbreviation: "SE" },
     ],
-    citacao: PENDING_TEXT, // TODO(cliente): citação-assinatura
+    quote: "Cada pessoa chega com uma história. O cuidado começa por ouvi-la.",
   },
 
-  pillars: [
-    // VALIDAR: lista final de procedimentos oferecidos
-    {
-      titulo: "Dermatologia Clínica",
-      slug: "clinica",
-      resumo: PENDING_TEXT, // TODO(cliente)
-      mensagemChave: "Diagnóstico preciso para o que incomoda hoje.",
-      servicos: [
-        "Acne",
-        "Rosácea",
-        "Eczema",
-        "Dermatite seborreica",
-        "Alergias (patch test)",
-        "Queda de cabelo e alopecias",
-        "Caspa",
-        "Doenças das unhas",
-        "Psoríase",
-      ],
-      ordem: 1,
+  services: {
+    heading: {
+      kicker: "Atuação",
+      title: "Áreas de atuação",
+      highlight: "atuação",
+      intro: "Do primeiro diagnóstico ao acompanhamento contínuo.",
     },
-    {
-      titulo: "Dermatologia Cirúrgica e Prevenção",
-      slug: "cirurgica-prevencao",
-      resumo: PENDING_TEXT, // TODO(cliente)
-      mensagemChave: "Olhar atento que protege.",
-      servicos: [
-        "Dermatoscopia digital (mapeamento de pintas)",
-        "Biópsias",
-        "Remoção de sinais, cistos e verrugas",
-        "Crioterapia",
-        "Eletrocoagulação",
-        "Excisão e sutura",
-        "Rastreio de câncer de pele",
-      ],
-      ordem: 2,
-    },
-    {
-      titulo: "Dermatologia Estética",
-      slug: "estetica",
-      resumo: PENDING_TEXT, // TODO(cliente)
-      mensagemChave: "Naturalidade guiada pela ciência.",
-      servicos: [
-        "Toxina botulínica",
-        "Preenchimento",
-        "Peelings",
-        "Rejuvenescimento facial",
-        "Cicatrizes",
-      ],
-      ordem: 3,
-    },
-  ],
+    items: [
+      {
+        title: "Avaliação e diagnóstico",
+        slug: "avaliacao",
+        keyMessage: "Entender antes de tratar.",
+        art: "rings",
+        services: [
+          "Consulta inicial completa",
+          "Revisão de histórico e exames anteriores",
+          "Exame clínico detalhado",
+          "Solicitação e interpretação de exames",
+          "Segunda opinião",
+        ],
+      },
+      {
+        title: "Tratamento e acompanhamento",
+        slug: "tratamento",
+        keyMessage: "Um plano pensado para a sua rotina.",
+        art: "reticle",
+        services: [
+          "Plano de tratamento individual",
+          "Ajustes conforme a evolução",
+          "Retornos programados",
+          "Acompanhamento de condições crônicas",
+          "Orientação para familiares",
+        ],
+      },
+      {
+        title: "Prevenção e orientação",
+        slug: "prevencao",
+        keyMessage: "Cuidar antes que incomode.",
+        art: "waves",
+        services: [
+          "Check-up preventivo",
+          "Rastreamento conforme idade e histórico",
+          "Orientação sobre hábitos e autocuidado",
+          "Educação em saúde",
+          "Encaminhamentos quando necessário",
+        ],
+      },
+    ],
+  },
 
-  skinLayers: [
-    // TODO(cliente): conteúdo educativo e relação camada → tratamentos exigem revisão médica
-    // VALIDAR: "papel" comes from the spec concept (section 04). Descriptions are minimal and
-    // purely positional (where the layer sits) — no clinical claims until reviewed.
-    {
-      id: "epiderme",
-      nome: "Epiderme",
-      profundidade: 1,
-      papel: "superfície",
-      descricao: "A camada mais externa da pele — a superfície que vemos e tocamos.",
-      descricaoProvisoria: true, // TODO(cliente): texto educativo revisado
-      tratamentos: [], // TODO(cliente)
+  conditions: {
+    heading: {
+      kicker: "Quando procurar",
+      title: "Quando agendar uma consulta",
+      highlight: "consulta",
+      intro: "Toque ou passe o cursor sobre um item para ver quando vale buscar avaliação.",
     },
-    {
-      id: "derme",
-      nome: "Derme",
-      profundidade: 2,
-      papel: "estrutura",
-      descricao: "A camada intermediária, logo abaixo da epiderme.",
-      descricaoProvisoria: true, // TODO(cliente): texto educativo revisado
-      tratamentos: [], // TODO(cliente)
-    },
-    {
-      id: "hipoderme",
-      nome: "Hipoderme",
-      profundidade: 3,
-      papel: "base",
-      descricao: "A camada mais profunda, abaixo da derme.",
-      descricaoProvisoria: true, // TODO(cliente): texto educativo revisado
-      tratamentos: [], // TODO(cliente)
-    },
-  ],
+    listLabel: "Motivos para buscar avaliação",
+    sheetKicker: "Quando procurar",
+    relatedLabel: "Área relacionada",
+    disclaimer: "Informação geral, de caráter educativo. Não substitui a avaliação profissional.",
+    pendingHint: "Orientação sobre quando procurar atendimento em revisão.",
+    items: [
+      {
+        name: "Sintomas persistentes",
+        whenToSeek:
+          "Quando um sintoma dura semanas ou volta com frequência, vale investigar a causa com calma.",
+        service: "avaliacao",
+      },
+      {
+        name: "Mudanças recentes",
+        whenToSeek:
+          "Alterações que surgiram ou mudaram de aspecto há pouco tempo merecem avaliação.",
+        service: "avaliacao",
+      },
+      {
+        name: "Check-up preventivo",
+        whenToSeek: "Consultas periódicas ajudam a acompanhar a saúde mesmo sem sintomas.",
+        service: "prevencao",
+      },
+      {
+        name: "Segunda opinião",
+        whenToSeek:
+          "Se ficou alguma dúvida sobre um diagnóstico ou tratamento, uma nova avaliação ajuda.",
+        service: "avaliacao",
+      },
+      {
+        name: "Resultados de exames",
+        whenToSeek:
+          "Para entender resultados de exames e decidir os próximos passos com segurança.",
+        service: "avaliacao",
+      },
+      {
+        name: "Condição crônica",
+        whenToSeek:
+          "Para acompanhar uma condição de longo prazo e ajustar o cuidado ao longo do tempo.",
+        service: "tratamento",
+      },
+      {
+        name: "Antes de um procedimento",
+        whenToSeek: "Para avaliar indicação, preparo e cuidados antes de qualquer procedimento.",
+        service: "tratamento",
+      },
+      {
+        name: "Histórico familiar",
+        whenToSeek: "Quando há casos na família, a avaliação ajuda a definir a prevenção adequada.",
+        service: "prevencao",
+      },
+    ],
+  },
 
-  conditions: [
-    // TODO(cliente): textos de "quando procurar" (até 140 caracteres) com revisão médica
-    { nome: "Acne", quandoProcurar: PENDING_TEXT, pilar: "clinica", destaque: true },
-    { nome: "Rosácea", quandoProcurar: PENDING_TEXT, pilar: "clinica", destaque: false },
-    { nome: "Eczema", quandoProcurar: PENDING_TEXT, pilar: "clinica", destaque: false },
-    {
-      nome: "Dermatite seborreica",
-      quandoProcurar: PENDING_TEXT,
-      pilar: "clinica",
-      destaque: false,
-    },
-    { nome: "Alergias de pele", quandoProcurar: PENDING_TEXT, pilar: "clinica", destaque: false },
-    { nome: "Melasma", quandoProcurar: PENDING_TEXT, pilar: "clinica", destaque: true }, // VALIDAR: pilar
-    { nome: "Queda de cabelo", quandoProcurar: PENDING_TEXT, pilar: "clinica", destaque: true },
-    { nome: "Doenças das unhas", quandoProcurar: PENDING_TEXT, pilar: "clinica", destaque: false },
-    { nome: "Psoríase", quandoProcurar: PENDING_TEXT, pilar: "clinica", destaque: false },
-    {
-      nome: "Pintas e sinais",
-      quandoProcurar: PENDING_TEXT,
-      pilar: "cirurgica-prevencao",
-      destaque: true,
-    },
-    {
-      nome: "Cistos e verrugas",
-      quandoProcurar: PENDING_TEXT,
-      pilar: "cirurgica-prevencao",
-      destaque: false,
-    },
-    { nome: "Cicatrizes", quandoProcurar: PENDING_TEXT, pilar: "estetica", destaque: false },
-  ],
+  // TEMPLATE: "none" or a variant from src/components/specialty/ (also enable
+  // sections.specialtyFeature). Example: "dermatology-skin-journey".
+  specialtyFeature: { variant: "none" },
 
-  consultationSteps: [
-    { ordem: 1, titulo: "Contato", descricao: PENDING_TEXT }, // TODO(cliente)
-    { ordem: 2, titulo: "Avaliação completa", descricao: PENDING_TEXT }, // TODO(cliente)
-    { ordem: 3, titulo: "Plano individual", descricao: PENDING_TEXT }, // TODO(cliente)
-    { ordem: 4, titulo: "Acompanhamento", descricao: PENDING_TEXT }, // TODO(cliente)
-  ],
+  consultation: {
+    heading: {
+      kicker: "Consulta",
+      title: "Como funciona a consulta",
+      highlight: "consulta",
+      intro: "Quatro etapas, do primeiro contato ao acompanhamento.",
+    },
+    steps: [
+      {
+        title: "Contato",
+        description: "Você envia uma mensagem e recebe as opções de data, horário e local.",
+      },
+      {
+        title: "Avaliação completa",
+        description:
+          "Conversa sem pressa sobre a sua história, exame e análise de exames anteriores.",
+      },
+      {
+        title: "Plano individual",
+        description: "As opções são explicadas com clareza e o plano é definido em conjunto.",
+      },
+      {
+        title: "Acompanhamento",
+        description: "Retornos programados para avaliar a evolução e ajustar o que for preciso.",
+      },
+    ],
+  },
 
-  differentials: [
-    // TODO(cliente): descrições
-    { titulo: "Escuta sem pressa", descricao: PENDING_TEXT, icone: "escuta" },
-    { titulo: "Conduta baseada em evidência", descricao: PENDING_TEXT, icone: "evidencia" },
-    { titulo: "Dermatoscopia digital", descricao: PENDING_TEXT, icone: "dermatoscopia" },
-    {
-      titulo: "3 endereços em Curitiba",
-      descricao: PENDING_TEXT,
-      icone: "enderecos",
-      pendente: true, // VALIDAR: locais ativos
-    },
-    { titulo: "Atendimento em inglês", descricao: PENDING_TEXT, icone: "idiomas" },
-    {
-      titulo: "Formação acadêmica",
-      descricao: PENDING_TEXT,
-      icone: "formacao",
-      pendente: true, // VALIDAR: formação e docência
-    },
-  ],
+  differentials: {
+    heading: { kicker: "Diferenciais", title: "Como é o atendimento", highlight: "atendimento" },
+    items: [
+      {
+        title: "Escuta sem pressa",
+        description: "Tempo de consulta pensado para ouvir, examinar e explicar cada etapa.",
+        icon: "listening",
+      },
+      {
+        title: "Conduta baseada em evidência",
+        description: "Decisões apoiadas em diretrizes e estudos científicos atualizados.",
+        icon: "evidence",
+      },
+      {
+        title: "Avaliação criteriosa",
+        description: "Exame detalhado e recursos diagnósticos quando indicados.",
+        icon: "precision",
+      },
+      {
+        title: "Fácil acesso",
+        description: `Consultório em região central de ${professional.location}.`,
+        icon: "locations",
+      },
+      {
+        title: "Atendimento em inglês",
+        description: "Consultas também em inglês, para quem preferir.",
+        icon: "languages",
+      },
+      {
+        title: "Formação contínua",
+        description: "Atualização constante em congressos e cursos da especialidade.",
+        icon: "education",
+      },
+    ],
+  },
 
-  // TODO(cliente): somente avaliações públicas com autorização explícita (autorizado: true)
-  testimonials: [],
+  faq: {
+    heading: { kicker: "Dúvidas", title: "Dúvidas frequentes", highlight: "frequentes" },
+    // TEMPLATE: neutral demo answers — confirm every policy with the client.
+    items: [
+      {
+        question: "A consulta é particular ou atende convênio?",
+        answer:
+          "As formas de atendimento disponíveis, particulares e por convênio, são informadas no agendamento pelo WhatsApp.",
+      },
+      {
+        question: "Como funciona o reembolso?",
+        answer:
+          "Após a consulta, você recebe a documentação necessária para solicitar o reembolso ao seu plano, conforme as regras do contrato.",
+      },
+      {
+        question: "Quanto tempo dura a consulta?",
+        answer:
+          "A primeira consulta costuma ser mais longa, para permitir uma avaliação completa. A duração é informada no agendamento.",
+      },
+      {
+        question: "Preciso de algum preparo antes da consulta?",
+        answer:
+          "Leve exames anteriores, receitas e a lista de medicamentos em uso. Se houver preparo específico, você será avisado no agendamento.",
+      },
+      {
+        question: "Qual é a faixa etária atendida?",
+        answer:
+          "A faixa etária atendida é informada no agendamento, de acordo com a especialidade.",
+      },
+      {
+        question: "Como funciona o retorno?",
+        answer:
+          "O retorno é agendado conforme a necessidade de cada caso, para avaliar a evolução e ajustar o plano.",
+      },
+    ],
+  },
 
-  faqs: [
-    // TODO(cliente): todas as respostas
-    // VALIDAR: provisional, neutral answers for the preview — they state that the information
-    // will be confirmed; no policies, prices, durations or rules are invented.
-    {
-      ordem: 1,
-      pergunta: "A consulta é particular ou atende convênio?",
-      resposta:
-        "As informações sobre convênios e formas de atendimento serão confirmadas com a Dra. Valéria antes da publicação.", // TODO(cliente)
-    },
-    {
-      ordem: 2,
-      pergunta: "Como funciona o reembolso?",
-      resposta:
-        "As orientações sobre reembolso serão confirmadas com a Dra. Valéria antes da publicação.", // TODO(cliente)
-    },
-    {
-      ordem: 3,
-      pergunta: "Quanto tempo dura a consulta?",
-      resposta: "A duração da consulta será confirmada com a Dra. Valéria antes da publicação.", // TODO(cliente)
-    },
-    {
-      ordem: 4,
-      pergunta: "Preciso de algum preparo antes da consulta?",
-      resposta:
-        "As orientações de preparo, quando houver, serão confirmadas com a Dra. Valéria antes da publicação.", // TODO(cliente)
-    },
-    {
-      ordem: 5,
-      pergunta: "Qual é a idade mínima para atendimento?",
-      resposta: "A faixa etária atendida será confirmada com a Dra. Valéria antes da publicação.", // TODO(cliente)
-    },
-    {
-      ordem: 6,
-      pergunta: "Como funciona o retorno?",
-      resposta: "As condições de retorno serão confirmadas com a Dra. Valéria antes da publicação.", // TODO(cliente)
-    },
-  ],
-
-  // VALIDAR: provisional closing copy for the preview (no medical promise). TODO(cliente)
   finalCta: {
     kicker: "Agendamento",
-    titulo: "Sua pele merece atenção individual.",
-    destaqueItalico: "atenção individual",
-    texto: "Agende uma avaliação dermatológica com a Dra. Valéria em Curitiba.",
-    ctaPrimario: "Agendar pelo WhatsApp",
-    ctaSecundario: { label: "Conheça a Dra.", href: "#sobre" },
+    title: "Seu cuidado merece atenção individual.",
+    highlight: "atenção individual",
+    text: `Agende uma avaliação com ${professional.displayName} em ${professional.location}.`,
+    primaryCta: "Agendar pelo WhatsApp",
+    secondaryCta: { label: "Conheça a Dra.", href: "#sobre" },
   },
 
-  locations: [
-    // VALIDAR: quais endereços seguem ativos
-    {
-      _id: "juveve",
-      bairro: "Juvevê",
-      clinica: "Clínica Pierre Fauchard",
-      endereco: "Av. Munhoz da Rocha, 668",
-      cep: PLACEHOLDER, // TODO(cliente)
-      geo: null, // TODO(cliente): coordenadas confirmadas
-      horarios: [], // TODO(cliente)
-      convenios: ["Particular", "Saúde Caixa"], // VALIDAR: lista e reembolso
-      mapsUrl: PLACEHOLDER, // TODO(cliente)
-      ativo: true, // VALIDAR
-    },
-    {
-      _id: "batel",
-      bairro: "Batel",
-      endereco: "Av. do Batel, 1889",
-      cep: PLACEHOLDER, // TODO(cliente)
-      geo: null, // TODO(cliente)
-      horarios: [], // TODO(cliente)
-      convenios: ["Particular", "Saúde Caixa"], // VALIDAR
-      mapsUrl: PLACEHOLDER, // TODO(cliente)
-      ativo: true, // VALIDAR
-    },
-    {
-      _id: "agua-verde",
-      bairro: "Água Verde",
-      endereco: "Av. Pres. Getúlio Vargas, 2499",
-      cep: PLACEHOLDER, // TODO(cliente)
-      geo: null, // TODO(cliente)
-      horarios: [], // TODO(cliente)
-      convenios: ["Particular", "Saúde Caixa"], // VALIDAR
-      mapsUrl: PLACEHOLDER, // TODO(cliente)
-      ativo: true, // VALIDAR
-    },
-  ],
+  footer: {
+    navTitle: "Navegação",
+    infoTitle: "Redes e informações",
+    privacyLabel: "Política de Privacidade",
+    credit: "Desenvolvido por Samuel Faria",
+  },
 };

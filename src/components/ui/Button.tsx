@@ -2,8 +2,8 @@ import type { AnchorHTMLAttributes, ButtonHTMLAttributes, ReactNode } from "reac
 import { ArrowRightIcon } from "./icons";
 
 /**
- * primary / secondary for light bands; light / outline-light for the dark Hipoderme bands
- * (terracota and darker), where terracota fills would disappear.
+ * primary / secondary for light bands; light / outline-light for the dark bands
+ * (final CTA, footer), where primary-color fills would disappear.
  */
 export type ButtonVariant = "primary" | "secondary" | "light" | "outline-light";
 export type ButtonSize = "md" | "lg";
@@ -56,7 +56,7 @@ export function buttonClasses({
     `btn-${variant}`,
     "relative isolate inline-flex items-center justify-center gap-2 overflow-hidden",
     "rounded-pill font-sans font-semibold tracking-[0.01em] select-none",
-    "transition-[color,background-color,border-color,scale,translate] duration-(--dur-fast) ease-skin",
+    "transition-[color,background-color,border-color,scale,translate] duration-(--dur-fast) ease-soft",
     pending ? "cursor-not-allowed" : "aria-disabled:cursor-not-allowed aria-disabled:opacity-50",
     sizeClasses[size],
     className,
@@ -69,7 +69,7 @@ export function ButtonContent({ children, arrow }: Pick<CommonProps, "children" 
       <span aria-hidden="true" className="btn-fill" />
       <span className="relative z-10">{children}</span>
       {arrow && (
-        <ArrowRightIcon className="relative z-10 shrink-0 transition-transform duration-(--dur-fast) ease-skin group-hover:translate-x-1 group-focus-visible:translate-x-1" />
+        <ArrowRightIcon className="relative z-10 shrink-0 transition-transform duration-(--dur-fast) ease-soft group-hover:translate-x-1 group-focus-visible:translate-x-1" />
       )}
     </>
   );

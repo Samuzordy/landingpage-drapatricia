@@ -1,21 +1,21 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { PillarCardsView, type PillarCardData } from "./PillarCardsView";
+import { ServiceCardsView, type ServiceCardData } from "./ServiceCardsView";
 
 const WIDE = "(min-width: 1024px)";
 const FINE_POINTER = "(hover: hover) and (pointer: fine)";
 
 /**
- * Expanding pillar cards (spec section 07) — interactive island, lazy-loaded by PillarsIsland.
- * - ≥ 1024px: three columns; the active card grows 1fr → 1.6fr while the others shrink, and its
- *   services enter with a 60ms stagger. Hover (fine pointer) or keyboard focus activates a card;
+ * Expanding service cards — interactive island, lazy-loaded by ServicesIsland.
+ * - ≥ 1024px: one column per area; the active card grows 1fr → 1.6fr while the others shrink,
+ *   and its services enter with a 60ms stagger. Hover (fine pointer) or keyboard focus activates a card;
  *   one card is always open.
- * - < 1024px / touch: accordion — tapping opens one pillar and collapses the others.
+ * - < 1024px / touch: accordion — tapping opens one area and collapses the others.
  * Each card is a disclosure (button + aria-expanded + region), so nothing depends on hover.
  * Reduced motion: no width/zoom/stagger movement, only the color/opacity changes remain.
  */
-export function PillarCards({ pillars }: { pillars: PillarCardData[] }) {
+export function ServiceCards({ services }: { services: ServiceCardData[] }) {
   const [active, setActive] = useState<number | null>(0);
   const [wide, setWide] = useState(false);
   const [fine, setFine] = useState(false);
@@ -39,8 +39,8 @@ export function PillarCards({ pillars }: { pillars: PillarCardData[] }) {
   }, []);
 
   return (
-    <PillarCardsView
-      pillars={pillars}
+    <ServiceCardsView
+      services={services}
       active={active}
       handlers={{
         onTrigger: (i) => setActive((current) => (current === i && !wide ? null : i)),

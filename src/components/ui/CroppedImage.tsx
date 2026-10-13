@@ -23,7 +23,8 @@ function scaleSizes(sizes: string, factor: number) {
 
 /**
  * next/image filling its (overflow-hidden) frame, with an optional non-destructive crop
- * (asset.crop). Pure component — usable from Server and Client Components.
+ * (asset.crop) or focal point (asset.objectPosition). Pure component — usable from Server and
+ * Client Components. Lazy by default; pass `priority` only for the LCP image (Hero).
  */
 export function CroppedImage({
   asset,
@@ -42,6 +43,8 @@ export function CroppedImage({
       priority={priority}
       sizes={scaleSizes(sizes, factor)}
       unoptimized={asset.src.endsWith(".svg")}
+      // object-position only matters without a crop box (the box already frames the subject).
+      style={!box && asset.objectPosition ? { objectPosition: asset.objectPosition } : undefined}
       className={`object-cover ${className}`}
     />
   );

@@ -27,36 +27,41 @@
 /* ---------- Reset (complements Tailwind preflight) ---------- */
 @layer base {
   /*
-   * Semantic text colors that follow the "Camadas da Pele" bands, so contrast stays AA as the
-   * background deepens. Sections declare their band with data-layer="…".
+   * Semantic text colors that follow the depth bands, so contrast stays AA as the background
+   * deepens. Sections get data-band="mid|deep" from lib/sections.ts (bandProps).
    *   --kicker-color: small uppercase labels;  --accent-text: italic accent words in headings.
+   *
+   * --depth-0 … --depth-7: the light → deep background steps (derived from tokens.css — don't
+   * edit here). Step 4 is the last one where --color-terracota-texto keeps ≥ 4.5:1.
    */
   :root {
     --kicker-color: var(--color-terracota-texto);
     --accent-text: var(--color-terracota);
+
+    --depth-0: var(--color-porcelana);
+    --depth-1: color-mix(in srgb, var(--color-band-mid) 22%, var(--color-porcelana));
+    --depth-2: color-mix(in srgb, var(--color-band-mid) 38%, var(--color-porcelana));
+    --depth-3: color-mix(in srgb, var(--color-band-mid) 55%, var(--color-porcelana));
+    --depth-4: color-mix(in srgb, var(--color-band-mid) 75%, var(--color-porcelana));
+    --depth-5: color-mix(in srgb, var(--color-band-deep) 50%, var(--color-band-mid));
+    --depth-6: var(--color-band-deep);
+    --depth-7: color-mix(in srgb, var(--color-band-base) 15%, var(--color-band-deep));
   }
 
-  [data-layer="derme-profunda"] {
+  /* Deep light bands: switch small accents to the deepest primary variant. */
+  [data-band="deep"] {
     --kicker-color: var(--color-terracota-texto-profundo);
     --accent-text: var(--color-terracota-texto-profundo);
-    /* Flat band colour; real sections override it with a gradient class (components layer). */
-    background-color: var(--color-layer-derme-profunda);
   }
 
-  /* Hipoderme entrance (FAQ): still a light background → deep terracota text accents. */
-  [data-layer="hipoderme"] {
-    --kicker-color: var(--color-terracota-texto-profundo);
-    --accent-text: var(--color-terracota-texto-profundo);
-  }
-
-  /* Dark Hipoderme (CTA, footer): white text ≥ 4.6:1 on terracota and darker. */
+  /* Dark bands (final CTA, footer): white text ≥ 4.6:1 on the base color and darker. */
   [data-tone="dark"] {
     --kicker-color: #fff;
     --accent-text: var(--color-porcelana);
     color: #fff;
   }
 
-  /* The default terracota focus ring would vanish on terracota. */
+  /* The default primary-color focus ring would vanish on the dark base. */
   [data-tone="dark"] :focus-visible {
     outline-color: var(--color-porcelana);
   }
@@ -185,6 +190,21 @@
 
 @utility tabular {
   font-variant-numeric: tabular-nums;
+}
+
+/* Background of a banded section: from where the previous one ended to where the next starts. */
+@utility depth-band {
+  background: linear-gradient(to bottom, var(--band-from), var(--band-to));
+}
+
+/* The final CTA's wave edge overlaps the bottom of the section before it — give it room.
+   Unlayered so it wins over the section-space utility. */
+main > :has(+ .final-cta) {
+  padding-bottom: 8rem;
+
+  @media (min-width: 1024px) {
+    padding-bottom: 11rem;
+  }
 }
 
 /* ---------- Grain texture (3% opacity, inline SVG noise) ---------- */

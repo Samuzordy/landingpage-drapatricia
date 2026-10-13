@@ -1,30 +1,38 @@
 /*
- * Design tokens — source: CLAUDE.md + docs/especificacao.pdf (section 05 and 07).
+ * Design tokens.
  *
  * Declared inside `@theme static` so Tailwind v4 both:
  *   1. emits every token as a CSS variable on :root (usable in plain CSS / JS), and
  *   2. generates utilities from them (bg-porcelana, text-cacau, rounded-card,
- *      shadow-warm, ease-skin, font-display, text-h1, tracking-kicker...).
- * `static` keeps unused tokens in the output, since JS (GSAP, Framer) reads them too.
+ *      shadow-warm, ease-soft, font-display, text-h1, tracking-kicker...).
+ * `static` keeps unused tokens in the output.
+ *
+ * NEW PROJECT: change only the tokens marked `TEMPLATE:` (colors below). The color names are
+ * historical (default warm palette) — read them as roles:
+ *   porcelana = light background · areia = soft surface · rose = decorative accent
+ *   terracota = primary brand · cacau = text · salvia = success/secondary accent
+ * After changing colors, re-check contrast (≥ 4.5:1) for the text variants noted below and
+ * update `settings.themeColor` in src/content/site.ts.
  */
 @theme static {
-  /* ---------- Colors ---------- */
-  --color-porcelana: #f7f1ec; /* main background */
-  --color-areia: #e9dcd1; /* secondary backgrounds, dividers */
-  --color-rose: #c98f7e; /* accents, active borders, icons — never body text */
-  --color-terracota: #a8634f; /* CTAs, fills, decorative elements, active states */
-  --color-terracota-texto: #8f4e3c; /* small text, kicker, links: ≈ 5.6:1 on porcelana (AA) */
-  /* Accessibility variant for the deep bands (Derme profunda #D2A796): ≈ 5.05:1 there, where
-     terracota-texto drops to 2.9:1. Used for kicker/accents via [data-layer] (globals.css). */
+  /* ---------- Colors (theme) ---------- */
+  --color-porcelana: #f7f1ec; /* TEMPLATE: light background (page base) */
+  --color-areia: #e9dcd1; /* TEMPLATE: soft surface — secondary backgrounds, dividers */
+  --color-rose: #c98f7e; /* TEMPLATE: decorative accent — borders, icons; never body text */
+  --color-terracota: #a8634f; /* TEMPLATE: primary brand color — CTAs, fills, active states */
+  /* TEMPLATE: darker primary for small text/links — must keep ≥ 4.5:1 on the light background */
+  --color-terracota-texto: #8f4e3c;
+  /* TEMPLATE: darkest primary for accents on the deep bands — ≥ 4.5:1 on --color-band-deep */
   --color-terracota-texto-profundo: #5e3024;
-  --color-cacau: #3b2a25; /* text and headings */
-  --color-salvia: #8fa392; /* clinical seals, success */
+  --color-cacau: #3b2a25; /* TEMPLATE: text and headings */
+  --color-salvia: #8fa392; /* TEMPLATE: success / secondary accent */
 
-  /* "Camadas da Pele" depth bands (DepthBackground interpolates between these) */
-  --color-layer-epiderme: #f7f1ec; /* Header, Hero, Credentials */
-  --color-layer-derme: #ead5ca; /* About, Pillars, SkinJourney, Conditions */
-  --color-layer-derme-profunda: #d2a796; /* HowItWorks, Differentials, Testimonials, Content */
-  --color-layer-hipoderme: #a8634f; /* FAQ, Locations, FinalCta, Footer (light text) */
+  /* ---------- Depth bands (theme) ----------
+     The page background deepens from the light surface (Hero) to the dark base (final CTA,
+     footer). Intermediate steps are derived automatically (globals.css, --depth-*). */
+  --color-band-mid: #ead5ca; /* TEMPLATE: soft tint of the brand — middle of the page */
+  --color-band-deep: #d2a796; /* TEMPLATE: deep background — last light sections */
+  --color-band-base: #a8634f; /* TEMPLATE: dark base (final CTA, footer) — white text on it */
 
   /* ---------- Typography ---------- */
   /* Font families are wired to next/font variables in globals.css (@theme inline). */
@@ -47,14 +55,14 @@
   --measure-body: 68ch; /* max line length for body copy */
 
   /* ---------- Motion ---------- */
-  --ease-skin: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
   --dur-fast: 180ms; /* color, underline, icons */
   --dur-base: 320ms; /* card elevation, expansions */
   --dur-slow: 700ms; /* scroll reveals */
   --stagger: 60ms; /* list items */
   --breath-duration: 6s; /* organic cells: scale 1 → 1.03 */
 
-  --animate-breathe: breathe var(--breath-duration) var(--ease-skin) infinite alternate;
+  --animate-breathe: breathe var(--breath-duration) var(--ease-soft) infinite alternate;
 
   @keyframes breathe {
     from {
@@ -68,6 +76,7 @@
   /* ---------- Shape & depth ---------- */
   --radius-card: 20px;
   --radius-pill: 999px;
+  /* TEMPLATE: tinted with the text color (cacau) at 18% */
   --shadow-warm: 0 20px 50px -20px rgba(59, 42, 37, 0.18);
 
   /* ---------- Layout ---------- */
@@ -76,5 +85,5 @@
   --grid-gutter: 24px; /* 12 columns, from 1024px */
   --page-margin-mobile: 20px;
   --section-space-mobile: 64px;
-  --section-space-desktop: 112px; /* within the 96–128px range from the spec */
+  --section-space-desktop: 112px; /* within a 96–128px range */
 }

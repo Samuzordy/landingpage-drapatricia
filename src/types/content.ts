@@ -1,9 +1,6 @@
 /**
- * Content model shared by the provisional content (src/content/site.ts) and,
- * from Etapa 7 on, by the Sanity queries.
- *
- * Type names are in English; field names follow the CMS schemas in section 09 of
- * docs/especificacao.pdf (Portuguese) so the Sanity migration needs no mapping layer.
+ * Content model of the landing template. Every project-specific value lives in
+ * src/content/site.ts, typed by this file — components only read from it.
  */
 
 /** Marker for data the client has not sent yet. Never render it as real content. */
@@ -25,151 +22,43 @@ export type ImageAsset = {
   height: number;
   /** Non-destructive visual crop (see lib/image.ts) — hides captions/logos baked into a photo. */
   crop?: ImageCrop;
+  /** CSS object-position for uncropped images, e.g. "50% 30%" to keep a face in frame. */
+  objectPosition?: string;
 };
 
 export type Link = {
   label: string;
+  /** Section anchor ("#sobre") or URL. Anchors to disabled sections are hidden automatically. */
   href: string;
 };
 
-export type GoogleRating = {
-  nota: number;
-  total: number;
-  url: string;
+/** Sections the page can render. Toggle them in `site.sections`. */
+export type SectionKey =
+  | "hero"
+  | "credentials"
+  | "about"
+  | "services"
+  | "conditions"
+  | "specialtyFeature"
+  | "consultation"
+  | "differentials"
+  | "faq"
+  | "finalCta";
+
+export type SectionToggles = Record<SectionKey, boolean>;
+
+/** Kicker + H2 (with optional italic highlight) + optional intro — shared by most sections. */
+export type SectionHeading = {
+  kicker: string;
+  title: string;
+  /** Words from `title` rendered in Fraunces italic. */
+  highlight?: string;
+  intro?: string;
 };
 
-export type SiteSettings = {
-  whatsapp: string | Placeholder;
-  mensagemPadrao: string;
-  instagram: { handle: string; url: string | Placeholder };
-  email: string | Placeholder;
-  seo: { title: string; description: string; ogImage?: ImageAsset };
-  /** null until the client authorizes and sends the Google Business Profile link. */
-  googleRating: GoogleRating | null;
-};
-
-export type TimelineItem = {
-  /** Year or a label such as "hoje". */
-  ano: string;
-  titulo: string;
-  descricao: string;
-};
-
-export type Institution = {
-  nome: string;
-  sigla: string;
-  logo?: ImageAsset;
-};
-
-export type Specialist = {
-  nome: string;
-  nomeExibicao: string;
-  especialidade: string;
-  crm: string;
-  rqe: string;
-  idiomas: string[];
-  foto?: ImageAsset;
-  /** Detail texture revealed by the DermatoscopeLens. */
-  fotoDetalhe?: ImageAsset;
-  /** Photo for the About section (may differ from the hero portrait). */
-  fotoSobre?: ImageAsset;
-  /** Plain paragraphs for now; becomes rich text (Portable Text) in Etapa 7. */
-  bio: string[];
-  timeline: TimelineItem[];
-  instituicoes: Institution[];
-  citacao: string;
-};
-
-export type PillarSlug = "clinica" | "cirurgica-prevencao" | "estetica";
-
-export type Pillar = {
-  titulo: string;
-  slug: PillarSlug;
-  resumo: string;
-  mensagemChave: string;
-  icone?: string;
-  imagem?: ImageAsset;
-  servicos: string[];
-  ordem: number;
-};
-
-export type SkinLayerId = "epiderme" | "derme" | "hipoderme";
-
-export type SkinLayer = {
-  id: SkinLayerId;
-  nome: string;
-  /** 1 = most superficial. */
-  profundidade: number;
-  /** Short role from the spec's concept (section 04): "superfície", "estrutura", "base". */
-  papel: string;
-  descricao: string;
-  /** true while the description is still provisional (needs medical review). */
-  descricaoProvisoria?: boolean;
-  /** References to Pillar.slug. */
-  tratamentos: PillarSlug[];
-};
-
-export type Condition = {
-  nome: string;
-  /** Max 140 characters (validated in the CMS from Etapa 7). */
-  quandoProcurar: string;
-  pilar: PillarSlug;
-  destaque: boolean;
-};
-
-export type ConsultationStep = {
-  ordem: number;
-  titulo: string;
-  descricao: string;
-};
-
-export type DifferentialIcon =
-  "escuta" | "evidencia" | "dermatoscopia" | "enderecos" | "idiomas" | "formacao";
-
-export type Differential = {
-  titulo: string;
-  descricao: string;
-  icone?: DifferentialIcon;
-  /** Claim still depends on client confirmation (shows an "a validar" mark). */
-  pendente?: boolean;
-};
-
-export type TestimonialSource = "Google" | "Doctoralia";
-
-export type Testimonial = {
-  /** First name only. */
-  autor: string;
-  texto: string;
-  fonte: TestimonialSource;
-  data: string;
-  /** Only rendered when true (CFM 2.336/2023). */
-  autorizado: boolean;
-};
-
-export type Faq = {
-  pergunta: string;
-  resposta: string;
-  ordem: number;
-};
-
-export type OpeningHours = {
-  dia: string;
-  abre: string;
-  fecha: string;
-};
-
-export type Location = {
-  _id: string;
-  bairro: string;
-  clinica?: string;
-  endereco: string;
-  cep: string | Placeholder;
-  /** null until real coordinates are confirmed — never guessed. */
-  geo: { lat: number; lng: number } | null;
-  horarios: OpeningHours[];
-  convenios: string[];
-  mapsUrl: string | Placeholder;
-  ativo: boolean;
+export type NavEntry = {
+  section: SectionKey;
+  label: string;
 };
 
 export type NavItem = {
@@ -178,56 +67,230 @@ export type NavItem = {
   href: `#${string}`;
 };
 
-export type HeroContent = {
-  kicker: string;
-  titulo: string;
-  /** Words from `titulo` rendered in Fraunces italic. */
-  destaqueItalico: string;
-  subtitulo: string;
-  ctaPrimario: string;
-  ctaSecundario: Link;
-  /** Short CTA label in the header. */
-  ctaHeader: string;
-};
-
-export type Credential = {
-  label: string;
-  /** Still needs confirmation by the client (shows a "a validar" mark while flags allow). */
-  pendente?: boolean;
-};
-
 export type SiteFlags = {
   /**
-   * Shows small "a validar" marks next to unconfirmed data and placeholder notices
-   * (e.g. Google badge, WhatsApp pending). Set to false before launch.
+   * Shows small "a validar" marks next to unconfirmed data and placeholder notices.
+   * Keep false for commercial previews.
    */
   showPendingMarkers: boolean;
 };
 
+export type GoogleRating = {
+  rating: number;
+  total: number;
+  url: string;
+};
+
+export type SocialLink = {
+  /** Network name shown before the handle, e.g. "Instagram". */
+  label: string;
+  handle: string;
+  url: string | Placeholder;
+};
+
+export type SiteSettings = {
+  /** Browser UI color (mobile address bar). Usually the light background token. */
+  themeColor: string;
+  whatsapp: string | Placeholder;
+  whatsappMessage: string;
+  /** Shown under WhatsApp CTAs while the number is a placeholder. */
+  whatsappPendingNote: string;
+  social: SocialLink[];
+  seo: { title: string; description: string };
+  /** null until the client authorizes and sends the Google Business Profile link. */
+  googleRating: GoogleRating | null;
+};
+
+export type Professional = {
+  /** Full legal name. */
+  name: string;
+  /** Name used across the page, e.g. "Dra. Nome Sobrenome". */
+  displayName: string;
+  /** Professional title shown under the name in About, e.g. "Médica especialista". */
+  title: string;
+  /** Short specialty label: header tagline, hero kicker, footer. */
+  specialty: string;
+  /** Council registrations: CRM/RQE (medicine), CRO, CRP, CRN, CREFITO… Always visible. */
+  registrations: string[];
+  /** "Cidade – UF". */
+  location: string;
+  languages: string[];
+};
+
+export type SiteImages = {
+  /** Hero portrait — the LCP image (preloaded). */
+  hero: ImageAsset;
+  /** About portrait (lazy-loaded). */
+  about: ImageAsset;
+};
+
+export type HeroContent = {
+  kicker: string;
+  title: string;
+  /** Words from `title` rendered in italic. */
+  highlight: string;
+  subtitle: string;
+  primaryCta: string;
+  secondaryCta: Link;
+  /** Short CTA label in the header. */
+  headerCta: string;
+  /**
+   * Optional magnifier lens over the hero portrait, revealing `detail` (e.g. a texture or
+   * close-up). null = plain portrait.
+   */
+  lens: { detail: ImageAsset; label: string } | null;
+};
+
+export type Credential = {
+  label: string;
+  /** Still needs confirmation (shows a mark while flags allow). */
+  pending?: boolean;
+};
+
+export type TimelineItem = {
+  /** Year or a label such as "hoje". */
+  year: string;
+  title: string;
+  description?: string;
+};
+
+export type Institution = {
+  name: string;
+  /** Monogram shown in the circle. */
+  abbreviation: string;
+};
+
+export type AboutFact = {
+  term: string;
+  detail: string;
+  /** Bold, tabular (used for registrations). */
+  emphasis?: boolean;
+  pending?: boolean;
+};
+
+export type AboutContent = {
+  kicker: string;
+  bio: string[];
+  facts: AboutFact[];
+  timelineTitle: string;
+  timeline: TimelineItem[];
+  institutionsTitle: string;
+  institutions: Institution[];
+  /** Signature quote; empty string hides it. */
+  quote: string;
+};
+
+/** Decorative line-art on the expanded service card. */
+export type ServiceArt = "rings" | "reticle" | "waves";
+
+export type ServiceArea = {
+  title: string;
+  /** Stable id — used in element ids and referenced by conditions. */
+  slug: string;
+  keyMessage: string;
+  services: string[];
+  art?: ServiceArt;
+};
+
+export type ServicesContent = {
+  heading: SectionHeading;
+  items: ServiceArea[];
+};
+
+export type ConditionItem = {
+  name: string;
+  /** Max ~140 characters. */
+  whenToSeek: string;
+  /** ServiceArea.slug shown as "related area" in the bottom sheet. */
+  service?: string;
+};
+
+export type ConditionsContent = {
+  heading: SectionHeading;
+  /** Accessible name of the chip list. */
+  listLabel: string;
+  sheetKicker: string;
+  relatedLabel: string;
+  disclaimer: string;
+  /** Hint shown while an item's text is still PENDING_TEXT. */
+  pendingHint: string;
+  items: ConditionItem[];
+};
+
+export type ConsultationStep = {
+  title: string;
+  description: string;
+};
+
+export type ConsultationContent = {
+  heading: SectionHeading;
+  steps: ConsultationStep[];
+};
+
+export type DifferentialIcon =
+  "listening" | "evidence" | "precision" | "locations" | "languages" | "education";
+
+export type Differential = {
+  title: string;
+  description: string;
+  icon?: DifferentialIcon;
+  pending?: boolean;
+};
+
+export type DifferentialsContent = {
+  heading: SectionHeading;
+  items: Differential[];
+};
+
+export type FaqItem = {
+  question: string;
+  answer: string;
+};
+
+export type FaqContent = {
+  heading: SectionHeading;
+  items: FaqItem[];
+};
+
 export type FinalCtaContent = {
   kicker: string;
-  titulo: string;
-  /** Words from `titulo` rendered in italic. */
-  destaqueItalico: string;
-  texto: string;
-  ctaPrimario: string;
-  ctaSecundario: Link;
+  title: string;
+  highlight: string;
+  text: string;
+  primaryCta: string;
+  secondaryCta: Link;
 };
+
+export type FooterContent = {
+  navTitle: string;
+  infoTitle: string;
+  privacyLabel: string;
+  /** Agency/author credit on the bottom line. Empty string hides it. */
+  credit: string;
+};
+
+/**
+ * Optional themed section (see src/components/specialty/). "none" removes it from the page,
+ * the nav and the depth gradient.
+ */
+export type SpecialtyVariant = "none" | "dermatology-skin-journey";
 
 export type SiteContent = {
   flags: SiteFlags;
+  sections: SectionToggles;
   settings: SiteSettings;
-  nav: NavItem[];
+  professional: Professional;
+  images: SiteImages;
+  nav: { header: NavEntry[]; footer: NavEntry[] };
   hero: HeroContent;
-  credentials: Credential[];
-  specialist: Specialist;
-  pillars: Pillar[];
-  skinLayers: SkinLayer[];
-  conditions: Condition[];
-  consultationSteps: ConsultationStep[];
-  differentials: Differential[];
-  testimonials: Testimonial[];
-  faqs: Faq[];
-  locations: Location[];
+  credentials: { label: string; items: Credential[] };
+  about: AboutContent;
+  services: ServicesContent;
+  conditions: ConditionsContent;
+  specialtyFeature: { variant: SpecialtyVariant };
+  consultation: ConsultationContent;
+  differentials: DifferentialsContent;
+  faq: FaqContent;
   finalCta: FinalCtaContent;
+  footer: FooterContent;
 };

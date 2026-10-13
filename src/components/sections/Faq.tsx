@@ -1,43 +1,37 @@
 import { AccordionView } from "@/components/ui/AccordionView";
-import { PendingMark } from "@/components/ui/PendingMark";
+import { SectionHeading } from "@/components/ui/SectionHeading";
 import { site } from "@/content/site";
+import { bandProps } from "@/lib/sections";
 import { FaqIsland } from "./FaqIsland";
 
 const ID_PREFIX = "faq";
 
 /**
- * Dúvidas frequentes (#duvidas) — entrance of the Hipoderme. Server Component: the accordion
- * ships as static HTML (all closed) and becomes interactive near the viewport (FaqIsland).
- * Answers are provisional and neutral (VALIDAR / TODO(cliente)): they only say the information
- * will be confirmed — no policies, prices or rules are invented.
- * The FAQPage JSON-LD is part of the production phase, not this preview.
+ * Dúvidas frequentes (#duvidas). Server Component: the accordion ships as static HTML (all
+ * closed) and becomes interactive near the viewport (FaqIsland).
+ * FAQPage JSON-LD belongs to a production build, not to this preview template.
  */
 export function Faq() {
-  const items = [...site.faqs]
-    .sort((a, b) => a.ordem - b.ordem)
-    .map((faq) => ({
-      id: `pergunta-${faq.ordem}`,
-      title: faq.pergunta,
-      content: <p>{faq.resposta}</p>,
-    }));
+  const { heading, items: faqs } = site.faq;
+  const items = faqs.map((faq, i) => ({
+    id: `pergunta-${i + 1}`,
+    title: faq.question,
+    content: <p>{faq.answer}</p>,
+  }));
 
   return (
     <section
       id="duvidas"
-      data-layer="hipoderme"
       aria-labelledby="duvidas-title"
-      className="layer-hipo-1 pt-16 pb-32 lg:pt-28 lg:pb-44"
+      {...bandProps("faq")}
+      className="section-space depth-band"
     >
       <div className="container-page grid-page gap-y-10">
-        <div className="col-span-4 lg:col-span-4">
-          <p className="kicker">Dúvidas</p>
-          <h2 id="duvidas-title" className="mt-4">
-            Dúvidas <em className="font-light text-(--accent-text)">frequentes</em>
-          </h2>
-          <p className="mt-5 text-cacau/90">
-            <PendingMark label="respostas provisórias" flush />
-          </p>
-        </div>
+        <SectionHeading
+          heading={heading}
+          titleId="duvidas-title"
+          className="col-span-4 lg:col-span-4"
+        />
 
         <div className="col-span-4 lg:col-span-7 lg:col-start-6">
           <FaqIsland items={items} idPrefix={ID_PREFIX} headingLevel={3}>

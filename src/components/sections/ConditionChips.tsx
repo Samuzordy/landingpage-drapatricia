@@ -4,10 +4,14 @@ import { useEffect, useId, useRef, useState } from "react";
 import { BottomSheet } from "@/components/ui/BottomSheet";
 import { Button } from "@/components/ui/Button";
 import { PendingTag } from "@/components/ui/PendingTag";
-import { ConditionChipList, type ConditionItem } from "./ConditionChipList";
+import { ConditionChipList, type ConditionChipItem } from "./ConditionChipList";
 
 export type ConditionChipsProps = {
-  conditions: ConditionItem[];
+  items: ConditionChipItem[];
+  listLabel: string;
+  labels: { sheetKicker: string; related: string; disclaimer: string };
+  /** Anchor of the services section, or null when it's disabled (no link). */
+  relatedHref: string | null;
   whatsapp: { label: string; href: string | null; pendingNote: string };
   showPendingMarkers: boolean;
 };
@@ -15,13 +19,20 @@ export type ConditionChipsProps = {
 const FINE_POINTER = "(hover: hover) and (pointer: fine)";
 
 /**
- * Condition chips (spec section 07) — interactive island, lazy-loaded by ConditionsIsland.
+ * "Quando procurar" chips — interactive island, lazy-loaded by WhenToSeekIsland.
  * - fine pointer: hover or keyboard focus shows the short hint in a Tooltip (180ms fill);
  * - any device: activating a chip (click, tap, Enter/Space) opens the bottom sheet with the
- *   same text, the related pillar and the WhatsApp CTA — the spec's touch equivalent.
+ *   same text, the related service area and the WhatsApp CTA — the touch equivalent.
  * The Tooltip is only attached for fine pointers, so a tap never shows both.
  */
-export function ConditionChips({ conditions, whatsapp, showPendingMarkers }: ConditionChipsProps) {
+export function ConditionChips({
+  items,
+  listLabel,
+  labels,
+  relatedHref,
+  whatsapp,
+  showPendingMarkers,
+}: ConditionChipsProps) {
   const [fine, setFine] = useState(false);
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const triggerRef = useRef<HTMLElement | null>(null);
@@ -35,12 +46,13 @@ export function ConditionChips({ conditions, whatsapp, showPendingMarkers }: Con
     return () => mq.removeEventListener("change", sync);
   }, []);
 
-  const current = openIndex === null ? null : conditions[openIndex];
+  const current = openIndex === null ? null : items[openIndex];
 
   return (
     <>
       <ConditionChipList
-        conditions={conditions}
+        items={items}
+        listLabel={listLabel}
         withHints={fine}
         onSelect={(i, e) => {
           triggerRef.current = e.currentTarget;
@@ -51,8 +63,8 @@ export function ConditionChips({ conditions, whatsapp, showPendingMarkers }: Con
       <BottomSheet
         open={current !== null}
         onClose={() => setOpenIndex(null)}
-        kicker="Quando procurar"
-        title={current?.nome}
+        kicker={labels.sheetKicker}
+        title={current?.name}
         returnFocusRef={triggerRef}
       >
         {current && (
@@ -61,16 +73,20 @@ export function ConditionChips({ conditions, whatsapp, showPendingMarkers }: Con
               {current.hint}
               {current.hintPending && showPendingMarkers && <PendingTag label="texto pendente" />}
             </p>
-            {current.pillar && (
+            {current.related && (
               <p className="mt-4 text-sm text-cacau/80">
-                Pilar relacionado:{" "}
-                <a
-                  href="#tratamentos"
-                  onClick={() => setOpenIndex(null)}
-                  className="font-semibold text-terracota-texto underline decoration-rose underline-offset-4"
-                >
-                  {current.pillar}
-                </a>
+                {labels.related}:{" "}
+                {relatedHref ? (
+                  <a
+                    href={relatedHref}
+                    onClick={() => setOpenIndex(null)}
+                    className="font-semibold text-terracota-texto underline decoration-rose underline-offset-4"
+                  >
+                    {current.related}
+                  </a>
+                ) : (
+                  <span className="font-semibold text-cacau">{current.related}</span>
+                )}
               </p>
             )}
             <div className="mt-6">
@@ -90,7 +106,7 @@ export function ConditionChips({ conditions, whatsapp, showPendingMarkers }: Con
               )}
             </div>
             <p className="mt-6 border-t border-areia pt-4 text-xs text-cacau/75">
-              Informação geral, de caráter educativo. Não substitui a avaliação médica.
+              {labels.disclaimer}
             </p>
           </>
         )}

@@ -58,7 +58,7 @@ export function AccordionView({
                 onClick={handlers ? () => handlers.onToggle(item.id) : undefined}
                 onKeyDown={handlers ? (e) => handlers.onTriggerKeyDown(index, e) : undefined}
                 // --kicker-color = the band's small accent text colour (AA on every band).
-                className="group flex min-h-14 w-full items-center justify-between gap-4 py-4 text-left text-cacau transition-colors duration-(--dur-fast) ease-skin hover:text-(--kicker-color) disabled:cursor-not-allowed disabled:opacity-50"
+                className="group flex min-h-14 w-full items-center justify-between gap-4 py-4 text-left text-cacau transition-colors duration-(--dur-fast) ease-soft hover:text-(--kicker-color) disabled:cursor-not-allowed disabled:opacity-50"
               >
                 <span>{item.title}</span>
                 <span

@@ -14,10 +14,10 @@ export type TimelineProps = {
 };
 
 /**
- * Vertical milestone list (About: 2003 → 2010 → 2013 → hoje). CSS-only Server Component.
+ * Vertical milestone list (About: education → … → hoje). CSS-only Server Component.
  * Fine pointers: hovering a milestone enlarges its year and fills the connector up to it
  * (via :has()). Descriptions are always present and readable — hover only adds emphasis —
- * so nothing depends on hover. The scroll-driven fill for touch belongs to Etapa 4 (motion).
+ * so nothing depends on hover.
  */
 export function Timeline({ items, label = "Linha do tempo", className = "" }: TimelineProps) {
   return (
